@@ -1,0 +1,78 @@
+/*
+    Copyright 2015 Cédric Levieux, Parti Pirate
+
+    This file is part of PPMoney.
+
+    PPMoney is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PPMoney is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PPMoney.  If not, see <http://www.gnu.org/licenses/>.
+*/
+nav.footer {
+	margin-top: 20px;
+	text-align: center;
+	font-size: 12px;
+	font-family: Ubuntu, Verdana, Geneva, sans-serif;
+	color: black;
+}
+
+nav.logo {
+	float: left;
+}
+
+.header {
+	font-family: Ubuntu, Verdana, Geneva, sans-serif;
+	text-align: center;
+	text-shadow: lightgrey 3px 3px 3px;
+}
+
+a {
+	color: inherit;
+}
+
+/*
+h2, h3 {
+	font-family: Ubuntu, Verdana, Geneva, sans-serif;
+	text-shadow: lightgrey 3px 3px 3px;
+}
+*/
+
+.group ul li {
+    display: inline-block;
+    border: black 1px solid;
+	margin: 5px;
+	padding: 2px 5px;
+    width: calc(25% - 20px);
+    background: inactivecaptiontext;
+    border-radius: 10px;
+    box-shadow: grey 5px 5px;
+}
+
+.group ul li.voting, .group ul li.eligible, .group ul li.not-connected {
+    background: white;
+}
+
+.group ul li h2 {
+	margin-top: 10px;
+}
+
+.no-voting button.delegate-button {
+	display: none;
+}
+
+.no-eligible button.candidate-button {
+    display: none;
+}
+
+
+.group ul li.not-mine {
+    display: none;
+}
