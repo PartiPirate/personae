@@ -87,6 +87,7 @@ $connection = openConnection();
 				</button>
 				<a class="navbar-brand" href="index.php"><img src="assets/images/logo.svg" style="position: relative; top: -14px; width: 48px; height: 48px; background-color: #ffffff;"
 					data-toggle="tooltip" data-placement="bottom"
+					alt="Logo du Parti Pirate"
 					title="Personae" /> </a>
 			</div>
 
