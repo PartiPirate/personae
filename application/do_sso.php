@@ -34,24 +34,23 @@ $query = "	SELECT *
 				tok_user_id = :tok_user_id
 			AND tok_validity_date > NOW()
 			AND tok_used_date IS NULL
-			AND tok_secret = :tok_secret
-			AND tok_application = :tok_application \n";
+			AND tok_secret = :tok_secret \n";
 
 
 $userId = $_REQUEST["userId"];
 
 $args = array(	"tok_user_id" => $userId,
-				"tok_secret" => $_REQUEST["secret"],
-				"tok_application" => $_REQUEST["application"]);
+				"tok_secret" => $_REQUEST["secret"]);
 
 $statement = $connection->prepare($query);
 $statement->execute($args);
 $results = $statement->fetchAll();
 
-//print_r($args);
-//print_r($results);
+// print_r($args);
+// print_r($results);
 
 if (!count($results)) exit();
+if ($results[0]["tok_application"] != "personae") exit();
 
 $updateSsoQuery = "	UPDATE sso.tokens SET tok_used_date = NOW() WHERE tok_id = :tok_id";
 $updateSsoArgs = array("tok_id" => $results[0]["tok_id"]);
