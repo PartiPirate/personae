@@ -20,9 +20,11 @@ include_once("header.php");
 
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/FixationBo.php");
+require_once("engine/bo/SkillUserBo.php");
 
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 $fixationBo = FixationBo::newInstance($connection, $config["galette"]["db"]);
+$skillUserBo = SkillUserBo::newInstance($connection, $config);
 
 $member = $galetteBo->getMemberById(intval($_REQUEST["id"]));
 $fixations = array();
@@ -33,6 +35,8 @@ if ($member) {
 	$filters["fme_member_id"] = $member["id_adh"];
 
 	$fixations = $fixationBo->getFixations($filters);
+	
+	$userSkills = $skillUserBo->getByFilters(array("sus_user_id" => $member["id_adh"], "with_label" => true, "with_endorsments" => true));
 }
 
 ?>
@@ -112,6 +116,36 @@ foreach($fixations as $fixation) {
 ?>
 
 <?php }?>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			Compétences&nbsp;
+		</div>
+		<div class="panel-body">
+
+	<?php 	if (!count($userSkills)) {
+				echo "Pas de compétence connue";
+			}
+			else {
+				foreach($userSkills as $userSkill) {
+	?>
+	<div class="row">
+		<div class="col-md-8"><?php echo $userSkill["ski_label"]; ?> <?php
+			if ($userSkill["sus_total_endorsments"]) {
+				echo "(";
+				echo $userSkill["sus_total_endorsments"]; 
+				echo ")";
+			}
+		?></div>
+		<div class="col-md-4"><?php echo lang("skill_level_" . $userSkill["sus_level"]); ?></div>
+	</div>
+	<?php 				
+				}
+			}?>
+
+
 		</div>
 	</div>
 

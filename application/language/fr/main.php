@@ -240,6 +240,12 @@ $lang["install_application_saveButton"] = "Sauver la configuration";
 $lang["install_autodestruct_guide"] = "Vous avez tout testé, tout configuré ? Alors un clic sur <em>autodestruction</em> pour supprimer cet installateur.";
 $lang["install_autodestruct"] = "Autodestruction";
 
+$lang["skill_level_concepts"] = "Notions";
+$lang["skill_level_average"] = "Niveau moyen";
+$lang["skill_level_good"] = "Bon niveau";
+$lang["skill_level_advanced"] = "Avancé";
+$lang["skill_level_expert"] = "Expert";
+
 $lang["about_footer"] = "À Propos";
 $lang["personae_footer"] = "<a href=\"https://www.personae.net/\" target=\"_blank\">Personae</a> est une application fournie par <a href=\"https://www.partipirate.org\" target=\"_blank\">le Parti Pirate</a>";
 ?>
