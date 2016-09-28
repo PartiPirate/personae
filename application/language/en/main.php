@@ -66,18 +66,11 @@ $lang["breadcrumb_about"] = "About";
 
 $lang["index_guide"] = "Personae is an application letting you share a tweeter account with a group of users.
 The tweets can or must be validated by other users before being published.";
-$lang["index_accounts"] = "Accounts";
-$lang["index_tweetPlaceholder"] = "tweet...";
-$lang["index_tweetButton"] = "Tweet it";
-$lang["index_supports_tweet"] = "Tweet";
-$lang["index_supports_facebook"] = "Facebook";
-$lang["index_cutTweets_legend"] = "Automatic cutting";
-$lang["index_options_mediaInput"] = "Media";
-$lang["index_options_cronDateInput"] = "Delayed departure";
-$lang["index_options_cronDatePlaceholder"] = "yyyy-mm-dd hh:mm";
-$lang["index_options_cronDateGuide"] = "Keep it blank if departure just after validation";
-$lang["index_options_validationDurationInput"] = "Maximal validation duration";
-$lang["index_options_secondaryAccounts"] = "Also send to";
+$lang["index_my_groups_button"] = "My groups";
+$lang["index_my_profile_button"] = "My profile";
+$lang["index_groups_button"] = "Groups";
+$lang["index_connect_button"] = "Connect";
+
 // $lang["index_options_validationDurationPlaceholder"] = "yyyy-mm-dd hh:mm";
 // $lang["index_options_validationDurationGuide"] = "Laisser vide si départ juste après validation";
 $lang["anonymous_form_nicknameInput"] = "Nickname";

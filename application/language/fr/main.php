@@ -80,7 +80,7 @@ report d'information) et dans quelle durée.</p>
 <p>Aujourd'hui Personae s'appuie sur les informations de Galette, l'outil de gestion d'adhérents, pour retrouver les membres
 et leur répartition.</p>";
 $lang["index_my_groups_button"] = "Mes groupes";
-$lang["index_my_powers_button"] = "Mes pouvoirs";
+$lang["index_my_profile_button"] = "Mon profil";
 $lang["index_groups_button"] = "Les groupes";
 $lang["index_connect_button"] = "Se connecter";
 

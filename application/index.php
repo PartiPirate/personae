@@ -38,7 +38,7 @@ include_once("header.php");
 			<a href="groups.php?limit=mine" class=" btn btn-default btn-lg btn-full-width"><?php echo lang("index_my_groups_button"); ?></a>
 		</div>
 		<div class="col-md-6">
-			<a href="member.php?id=<?php echo $sessionUserId; ?>" class="btn btn-default btn-lg btn-full-width"><?php echo lang("index_my_powers_button"); ?></a>
+			<a href="member.php?id=<?php echo $sessionUserId; ?>" class="btn btn-default btn-lg btn-full-width"><?php echo lang("index_my_profile_button"); ?></a>
 		</div>
 	</div>
 
