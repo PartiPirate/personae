@@ -123,7 +123,7 @@ $connection = openConnection();
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $sessionUser["pseudo_adh"]; ?> <span
 							class="caret"></span> </a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="member.php?id=<?php echo $sessionUserId; ?>"><?php echo lang("menu_my_powers"); ?></a></li>
+							<li><a href="member.php?id=<?php echo $sessionUserId; ?>"><?php echo lang("menu_myprofile"); ?></a></li>
 							<li><a href="mypreferences.php"><?php echo lang("menu_mypreferences"); ?></a></li>
 							<li class="divider"></li>
 							<li><a class="logoutLink" href="do_logout.php"><?php echo lang("menu_logout"); ?></a></li>

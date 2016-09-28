@@ -35,11 +35,7 @@ $lang["personae_title"] = "Personae";
 
 $lang["menu_language"] = "Language : {language}";
 $lang["menu_index"] = "Home";
-$lang["menu_tweet"] = "Tweet";
-$lang["menu_history"] = "History";
-$lang["menu_validation"] = "Validation";
-$lang["menu_timelines"] = "Timelines";
-$lang["menu_mytweets"] = "My tweets";
+$lang["menu_myprofile"] = "My profile";
 $lang["menu_myrights"] = "My rights";
 $lang["menu_mypreferences"] = "My preferences";
 $lang["menu_myaccounts"] = "My accounts";
