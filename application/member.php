@@ -116,8 +116,12 @@ foreach($fixations as $fixation) {
 ?>
 
 <?php }?>
+
+<?php if ($isConnected) {?>
+
 		</div>
 	</div>
+
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -145,9 +149,12 @@ foreach($fixations as $fixation) {
 				}
 			}?>
 
+<?php }?>
+
 
 		</div>
 	</div>
+
 
 </div>
 
