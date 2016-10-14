@@ -26,7 +26,13 @@ $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 $fixationBo = FixationBo::newInstance($connection, $config["galette"]["db"]);
 $skillUserBo = SkillUserBo::newInstance($connection, $config);
 
-$member = $galetteBo->getMemberById(intval($_REQUEST["id"]));
+if (isset($_REQUEST["id"])) {
+	$member = $galetteBo->getMemberById(intval($_REQUEST["id"]));
+}
+else if (isset($_REQUEST["pseudo"])) {
+	$member = $galetteBo->getMemberByMailOrPseudo($_REQUEST["pseudo"]);
+}
+
 $fixations = array();
 
 if ($member) {

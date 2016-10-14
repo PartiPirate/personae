@@ -26,6 +26,8 @@ require_once("engine/bo/GaletteBo.php");
 
 // We sanitize the request fields
 xssCleanArray($_REQUEST);
+// xssCleanArray($_POST);
+// xssCleanArray($_GET);
 
 $connection = openConnection();
 

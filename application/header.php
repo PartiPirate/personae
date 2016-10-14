@@ -20,7 +20,10 @@ session_start();
 include_once("config/database.php");
 include_once("language/language.php");
 include_once("engine/utils/bootstrap_forms.php");
+require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/SessionUtils.php");
+
+xssCleanArray($_REQUEST);
 
 // $user = SessionUtils::getUser($_SESSION);
 // $userId = SessionUtils::getUserId($_SESSION);
