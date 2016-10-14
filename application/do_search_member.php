@@ -57,6 +57,9 @@ if(isset($_POST["mem_zipcode"]) && $_POST["mem_zipcode"]) {
 if(isset($_POST["mem_city"]) && $_POST["mem_city"]) {
 	$filters["ville_adh"] = utf8_decode($_POST["mem_city"]);
 }
+if (isset($_POST["skill_ids"])) {
+	$filters["skill_ids"] = $_POST["skill_ids"];
+}
 
 $filters["adh_only"] = true;
 
@@ -106,13 +109,20 @@ $rows = array();
 foreach($members as $member) {
 	$row = array();
 	$row["id"] = $member["id_adh"];
-//	$row["lastname"] = utf8_encode($member["nom_adh"]);
-//	$row["firstname"] = utf8_encode($member["prenom_adh"]);
-	$row["lastname"] = "";
-	$row["firstname"] = "";
-	$row["nickname"] = utf8_encode($member["pseudo_adh"]);
-//	$row["mail"] = $member["email_adh"];
-	$row["mail"] = "";
+
+	if ($member["pseudo_adh"]) {
+		$row["lastname"] = "";
+		$row["firstname"] = "";
+		$row["nickname"] = utf8_encode($member["pseudo_adh"]);
+		$row["mail"] = "";
+	}
+	else {
+		$row["lastname"] = utf8_encode($member["nom_adh"]);
+		$row["firstname"] = utf8_encode($member["prenom_adh"]);
+		$row["nickname"] = "";
+		$row["mail"] = $member["email_adh"];
+	}
+
 	$row["zipcode"] = $member["cp_adh"];
 //	$row["city"] = utf8_encode($member["ville_adh"]);
 	$row["city"] = "";

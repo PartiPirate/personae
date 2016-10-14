@@ -1,3 +1,13 @@
+function hideUnactiveSkills() {
+	$(".btn-skill-filter").each(function() {
+		if ($(this).hasClass("active")) {
+			return;
+		}
+		
+		$(this).hide();
+	});
+}
+
 $(function() {
 	checkSuccesButtonState = function(target) {
 		var dialog = target.parents(".modal-dialog");
@@ -80,17 +90,10 @@ $(function() {
 		event.preventDefault();
 		event.stopPropagation();
 
+		$(".btn-danger.btn-add-skill-filter").click();
+		hideUnactiveSkills();
+
 		$.post("do_search_member.php", $(".search-member-form").serialize(), function(data) {
-			/*
-			data = {
-					numberOfRows: 15,
-					rows: [
-							{id: 1, lastname: "A", firstname: "D", nickname: "farlistener", mail: "toto@toto.com", zipcode: "82400", city: "Valence d'Agen", status: ""},
-							{id: 13, lastname: "B", firstname: "E", nickname: "nathouille", mail: "toto@toto.com", zipcode: "82400", city: "Valence d'Agen", status: ""},
-							{id: 14, lastname: "C", firstname: "F", nickname: "jeey", mail: "toto@toto.com", zipcode: "82400", city: "Valence d'Agen", status: ""}
-					]
-			};
-			*/
 
 			var table = $("table.search-member-table");
 			var tbody = $("table.search-member-table tbody");
@@ -121,4 +124,30 @@ $(function() {
 
 		checkSuccesButtonState($(this));
 	});
+	
+	$("body").on("click", ".btn-add-skill-filter", function(event) {
+		var button = $(this);
+		var icon = button.find(".fa");
+		
+		if (icon.hasClass("fa-plus")) {
+			$(".btn-skill-filter").show();
+		}
+		else {
+			hideUnactiveSkills();
+		}
+		
+		button.toggleClass("btn-primary").toggleClass("btn-danger");
+		icon.toggleClass("fa-plus").toggleClass("fa-minus");
+		
+		$(this).blur();
+	});
+
+	$("body").on("click", ".btn-skill-filter", function(event) {
+		var button = $(this);
+		button.toggleClass("active");
+		
+		var checkbox = $("#" + button.data("for"));
+		checkbox.prop("checked", button.hasClass("active"));
+	});
+	
 });

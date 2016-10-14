@@ -22,6 +22,17 @@ $isModal = isset($_GET["isModal"]);
 if (!$isModal) {
 	include_once("header.php");
 }
+else {
+	include_once("config/database.php");
+	
+	$connection = openConnection();
+}
+
+require_once("engine/bo/SkillBo.php");
+
+$skillBo = SkillBo::newInstance($connection, $config);
+
+$skills = $skillBo->getByFilters(array());
 
 ?>
 
@@ -92,6 +103,26 @@ if (!$isModal) {
 								placeholder="nom de la ville" class="form-control input-md"/>
 						</div>
 					</div>
+				</fieldset>
+				<fieldset>
+
+					<legend>Filtrer sur les compétence <button type="button" class="pull-right btn btn-xs btn-primary btn-add-skill-filter"><span class="fa fa-plus"></span></button></legend>
+
+					<div class="form-group">
+						<?php 
+							foreach($skills as $skill) {
+						?>
+							<input type="checkbox" 
+								class="simply-hidden"
+								name="skill_ids[]" value="<?php echo $skill["ski_id"]; ?>" id="skill_<?php echo $skill["ski_id"]; ?>">
+							<button type="button"
+								style="display: none; " 
+								class="btn btn-default btn-skill-filter" data-for="skill_<?php echo $skill["ski_id"]; ?>"><?php echo $skill["ski_label"]; ?></button>
+						<?php 								
+							}
+						?>
+					</div>
+
 
 					<div class="form-group text-center">
 						<button class="btn btn-primary btn-search-member">Chercher <span class="fa fa-search"></span></button>

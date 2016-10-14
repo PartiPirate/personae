@@ -36,7 +36,7 @@ if ($member) {
 
 	$fixations = $fixationBo->getFixations($filters);
 	
-	$userSkills = $skillUserBo->getByFilters(array("sus_user_id" => $member["id_adh"], "with_label" => true, "with_endorsments" => true));
+	$userSkills = $skillUserBo->getByFilters(array("sus_user_id" => $member["id_adh"], "with_label" => true, "with_endorsments" => true, "is_endorser" => $sessionUserId));
 }
 
 ?>
@@ -123,7 +123,7 @@ foreach($fixations as $fixation) {
 	</div>
 
 
-	<div class="panel panel-default">
+	<div class="panel panel-default" id="panel-endorsments">
 		<div class="panel-heading">
 			Compétences&nbsp;
 		</div>
@@ -135,7 +135,10 @@ foreach($fixations as $fixation) {
 			else {
 				foreach($userSkills as $userSkill) {
 	?>
-	<div class="row">
+	<div class="row data" 
+		data-id="<?php echo $userSkill["sus_id"]?>" 
+		data-skill-label="<?php echo $userSkill["ski_label"]?>" 
+		data-identity="<?php echo GaletteBo::showIdentity($member); ?>">
 		<div class="col-md-8"><?php echo $userSkill["ski_label"]; ?> <?php
 			if ($userSkill["sus_total_endorsments"]) {
 				echo "(";
@@ -143,7 +146,15 @@ foreach($fixations as $fixation) {
 				echo ")";
 			}
 		?></div>
-		<div class="col-md-4"><?php echo lang("skill_level_" . $userSkill["sus_level"]); ?></div>
+		<div class="col-md-2"><?php echo lang("skill_level_" . $userSkill["sus_level"]); ?></div>
+		<div class="col-md-2">
+			<?php if ($member["id_adh"] != $sessionUserId && $userSkill["sus_is_endorser"] == 0) {?>
+			<button class="btn btn-default btn-xs btn-endorse-skill"><span class="glyphicon glyphicon-thumbs-up"></span> Approuver</button>
+			<?php }
+				  elseif ($userSkill["sus_is_endorser"] == 1) {?>
+				  	Vous avez approuvé
+			<?php }?>
+		</div>
 	</div>
 	<?php 				
 				}
@@ -157,6 +168,30 @@ foreach($fixations as $fixation) {
 
 
 </div>
+
+	<div id="dialog-endorse-skill" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Approuver la compétence de <span class="skill-user-identity"></span></h4>
+				</div>
+				<div class="modal-body">
+					Approuver la compétence de <span class="skill-user-identity"></span> : <span class="skill-label"></span>
+					<form>
+						<input type="hidden" name="sus_id">
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+					<button type="button" class="btn btn-ok btn-success">Approuver</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 <div class="lastDiv"></div>
 

@@ -17,12 +17,12 @@
     along with Fabrilia.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-class SkillUserBo {
+class SkillEndorsmentBo {
 	var $pdo = null;
 	var $galetteDatabase = "";
 
-	var $TABLE = "skill_users";
-	var $ID_FIELD = "sus_id";
+	var $TABLE = "skill_endorsments";
+	var $ID_FIELD = "sen_id";
 
 	function __construct($pdo, $config) {
 		$this->galetteDatabase = $config["galette"]["db"] . ".";
@@ -31,18 +31,18 @@ class SkillUserBo {
 	}
 
 	static function newInstance($pdo, $config) {
-		return new SkillUserBo($pdo, $config);
+		return new SkillEndorsmentBo($pdo, $config);
 	}
 
-	function create(&$skillUser) {
+	function create(&$skillEndorsment) {
 		$query = "	INSERT INTO ".$this->galetteDatabase."$this->TABLE () VALUES ()	";
 
 		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
+//		echo showQuery($query, $skillEndorsment);
 
 		try {
 			$statement->execute();
-			$skillUser[$this->ID_FIELD] = $this->pdo->lastInsertId();
+			$skillEndorsment[$this->ID_FIELD] = $this->pdo->lastInsertId();
 
 			return true;
 		}
@@ -53,43 +53,86 @@ class SkillUserBo {
 		return false;
 	}
 
-	function update($skillUser) {
+	function update($skillEndorsment) {
 		$query = "	UPDATE ".$this->galetteDatabase."$this->TABLE SET ";
 
 		$separator = "";
-		foreach($skillUser as $field => $value) {
+		foreach($skillEndorsment as $field => $value) {
 			$query .= $separator;
 			$query .= $field . " = :". $field;
 			$separator = ", ";
 		}
 
 		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-
-//		echo showQuery($query, $skillUser);
+//		echo showQuery($query, $skillEndorsment);
 
 		$statement = $this->pdo->prepare($query);
-		$statement->execute($skillUser);
+		$statement->execute($skillEndorsment);
 	}
 
-	function save(&$skillUser) {
- 		if (!isset($skillUser[$this->ID_FIELD]) || !$skillUser[$this->ID_FIELD]) {
-			$this->create($skillUser);
+	function save(&$skillEndorsment) {
+ 		if (!isset($skillEndorsment[$this->ID_FIELD]) || !$skillEndorsment[$this->ID_FIELD]) {
+			$this->create($skillEndorsment);
 		}
 
-		$this->update($skillUser);
+		$this->update($skillEndorsment);
 	}
 
-	function delete($skillUser) {
+	function delete($skillEndorsment) {
 		$query = "	DELETE FROM ".$this->galetteDatabase."$this->TABLE ";
-	
+		
 		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
 	
-		//		echo showQuery($query, $skillUser);
+		//		echo showQuery($query, $skillEndorsment);
 	
-		$args[$this->ID_FIELD] = $skillUser[$this->ID_FIELD];
-	
+		$args[$this->ID_FIELD] = $skillEndorsment[$this->ID_FIELD];
+		
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
+	}
+
+	function getRandomSkillUser($userId) {
+		$query = "	SELECT *
+					FROM ".$this->galetteDatabase."skill_users
+					JOIN ".$this->galetteDatabase."skills ON ski_id = sus_skill_id
+					JOIN ".$this->galetteDatabase."galette_adherents ON id_adh = sus_user_id
+					LEFT JOIN ".$this->galetteDatabase."skill_endorsments ON sus_id = sen_skill_user_id AND sen_user_id = :id_adh
+					WHERE 1
+					AND sus_user_id != :id_adh
+					AND sen_id IS NULL
+					ORDER BY rand()	
+					LIMIT 0, 1 ";
+
+		$args["id_adh"] = $userId;
+		
+		$statement = $this->pdo->prepare($query);
+//		echo showQuery($query, $args);
+		
+		$results = array();
+
+		try {
+			$statement->execute($args);
+			$results = $statement->fetchAll();
+
+			foreach($results as $index => $line) {
+				foreach($line as $field => $value) {
+					if (is_numeric($field)) {
+						unset($results[$index][$field]);
+					}
+				}
+			}
+		}
+		catch(Exception $e){
+			echo 'Erreur de requète : ', $e->getMessage();
+		}
+
+		if (count($results)) {
+//			print_r($results[0]);
+			
+			return $results[0];
+		}
+		
+		return null;
 	}
 	
 	function getById($id) {
@@ -108,24 +151,9 @@ class SkillUserBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT * ";
-
-			if (isset($filters["with_endorsments"]) && $filters["with_endorsments"]) {
-			$query .= ", (SELECT COUNT(*) FROM ".$this->galetteDatabase."skill_endorsments WHERE sen_skill_user_id = sus_id) AS sus_total_endorsments \n";
-		}
-		
-		if (isset($filters["is_endorser"]) && $filters["is_endorser"]) {
-			$query .= ", (SELECT COUNT(*) FROM ".$this->galetteDatabase."skill_endorsments WHERE sen_skill_user_id = sus_id AND sen_user_id = :is_endorser) AS sus_is_endorser \n";
-			$args["is_endorser"] = $filters["is_endorser"];
-		}
-		
-		$query .= "	FROM ".$this->galetteDatabase."$this->TABLE ";
-
-		if (isset($filters["with_label"]) && $filters["with_label"]) {
-			$query .= " JOIN ".$this->galetteDatabase."skills ON sus_skill_id = ski_id \n";
-		}
-
-		$query .= "	WHERE
+		$query = "	SELECT *
+					FROM ".$this->galetteDatabase."$this->TABLE
+					WHERE
 						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
@@ -133,13 +161,7 @@ class SkillUserBo {
 			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 		}
 
-		if (isset($filters["sus_user_id"])) {
-			$args["sus_user_id"] = $filters["sus_user_id"];
-			$query .= " AND sus_user_id = :sus_user_id \n";
-		}
-
-		
-		//		$query .= "	ORDER BY ski_label ASC";
+		$query .= "	ORDER BY ski_label ASC";
 
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);

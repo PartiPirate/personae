@@ -73,6 +73,11 @@ class GaletteBo {
 				$args["group_name_$index"] = $groupName;
 			}
 		}
+		
+		if ($filters && isset($filters["skill_ids"])) {
+			$in = implode(", ", $filters["skill_ids"]);
+			$query .= "	AND ga.id_adh IN (SELECT sus_user_id FROM ".$this->database."skill_users WHERE sus_skill_id IN ($in))";
+		}
 
 		$statement = $this->pdo->prepare($query);
 

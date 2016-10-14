@@ -17,12 +17,12 @@
     along with Fabrilia.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-class SkillUserBo {
+class SkillBo {
 	var $pdo = null;
 	var $galetteDatabase = "";
 
-	var $TABLE = "skill_users";
-	var $ID_FIELD = "sus_id";
+	var $TABLE = "skills";
+	var $ID_FIELD = "ski_id";
 
 	function __construct($pdo, $config) {
 		$this->galetteDatabase = $config["galette"]["db"] . ".";
@@ -31,10 +31,10 @@ class SkillUserBo {
 	}
 
 	static function newInstance($pdo, $config) {
-		return new SkillUserBo($pdo, $config);
+		return new SkillBo($pdo, $config);
 	}
 
-	function create(&$skillUser) {
+	function create(&$skill) {
 		$query = "	INSERT INTO ".$this->galetteDatabase."$this->TABLE () VALUES ()	";
 
 		$statement = $this->pdo->prepare($query);
@@ -42,7 +42,7 @@ class SkillUserBo {
 
 		try {
 			$statement->execute();
-			$skillUser[$this->ID_FIELD] = $this->pdo->lastInsertId();
+			$skill[$this->ID_FIELD] = $this->pdo->lastInsertId();
 
 			return true;
 		}
@@ -53,11 +53,11 @@ class SkillUserBo {
 		return false;
 	}
 
-	function update($skillUser) {
+	function update($skill) {
 		$query = "	UPDATE ".$this->galetteDatabase."$this->TABLE SET ";
 
 		$separator = "";
-		foreach($skillUser as $field => $value) {
+		foreach($skill as $field => $value) {
 			$query .= $separator;
 			$query .= $field . " = :". $field;
 			$separator = ", ";
@@ -65,33 +65,20 @@ class SkillUserBo {
 
 		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
 
-//		echo showQuery($query, $skillUser);
+//		echo showQuery($query, $skill);
 
 		$statement = $this->pdo->prepare($query);
-		$statement->execute($skillUser);
+		$statement->execute($skill);
 	}
 
-	function save(&$skillUser) {
- 		if (!isset($skillUser[$this->ID_FIELD]) || !$skillUser[$this->ID_FIELD]) {
-			$this->create($skillUser);
+	function save(&$skill) {
+ 		if (!isset($skill[$this->ID_FIELD]) || !$skill[$this->ID_FIELD]) {
+			$this->create($skill);
 		}
 
-		$this->update($skillUser);
+		$this->update($skill);
 	}
 
-	function delete($skillUser) {
-		$query = "	DELETE FROM ".$this->galetteDatabase."$this->TABLE ";
-	
-		$query .= "	WHERE $this->ID_FIELD = :$this->ID_FIELD ";
-	
-		//		echo showQuery($query, $skillUser);
-	
-		$args[$this->ID_FIELD] = $skillUser[$this->ID_FIELD];
-	
-		$statement = $this->pdo->prepare($query);
-		$statement->execute($args);
-	}
-	
 	function getById($id) {
 		$filters = array($this->ID_FIELD => intval($id));
 
@@ -108,24 +95,9 @@ class SkillUserBo {
 		if (!$filters) $filters = array();
 		$args = array();
 
-		$query = "	SELECT * ";
-
-			if (isset($filters["with_endorsments"]) && $filters["with_endorsments"]) {
-			$query .= ", (SELECT COUNT(*) FROM ".$this->galetteDatabase."skill_endorsments WHERE sen_skill_user_id = sus_id) AS sus_total_endorsments \n";
-		}
-		
-		if (isset($filters["is_endorser"]) && $filters["is_endorser"]) {
-			$query .= ", (SELECT COUNT(*) FROM ".$this->galetteDatabase."skill_endorsments WHERE sen_skill_user_id = sus_id AND sen_user_id = :is_endorser) AS sus_is_endorser \n";
-			$args["is_endorser"] = $filters["is_endorser"];
-		}
-		
-		$query .= "	FROM ".$this->galetteDatabase."$this->TABLE ";
-
-		if (isset($filters["with_label"]) && $filters["with_label"]) {
-			$query .= " JOIN ".$this->galetteDatabase."skills ON sus_skill_id = ski_id \n";
-		}
-
-		$query .= "	WHERE
+		$query = "	SELECT *
+					FROM ".$this->galetteDatabase."$this->TABLE
+					WHERE
 						1 = 1 \n";
 
 		if (isset($filters[$this->ID_FIELD])) {
@@ -133,13 +105,7 @@ class SkillUserBo {
 			$query .= " AND $this->ID_FIELD = :$this->ID_FIELD \n";
 		}
 
-		if (isset($filters["sus_user_id"])) {
-			$args["sus_user_id"] = $filters["sus_user_id"];
-			$query .= " AND sus_user_id = :sus_user_id \n";
-		}
-
-		
-		//		$query .= "	ORDER BY ski_label ASC";
+		$query .= "	ORDER BY ski_label ASC";
 
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
