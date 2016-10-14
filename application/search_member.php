@@ -106,9 +106,9 @@ $skills = $skillBo->getByFilters(array());
 				</fieldset>
 				<fieldset>
 
-					<legend>Filtrer sur les compétence <button type="button" class="pull-right btn btn-xs btn-primary btn-add-skill-filter"><span class="fa fa-plus"></span></button></legend>
+					<legend>Filtrer sur les compétences <button type="button" class="pull-right btn btn-xs btn-primary btn-add-skill-filter"><span class="fa fa-plus"></span></button></legend>
 
-					<div class="form-group">
+					<div class="form-group text-center">
 						<?php 
 							foreach($skills as $skill) {
 						?>
@@ -134,14 +134,15 @@ $skills = $skillBo->getByFilters(array());
 			<table class="table search-member-table" style="display: none;">
 				<thead>
 					<tr>
-						<th>Nom</th>
-						<th>Prénom</th>
-						<th>Pseudo</th>
+						<th>Identité</th>
 						<th>Mail</th>
 						<th>Code postal</th>
 						<th>Ville</th>
 						<th>Statut</th>
+						<th>Compétences (Niveau - Approbations)</th>
+<!-- 						
 						<th>Actions</th>
+ -->						
 					</tr>
 				</thead>
 				<tbody>
@@ -162,14 +163,15 @@ $skills = $skillBo->getByFilters(array());
 			<tr data-template-id="template-tweet"
 				data-row=""
 				class="template">
-				<td>${lastname}</td>
-				<td>${firstname}</td>
-				<td>${nickname}</td>
+				<td><a href="member.php?id=${id}" target="_blank">${lastname} ${firstname} ${nickname}</a></td>
 				<td>${mail}</td>
 				<td>${zipcode}</td>
 				<td>${city}</td>
 				<td class="text-center">${status}</td>
+				<td>${skills}</td>
+<!-- 				
 				<td>${action}</td>
+ -->				
 			</tr>
 		</table>
 

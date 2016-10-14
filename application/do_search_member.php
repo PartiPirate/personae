@@ -17,6 +17,7 @@
     along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
 include_once("config/database.php");
+include_once("language/language.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/ThemeBo.php");
@@ -40,26 +41,28 @@ $groupBo = GroupBo::newInstance($connection, $config["galette"]["db"]);
 
 $filters = array();
 if(isset($_POST["mem_lastname"]) && $_POST["mem_lastname"]) {
-	$filters["nom_adh"] = utf8_decode($_POST["mem_lastname"]);
+	$filters["nom_adh_like"] = utf8_decode($_POST["mem_lastname"]);
 }
 if(isset($_POST["mem_firstname"]) && $_POST["mem_firstname"]) {
-	$filters["prenom_adh"] = utf8_decode($_POST["mem_firstname"]);
+	$filters["prenom_adh_like"] = utf8_decode($_POST["mem_firstname"]);
 }
 if(isset($_POST["mem_nickname"]) && $_POST["mem_nickname"]) {
-	$filters["pseudo_adh"] = utf8_decode($_POST["mem_nickname"]);
+	$filters["pseudo_adh_like"] = utf8_decode($_POST["mem_nickname"]);
 }
 if(isset($_POST["mem_mail"]) && $_POST["mem_mail"]) {
 	$filters["email_adh"] = $_POST["mem_mail"];
 }
 if(isset($_POST["mem_zipcode"]) && $_POST["mem_zipcode"]) {
-	$filters["cp_adh"] = $_POST["mem_zipcode"];
+	$filters["cp_adh_like"] = $_POST["mem_zipcode"];
 }
 if(isset($_POST["mem_city"]) && $_POST["mem_city"]) {
-	$filters["ville_adh"] = utf8_decode($_POST["mem_city"]);
+	$filters["ville_adh_like"] = utf8_decode($_POST["mem_city"]);
 }
 if (isset($_POST["skill_ids"])) {
 	$filters["skill_ids"] = $_POST["skill_ids"];
 }
+
+$filters["with_skills"] = true;
 
 $filters["adh_only"] = true;
 
@@ -128,7 +131,26 @@ foreach($members as $member) {
 	$row["city"] = "";
 	$row["status"] = isset($member["mem_status"]) ? $member["mem_status"] : "";
 	$row["action"] = "";
-
+	
+	$uSkills = array();
+	
+	if ($member["skills"]) {
+		$skills = explode(",", $member["skills"]);
+		foreach($skills as $skill) {
+			$skill = explode("#", trim($skill));
+			$uSkill = $skill[0];
+			$uSkill .= " (";
+			$uSkill .= lang("skill_level_" . $skill[1]);
+			$uSkill .= " - ";
+			$uSkill .= $skill[2];
+			$uSkill .= ")";
+			
+			$uSkills[] = $uSkill;
+		}
+	}
+	
+	$row["skills"] = implode(", ", $uSkills);
+	
 	switch($row["status"]) {
 		case "candidate":
 			$row["status"] = "<span title='Candidat' class='text-success fa fa-thumbs-o-up'></span>";

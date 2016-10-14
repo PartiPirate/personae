@@ -127,7 +127,7 @@ foreach($fixations as $fixation) {
 		<div class="panel-heading">
 			Compétences&nbsp;
 		</div>
-		<div class="panel-body">
+		<div class="panel-body row-striped row-hover">
 
 	<?php 	if (!count($userSkills)) {
 				echo "Pas de compétence connue";
