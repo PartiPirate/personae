@@ -282,7 +282,7 @@
 					</div>
 				</form>
 
-				<table>
+				<table class="no-pagination">
 					<tbody>
 						<?php 	if ($fixation) {
 									foreach($fixation["members"] as $memberId => $member) {

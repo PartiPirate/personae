@@ -29,7 +29,7 @@
 	<div class="panel-heading">
 		Mandats en cours&nbsp;
 	</div>
-	<table class="table">
+	<table class="table no-pagination">
 		<thead>
 			<tr>
 				<th>Nom</th>
