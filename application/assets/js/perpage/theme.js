@@ -164,7 +164,7 @@ function setDelegationPowerHandlers() {
 	});
 
 	$("#del_member_to").change(function() {
-		$(".delegative").hide();
+		$(".delegative[data-eligible!=candidate]").hide();
 		$("#delegative-" + $("#del_member_to").val()).show();
 		$("#del_power").val($("#delegative-" + $("#del_member_to").val() + " #delegative-power").val());
 		$("#del_previous_power").val($("#delegative-" + $("#del_member_to").val() + " #delegative-previous-power").val());
@@ -175,6 +175,8 @@ function setDelegationPowerHandlers() {
 	});
 
 	$(".delegative #delegateButton").click(function() {
+		$("#del_member_to").val($(this).data("id"));
+
 		saveDelegation();
 	});
 }

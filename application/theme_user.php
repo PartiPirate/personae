@@ -216,7 +216,8 @@
 					data-nickname="<?php echo strtolower($eligible["pseudo_adh"]); ?>"
 					data-mail="<?php echo strtolower($eligible["email_adh"]); ?>"
 					data-id="<?php echo $eligible["id_adh"]; ?>"
-					class="delegative" style="display:none;">
+					data-eligible="<?php echo $eligible["can_status"]; ?>"
+					class="delegative" style="display:<?php echo ($eligible["can_status"] == "candidate" ? "block" : "none"); ?>;">
 				<legend>
 					Délégué : <span id="delegate-name"><?php echo GaletteBo::showIdentity($eligible); ?></span>
 					<?php
@@ -243,7 +244,7 @@
 						<input type="hidden" id="delegative-previous-power" value="<?php echo $delegativePower; ?>" />
 					</div>
 					<div class="col-md-2">
-						<button id="delegateButton" type="button" class="btn btn-primary">Déléguer</button>
+						<button id="delegateButton" type="button" class="btn btn-primary" data-id="<?php echo $eligible["id_adh"]; ?>">Déléguer</button>
 					</div>
 				</div>
 				<div>
