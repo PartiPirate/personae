@@ -106,7 +106,13 @@ class DiscourseAPI
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $HTTPMETHOD );
         $body = curl_exec($ch);
+        
+//        echo print_r($body, true) . "\n";
+        
         $rc = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        
+//        echo print_r($rc, true) . "\n";
+        
         curl_close($ch);
 	$resObj = new \stdClass();
         $json = json_decode($body);
@@ -119,6 +125,26 @@ class DiscourseAPI
         return $resObj;
     }
 
+    function removeUserInGroup($groupId, $userId) {
+    	$params = array("user_id" => $userId);
+    	
+    	return $this->_deleteRequest("/admin/groups/$groupId/members.json", $params);
+    }
+    
+    function addUsersInGroup($groupname, $usernames) {
+		$groupId = $this->getGroupIdByGroupName($groupname);
+
+//		echo print_r($groupId, true) . "\n";
+		
+        if (!$groupId) {
+            return false;
+        }
+        
+        $params = array("usernames" => implode(",", $usernames));
+		
+		return $this->_putRequest("/admin/groups/$groupId/members.json", $params);
+    }
+    
      /**
      * group
      *

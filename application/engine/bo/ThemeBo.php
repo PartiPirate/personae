@@ -113,6 +113,10 @@ class ThemeBo {
 			$query .= " AND the_id = :the_id \n";
 		}
 
+		if ($filters && isset($filters["the_has_discourse"]) && $filters["the_has_discourse"]) {
+			$query .= " AND the_discourse_group_labels != '[]' \n";
+		}
+
 		if ($filters && isset($filters["the_next_fixation_date"])) {
 			$args["the_next_fixation_date"] = $filters["the_next_fixation_date"];
 			$query .= " AND the_next_fixation_date = :the_next_fixation_date \n";

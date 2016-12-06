@@ -176,6 +176,10 @@ class GaletteBo {
 			$args["group_name"] = $filters["group_name"];
 		}
 
+		if ($filters && isset($filters["has_discourse"]) && $filters["has_discourse"]) {
+			$query .= " AND discourse_group_labels != '[]' \n";
+		}
+		
 		//		echo showQuery($query, $args);
 		$statement = $this->pdo->prepare($query);
 
