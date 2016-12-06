@@ -295,7 +295,7 @@ class DiscourseAPI
      * @return mixed HTTP return code and API return object
      */
 
-    function createUser($name, $userName, $emailAddress, $password)
+    function createUser($name, $userName, $emailAddress, $password, $active = false)
     {
         $obj = $this->_getRequest('/users/hp.json');
         if ($obj->http_code != 200) {
@@ -307,6 +307,7 @@ class DiscourseAPI
             'username' => $userName,
             'email' => $emailAddress,
             'password' => $password,
+        	'active' => $active,
             'challenge' => strrev($obj->apiresult->challenge),
             'password_confirmation' => $obj->apiresult->value
         );
