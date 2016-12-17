@@ -104,6 +104,14 @@
 					<label class="form-control labelForCheckbox" for="the_secret_until_fixation">D&eacute;l&eacute;gation secr&egrave;te jusqu'&agrave; la fixation</label>
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="the_discourse_group_labels">Groupes discourse : </label>
+				<div class="col-md-8">
+					<input type="text" name="the_discourse_group_labels" id="the_discourse_group_labels"
+						placeholder="" class="form-control input-md"
+						value="<?php echo htmlspecialchars($theme["the_discourse_group_labels"], ENT_QUOTES); ?>"/>
+				</div>
+			</div>
 		</fieldset>
 	</div>
 </div>

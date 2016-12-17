@@ -66,6 +66,8 @@ $theme["the_eligible_group_id"] = $_REQUEST["the_eligible_group_id"];
 $theme["the_voting_group_type"] = $_REQUEST["the_voting_group_type"];
 $theme["the_voting_group_id"] = $_REQUEST["the_voting_group_id"];
 
+$theme["the_discourse_group_labels"] = $_REQUEST["the_discourse_group_labels"];
+
 $isCreating = ($theme["the_id"] == 0);
 $themeBo->save($theme);
 
