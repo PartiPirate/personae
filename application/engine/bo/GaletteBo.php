@@ -36,7 +36,8 @@ class GaletteBo {
 
 		$args = array();
 
-		$query = "	SELECT *";
+		$query = "	SELECT DISTINCT * ";
+
 		if ($filters && isset($filters["with_skills"]) && $filters["with_skills"]) {
 			
 			$query .= ", (SELECT GROUP_CONCAT(CONCAT(ski_label , '#' , sus_level, '#' , (SELECT COUNT(*) FROM galette.skill_endorsments WHERE sen_skill_user_id = sus_id))) FROM ".$this->database."skill_users JOIN ".$this->database."skills ON ski_id = sus_skill_id WHERE sus_user_id = ga.id_adh ";
@@ -71,7 +72,7 @@ class GaletteBo {
 
 		if ($filters) {
 			foreach($filters as $key => $value) {
-				if (in_array($key, array("id_adh", "nom_adh", "prenom_adh", "pseudo_adh", "email_adh", "cp_adh", "ville_adh"))) {
+				if (in_array($key, array("id_adh", "nom_adh", "prenom_adh", "pseudo_adh", "email_adh", "cp_adh", "ville_adh", "activite_adh"))) {
 					$query .= "	AND ga.$key = :$key \n";
 					$args[$key] = $value;
 				}
@@ -98,6 +99,8 @@ class GaletteBo {
 			$in = implode(", ", $filters["skill_ids"]);
 			$query .= "	AND ga.id_adh IN (SELECT sus_user_id FROM ".$this->database."skill_users WHERE sus_skill_id IN ($in))";
 		}
+
+		$query .= "	ORDER BY ga.id_adh \n";
 
 		$statement = $this->pdo->prepare($query);
 

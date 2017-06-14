@@ -279,9 +279,23 @@ class DiscourseAPI
      * @return mixed HTTP return code and API return object
      */
 
-    function getGroupMembers($group)
+    function getGroupMembers($group, $limit = 0, $offset = 0)
     {
-        return $this->_getRequest("/groups/{$group}/members.json");
+        $url = "/groups/{$group}/members.json";
+
+        $separator = "?";
+
+        if ($limit) {
+            $url .= $separator . "limit=" . $limit;
+            $separator = "&";
+        }
+
+        if ($offset) {
+            $url .= $separator . "offset=" . $offset;
+            $separator = "&";
+        }
+
+        return $this->_getRequest("$url");
     }
 
     /**
@@ -339,6 +353,9 @@ class DiscourseAPI
     function getUsernameByEmail($email)
     {
         $users = $this->_getRequest("/admin/users/list/active.json?filter=".urlencode($email));
+        
+        if ($users->http_code == 429) throw new \Exception('HTTP CODE 429');
+        
         foreach($users->apiresult as $user) {
             if($user->email === $email) {
                 return $user->username;

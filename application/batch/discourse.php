@@ -41,6 +41,7 @@ $groupedUsers = array();
 
 // Put on-date members
 $filters = array("adh_only" => true);
+$filters["activite_adh"] = 1;
 $members = $galetteBo->getMembers($filters);
 
 $discourseGroupLabel = "Membres";
@@ -62,10 +63,15 @@ foreach($themes as $theme) {
 	$fixationId = $theme["the_current_fixation_id"];
 	
 	if (!$fixationId) continue;
-	
+
 	$filters = array("fix_id" => $fixationId, "with_fixation_members" => true);
 	$members = $fixationBo->getFixations($filters);
-	
+
+	if (!$discourseGroupLabels) $discourseGroupLabels = array();
+
+//	echo "--------------\n";
+//	print_r($discourseGroupLabels);
+
 	foreach($discourseGroupLabels as $discourseGroupLabel) {
 		if (!isset($groupedUsers[$discourseGroupLabel])) {
 			$groupedUsers[$discourseGroupLabel] = array();
@@ -75,6 +81,8 @@ foreach($themes as $theme) {
 			$groupedUsers[$discourseGroupLabel][] = $member;
 		}
 	}
+
+//	echo "--------------\n";
 }
 
 // Get all groups with discourse parameters
@@ -86,6 +94,8 @@ foreach($groups as $group) {
 	
 	$filters = array("adh_only" => true, "adh_group_names" => array($group["group_name"]));
 	$members = $galetteBo->getMembers($filters);
+
+//	print_r($discourseGroupLabels);
 
 	foreach($discourseGroupLabels as $discourseGroupLabel) {
 		if (!isset($groupedUsers[$discourseGroupLabel])) {
@@ -104,15 +114,23 @@ foreach($groups as $group) {
 $cachedUsers = array();
 
 $index = 0;
-$numberOfOperationsForSleeping = 3;
+$numberOfOperationsForSleeping = 2;
 
 foreach($groupedUsers as $groupLabel => $users) {
 	echo $groupLabel . "\n";
 
  	$groupId = $discourseApi->getGroupIdByGroupName($groupLabel);
  	sleep(1);
-	$groupMembers = $discourseApi->getGroupMembers($groupLabel);
+ 	
+	echo $groupLabel . " => " . count($users) . " users in personae \n";
+ 	sleep(1);
+ 	
+	$groupMembers = $discourseApi->getGroupMembers($groupLabel, count($users) + 100);
 	sleep(1);
+
+	echo $groupLabel . " => " . count($groupMembers->apiresult->members) . " users in discourse \n";
+
+//	exit();
 	
 // 	if (count($users) == count($groupMembers->apiresult->members)) {
 // 		$allFound = true;
@@ -127,11 +145,38 @@ foreach($groupedUsers as $groupLabel => $users) {
 //	echo print_r($groupMembers->apiresult, true) . "\n"; 
 	
 	// Retrieve
+	
+	$toDeletes = $groupMembers->apiresult->members;
+	$toAdd = array();
+
 	$usernames = array();
 	foreach($users as $memberIndex => $user) {
 		if (isset($cachedUsers[$user["email_adh"]])) {
 			$discourseUser = $cachedUsers[$user["email_adh"]];
 			$usernames[] = $discourseUser->username;
+
+			$found = false;
+			foreach($groupMembers->apiresult->members as $memberIndex => $member) {
+				if ($discourseUser->username == $member->username) {
+					$found = true;
+
+					echo $discourseUser->username . " found \n";
+
+					break;
+				}
+			}
+			
+			if (!$found && !in_array($discourseUser->username, $toAdd)) {
+				$toAdd[] = $discourseUser->username;
+				echo $discourseUser->username . " to add \n";
+			}
+
+			foreach($toDeletes as $memberIndex => $member) {
+				if ($discourseUser->username == $member->username) {
+					unset($toDeletes[$memberIndex]);
+					break;
+				}
+			}			
 		}
 		else {
 			$discourseUser = $discourseApi->getUserByEmail($user["email_adh"]);
@@ -142,35 +187,99 @@ foreach($groupedUsers as $groupLabel => $users) {
 			
 			if ($discourseUser) {
 				$usernames[] = $discourseUser->username;
+
+				$found = false;
+				foreach($groupMembers->apiresult->members as $memberIndex => $member) {
+					if ($discourseUser->username == $member->username) {
+						$found = true;
+
+						echo $discourseUser->username . " found \n";
+
+						break;
+					}
+				}
+				
+				if (!$found && !in_array($discourseUser->username, $toAdd)) {
+					$toAdd[] = $discourseUser->username;
+					echo $discourseUser->username . " to add \n";
+				}
+				
+
+				foreach($toDeletes as $memberIndex => $member) {
+					if ($discourseUser->username == $member->username) {
+						unset($toDeletes[$memberIndex]);
+						break;
+					}
+				}			
 				
 				$cachedUsers[$user["email_adh"]] = $discourseUser; 
 			}
 			else if (isset($user["pseudo_adh"])) {
 				$discourseUser = $discourseApi->getUserByUsername($user["pseudo_adh"]);
-	 		if (($index++ % $numberOfOperationsForSleeping) == 0) sleep(1);
+		 		if (($index++ % $numberOfOperationsForSleeping) == 0) sleep(1);
 				
 				if (isset($discourseUser->apiresult->user)) {
 					$usernames[] = $discourseUser->apiresult->user->username;
+
+					$found = false;
+					foreach($groupMembers->apiresult->members as $memberIndex => $member) {
+						if ($discourseUser->apiresult->user->username == $member->username) {
+							$found = true;
+
+							echo $discourseUser->apiresult->user->username . " found \n";
+
+							break;
+						}
+					}
+					
+					if (!$found && !in_array($discourseUser->apiresult->user->username, $toAdd)) {
+						$toAdd[] = $discourseUser->apiresult->user->username;
+						echo $discourseUser->apiresult->user->username . " to add \n";
+					}
+
+
+					foreach($toDeletes as $memberIndex => $member) {
+						if ($discourseUser->apiresult->user->username == $member->username) {
+							unset($toDeletes[$memberIndex]);
+							break;
+						}
+					}			
 				}
+				else {
+					echo $user["email_adh"] . "not found with pseudo \n";
+				}
+			}
+			else {
+				echo $user["email_adh"] . "not found with no pseudo \n";
 			}
 		}
 	}
 
-	if (count($groupMembers->apiresult->members) == count($usernames)) {
+	print_r($toAdd);
+	print_r($toDeletes);
+	
+//	exit();
+
+/*	if (count($groupMembers->apiresult->members) == count($usernames)) {
 		echo $groupLabel . " => " . count($usernames) . " users - no touching \n";
 		continue;
 	}
-	
+*/	
 	// Delete
-	foreach($groupMembers->apiresult->members as $memberIndex => $member) {
-		$discourseApi->removeUserInGroup($groupId, $member->id);
-		if (($index++ % $numberOfOperationsForSleeping) == 0) {
-			sleep(1);
+	if (count($toDeletes)) {
+		foreach($toDeletes as $memberIndex => $member) {
+			$discourseApi->removeUserInGroup($groupId, $member->id);
+
 			echo "Remove $memberIndex / " . count($groupMembers->apiresult->members) . "\n";
+
+			if (($index++ % $numberOfOperationsForSleeping) == 0) {
+				sleep(1);
+			}
 		}
 	}
 	
 	// Add
+/*	
 	foreach($usernames as $memberIndex => $username) {
 		$answer = $discourseApi->addUsersInGroup($groupLabel, array($username));
  		if (($index++ % $numberOfOperationsForSleeping) == 0) {
@@ -178,7 +287,12 @@ foreach($groupedUsers as $groupLabel => $users) {
  			echo "Adding $memberIndex / " . count($usernames) . "\n";
  		}
 	}
-	
+*/
+	if (count($toAdd)) {
+		$answer = $discourseApi->addUsersInGroup($groupLabel, $toAdd);
+		print_r($answer);
+	}
+
 	echo $groupLabel . " => " . count($usernames) . " users \n";
 }
 
