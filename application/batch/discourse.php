@@ -30,8 +30,7 @@ require_once("engine/bo/GaletteBo.php");
 require_once("engine/discourse/DiscourseAPI.php");
 
 $connection = openConnection();
-//$discourseApi = new richp10\discourseAPI\DiscourseAPI("discourse.partipirate.org", $config["discourse"]["api_key"], "https");
-$discourseApi = new richp10\discourseAPI\DiscourseAPI("127.0.0.1:480", $config["discourse"]["api_key"], "http");
+$discourseApi = new richp10\discourseAPI\DiscourseAPI($config["discourse"]["url"], $config["discourse"]["api_key"], $config["discourse"]["protocol"]);
 
 $themeBo = ThemeBo::newInstance($connection, $config["galette"]["db"]);
 $fixationBo = FixationBo::newInstance($connection, $config["galette"]["db"]);
@@ -268,9 +267,11 @@ foreach($groupedUsers as $groupLabel => $users) {
 	// Delete
 	if (count($toDeletes)) {
 		foreach($toDeletes as $memberIndex => $member) {
-			$discourseApi->removeUserInGroup($groupId, $member->id);
+			$answer = $discourseApi->removeUserInGroup($groupId, $member->id);
 
 			echo "Remove $memberIndex / " . count($groupMembers->apiresult->members) . "\n";
+
+			print_r($answer);
 
 			if (($index++ % $numberOfOperationsForSleeping) == 0) {
 				sleep(1);

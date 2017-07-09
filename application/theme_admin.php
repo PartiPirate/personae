@@ -61,6 +61,27 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-md-4 control-label method demliq" for="the_max_delegations">Nombre maximum de délégations :</label>
+				<div class="col-md-2 method demliq">
+					<input type="text" name="the_max_delegations" id="the_max_delegations"
+						placeholder="0 pour illimité" class="form-control input-md"
+						value="<?php echo $theme["the_max_delegations"]; ?>"/>
+				</div>
+				<label class="col-md-4 control-label method demliq" for="the_dilution">Dilution : </label>
+				<div class="col-md-2 method demliq">
+					<div class="input-group">
+						<input type="number" name="the_dilution" id="the_dilution"
+							min="10" max="100" step="5"
+							placeholder="entre 10 et 100%" class="form-control input-md"
+							aria-describedby="dilution-addon"
+							value="<?php echo $theme["the_dilution"]; ?>" />
+						<span class="input-group-addon" id="dilution-addon">%</span>
+					</div>
+					
+					
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-md-4 control-label" for="the_next_fixation_date">Date de la prochaine fixation : </label>
 				<div class="col-md-2">
 					<input type="date" name="the_next_fixation_date" id="the_next_fixation_date"
