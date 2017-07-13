@@ -177,6 +177,10 @@ $lang["success_theme_theme"] = "Le thème a été mis à jour";
 $lang["success_group_group"] = "Le groupe a été mis à jour";
 $lang["error_cant_change_password"] = "Le changement de mot de passe a échoué";
 $lang["ok_operation_success"] = "Opération réussie";
+
+$lang["error_voting_cycling"] = "Cette délégation n'est pas possible car vous recevez déjà sa délégation";
+$lang["error_max_delegations"] = "Cette délégation n'est pas possible car la personne recevant déjà assez de délégations";
+
 $lang["error_passwords_not_equal"] = "Votre mot de passe et sa confirmation sont différents";
 $lang["error_cant_send_mail"] = "Personae n'arrive pas à envoyer de mail à votre adresse mail";
 $lang["error_cant_register"] = "Personae n'arrive pas à traiter votre enregistrement";

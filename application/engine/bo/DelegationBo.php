@@ -235,7 +235,7 @@ class DelegationBo {
 						foreach($members as $takerIndex => $takerMember) {
 							if ($takerMember["id_adh"] != $delegation["del_member_to"]) continue;
 
-							$toGive = $giverMember["power"] * $delegation["del_power"] / $instancePower;
+							$toGive = $giverMember["power"] * $delegation["del_power"] *  (((isset($instance["the_dilution"])  && $instance["the_dilution"]) ? $instance["the_dilution"] : 100) / 100) / $instancePower;
 							$givenPower += $toGive;
 
 							$members[$takerIndex]["power"] += $toGive;

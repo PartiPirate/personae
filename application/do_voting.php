@@ -85,12 +85,38 @@ if ($isCycling) {
 }
 
 // Retrieve previous candidate
+$exists = false;
 $delegations = $delegationBo->getDelegations($delegation);
 if (count($delegations)) {
 	$delegation = $delegations[0];
+	$exists = true;
 }
 
 $delegation["del_power"] = $_REQUEST["del_power"];
+
+$instance["the_max_delegations"] = 1;
+
+if ($delegation["del_power"] > 0) {	
+	$actualDelegationNumbers = 0;
+
+	foreach($powers as $power) {
+		
+		if ($delegation["del_member_to"] == $power["id_adh"]) {
+			$actualDelegationNumbers = count($power["givers"]);
+		}
+	}
+
+	if ($exists) {
+		$actualDelegationNumbers--;
+	}
+
+//	echo "Number of delegations = " . $actualDelegationNumbers . "\n";
+
+	if ($instance["the_max_delegations"] && $actualDelegationNumbers >= $instance["the_max_delegations"]) {
+		echo json_encode(array("error" => "error_max_delegations"));
+		exit();
+	}
+}
 
 if ($delegation["del_power"] > 0) {
 	// Save it
