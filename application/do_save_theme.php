@@ -54,8 +54,14 @@ $theme["the_min_members"] = $_REQUEST["the_min_members"];
 $theme["the_max_members"] = $_REQUEST["the_max_members"];
 $theme["the_dilution"] = $_REQUEST["the_dilution"];
 $theme["the_max_delegations"] = $_REQUEST["the_max_delegations"];
+
+$theme["the_type_date"] = $_REQUEST["the_type_date"];
+
 $theme["the_next_fixation_date"] = $_REQUEST["the_next_fixation_date"];
 $theme["the_next_fixed_until_date"] = $_REQUEST["the_next_fixed_until_date"];
+
+$theme["the_periodicity"] = $_REQUEST["the_periodicity"];
+
 $theme["the_voting_power"] = $_REQUEST["the_voting_power"];
 $theme["the_voting_method"] = $_REQUEST["the_voting_method"];
 $theme["the_secret_until_fixation"] = isset($_REQUEST["the_secret_until_fixation"]) ? 1 : 0;

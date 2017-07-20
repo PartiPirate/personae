@@ -81,7 +81,20 @@
 					
 				</div>
 			</div>
+			
 			<div class="form-group">
+				<div class="col-md-12 text-center">
+					<input type="hidden" 
+						name="the_type_date" id="the_type_date" 
+						value="<?php echo $theme["the_type_date"]; ?>">
+					<div class="btn-group btn-group-periodicity" role="group">
+						<button type="button" class="btn btn-default btn-periodicity <?php echo ($theme["the_type_date"] == "date" ? "active" : ""); ?>" data-value="date">Date fixe</button>
+						<button type="button" class="btn btn-default btn-periodicity <?php echo ($theme["the_type_date"] == "periodicity" ? "active" : ""); ?>" data-value="periodicity">Périodique</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group type-date date">
 				<label class="col-md-4 control-label" for="the_next_fixation_date">Date de la prochaine fixation : </label>
 				<div class="col-md-2">
 					<input type="date" name="the_next_fixation_date" id="the_next_fixation_date"
@@ -95,6 +108,21 @@
 						value="<?php echo $theme["the_next_fixed_until_date"]; ?>"/>
 				</div>
 			</div>
+
+
+			<div class="form-group type-date periodicity">
+				<label class="col-md-4 control-label" for="the_periodicity">Périodicité : </label>
+				<div class="col-md-2">
+					<select name="the_periodicity" id="the_periodicity" class="form-control input-md">
+						<option value="hour" <?php echo $theme["the_periodicity"] == "hour" ? 'selected="selected"' : ''; ?>>Toutes les heures</option>
+						<option value="day" <?php echo $theme["the_periodicity"] == "day" ? 'selected="selected"' : ''; ?>>Tous les jours</option>
+						<option value="week" <?php echo $theme["the_periodicity"] == "week" ? 'selected="selected"' : ''; ?>>Toutes les semaines</option>
+						<option value="month" <?php echo $theme["the_periodicity"] == "month" ? 'selected="selected"' : ''; ?>>Tous les mois</option>
+					</select>
+
+				</div>
+			</div>
+
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="the_voting_method">Méthode de fixation : </label>
 				<div class="col-md-2">

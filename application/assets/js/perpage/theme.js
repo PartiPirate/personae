@@ -45,6 +45,11 @@ function saveTheme() {
 	}, "json");
 }
 
+function changeDateMethod() {
+	$(".type-date").hide();
+	$("." + $("#the_type_date").val()).show();
+}
+
 function changeVotingMethod() {
 	$(".method").hide();
 	$("." + $("#the_voting_method").val()).show();
@@ -65,6 +70,15 @@ function saveThemeFormHandlers() {
 	$("#saveThemeForm select").change(function() {
 		saveTheme();
 	});
+
+	$("button.btn-periodicity").click(function() {
+		$("button.btn-periodicity").removeClass("active");
+		$(this).addClass("active");
+
+		$("#the_type_date").val($(this).data("value"));
+		changeDateMethod();
+		saveTheme();
+	})
 
 	$("#the_voting_method").change(function() {
 		changeVotingMethod();
@@ -503,4 +517,5 @@ $(function() {
 	toggleAdmins();
 	toggleElecteds();
 	changeVotingMethod();
+	changeDateMethod();
 });
