@@ -33,14 +33,14 @@ class GroupBo {
 	}
 
 	function create(&$group) {
-		$query = "	INSERT INTO groups (sig_id) VALUES (:sig_id)	";
+		$query = "	INSERT INTO dlp_groups (gro_id) VALUES (:gro_id)	";
 
 		$statement = $this->pdo->prepare($query);
 		//		echo showQuery($query, $args);
 
 		try {
-			$statement->execute(array("sig_id" => $group["sig_id"]));
-//			$group["sig_id"] = $this->pdo->lastInsertId();
+			$statement->execute();
+			$group["gro_id"] = $this->pdo->lastInsertId();
 
 			return true;
 		}
@@ -52,7 +52,7 @@ class GroupBo {
 	}
 
 	function update($group) {
-		$query = "	UPDATE groups SET ";
+		$query = "	UPDATE dlp_groups SET ";
 
 		$separator = "";
 		foreach($group as $field => $value) {
@@ -61,7 +61,7 @@ class GroupBo {
 			$separator = ", ";
 		}
 
-		$query .= "	WHERE sig_id = :sig_id ";
+		$query .= "	WHERE gro_id = :gro_id ";
 
 //		echo showQuery($query, $group);
 
@@ -70,16 +70,9 @@ class GroupBo {
 	}
 
 	function save(&$group) {
-// 		if (!isset($group["sig_id"]) || !$group["sig_id"]) {
+ 		if (!isset($group["gro_id"]) || !$group["gro_id"]) {
 			$this->create($group);
-
-			// create reference
-// 			$group["tra_reference"] = "" . $group["sig_id"];
-// 			while(strlen($group["tra_reference"]) < 8) {
-// 				$group["tra_reference"] = "0" . $group["tra_reference"];
-// 			}
-// 			$group["tra_reference"] = "PP" . $group["tra_reference"];
-// 		}
+ 		}
 
 		$this->update($group);
 	}
@@ -265,6 +258,8 @@ class GroupBo {
 
 				$groups[$groupId]["gro_id"] = $line["gro_id"];
 				$groups[$groupId]["gro_label"] = $line["gro_label"];
+				$groups[$groupId]["gro_contact"] = $line["gro_contact"];
+				$groups[$groupId]["gro_contact_type"] = $line["gro_contact_type"];
 
 				if (!isset($groups[$groupId]["gro_themes"])) {
 					$groups[$groupId]["gro_themes"] = array();
@@ -427,4 +422,58 @@ class GroupBo {
 
 		return $results;
 	}
+	
+	// Authority part
+	
+	// Admin part
+
+	function addAuthorityAdmin($admin) {
+		$query = "	INSERT INTO dlp_group_authoritatives
+						(gau_group_id, gau_authoritative_id)
+					VALUES
+						(:gau_group_id, :gau_authoritative_id) \n";
+
+		//		$query .= "	ORDER BY gro_label, the_label ";
+
+		$statement = $this->pdo->prepare($query);
+		//		echo showQuery($query, $args);
+
+		$statement->execute($admin);
+	}
+
+	function removeAuthorityAdmin($admin) {
+		$query = "	DELETE FROM  dlp_group_authoritatives
+					WHERE
+						gau_group_id = :gau_group_id
+					AND gau_authoritative_id = :gau_authoritative_id \n";
+
+		//		$query .= "	ORDER BY gro_label, the_label ";
+
+		$statement = $this->pdo->prepare($query);
+		//		echo showQuery($query, $args);
+
+		$statement->execute($admin);
+	}
+	
+	function getAuthorityAdmins($group) {
+		$args = array();
+		$args["gau_group_id"] = $group["gro_id"];
+
+		$query = "	SELECT *, group_name as gau_authoritative_name
+					FROM dlp_group_authoritatives
+					LEFT JOIN ".$this->database."galette_groups ON id_group = gau_authoritative_id
+					WHERE
+						gau_group_id = :gau_group_id \n";
+
+		//		$query .= "	ORDER BY gro_label, the_label ";
+
+		$statement = $this->pdo->prepare($query);
+		//		echo showQuery($query, $args);
+
+		$statement->execute($args);
+		$results = $statement->fetchAll();
+
+		return $results;
+	}
+	
 }

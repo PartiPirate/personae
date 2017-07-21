@@ -167,12 +167,29 @@ class GaletteBo {
 		return $this->getGroupByName($sectionName);
 	}
 
+	function getGroupById($groupId) {
+		$filters = array("id_group" => intval($groupId));
+
+		$groups = $this->getGroups($filters);
+
+		if (count($groups)) {
+			return $groups[0];
+		}
+
+		return null;
+	}
+
 	function getGroups($filters = null) {
 		$query = "	SELECT *
 					FROM ".$this->database."galette_groups
 					WHERE 1 = 1";
 
 		$args = array();
+
+		if ($filters && isset($filters["id_group"])) {
+			$query .= "	AND id_group = :id_group";
+			$args["id_group"] = $filters["id_group"];
+		}
 
 		if ($filters && isset($filters["group_name"])) {
 			$query .= "	AND group_name = :group_name";

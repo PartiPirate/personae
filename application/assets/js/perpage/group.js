@@ -1,3 +1,5 @@
+/* global $ */
+/* global keyupTimeoutId */
 
 keyupTimeoutId = null;
 
@@ -8,10 +10,36 @@ function clearKeyup() {
 	}
 }
 
+function saveGroupFormHandlers() {
+	$("#saveGroupForm").change(saveGroup);
+
+	$("#saveGroupForm input[type=text]").keyup(function() {
+		clearKeyup();
+		keyupTimeoutId = setTimeout(saveGroup, 1500);
+	});
+
+	$("#saveGroupForm input[type=checkbox]").change(function() {
+		saveGroup();
+	});
+
+	$("#saveGroupForm select").change(function() {
+		saveGroup();
+	});
+}
+
+function changeContactMethod() {
+	$(".contact-type").hide();
+	$(".contact-type." + $("#gro_contact_type").val()).show();
+}
+
 function addGroupHandlers() {
 	$(".addThemeButton").click(function(event) {
 		var groupId = $(this).data("group-id");
 		window.location.href = "theme.php?groupId=" + groupId + "&id=0&admin=";
+	});
+	
+	$("#gro_contact_type").change(function() {
+		changeContactMethod();
 	});
 }
 
@@ -93,7 +121,7 @@ function adminFormHandlers() {
 		$.post(form.attr("action"), form.serialize(), function(data) {
 			if (data.ok) {
 				addGroupAdmins(data.admins);
-				$("#admins table tbody").append(link);
+//				$("#admins table tbody").append(link);
 
 				form.get(0).reset();
 			}
@@ -124,6 +152,59 @@ function addRemoveAdminLinkHandlers(selector) {
 	});
 }
 
+function addGroupAuthoritatives(authoritatives) {
+	var authoritativeTBody = $("#authoritative table tbody");
+
+	for(var index = 0; index < authoritatives.length; ++index) {
+		var authoritative = authoritatives[index];
+
+		var link = $("tr[data-template-id=template-group-authoritative]").template("use", {data : authoritative});
+		authoritativeTBody.append(link);
+	}
+}
+
+function authoritativeFormHandlers() {
+	$("#addAuthoritativeButton").click(function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		var form = $("#addAuthoritativeForm");
+		if (form.find("#gau_authoritative_id").val() == "") return;
+
+		$.post(form.attr("action"), form.serialize(), function(data) {
+			if (data.ok) {
+				addGroupAuthoritatives(data.authoritatives);
+//				$("#authoritatives table tbody").append(link);
+
+				form.get(0).reset();
+			}
+		}, "json");
+	});
+
+	addRemoveAuthoritativeLinkHandlers();
+	if (typeof groupAuthoritatives != "undefined") {
+		addGroupAuthoritatives(groupAuthoritatives);
+	}
+}
+
+function addRemoveAuthoritativeLinkHandlers(selector) {
+	$("#authoritative").on("click", ".removeAuthoritativeLink", function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		var mylink = $(this);
+		var myform = {"action": "remove_authoritative"};
+		myform["gau_group_id"] = $(this).data("group-id");
+		myform["gau_authoritative_id"] = $(this).data("authoritative-id");
+
+		$.post("do_set_group_authority.php", myform, function(data) {
+			if (data.ok) {
+				mylink.parents("tr").remove();
+			}
+		}, "json");
+	});
+}
+
 function saveGroup() {
 	clearKeyup();
 	var myform = $("#saveGroupForm");
@@ -133,32 +214,18 @@ function saveGroup() {
 			$(this).parents(".container").hide();
 		});
 
-		$("#group_id").val(data.group.the_id);
-		$("#group_link").text(data.group.gre_label);
+		$("#group_id").val(data.group.gro_id);
+		$("#group_link").text(data.group.gro_label);
 	}, "json");
 }
 
-function saveGroupFormHandlers() {
-	$("#saveGroupForm").change(saveGroup);
-
-	$("#saveGroupForm input[type=text]").keyup(function() {
-		clearKeyup();
-		keyupTimeoutId = setTimeout(saveGroup, 1500);
-	});
-
-	$("#saveGroupForm input[type=checkbox]").change(function() {
-		saveGroup();
-	});
-
-	$("#saveGroupForm select").change(function() {
-		saveGroup();
-	});
-}
 
 $(function() {
 	addGroupHandlers();
 	savePowerHandlers();
 	excludeHandlers();
 	adminFormHandlers();
+	authoritativeFormHandlers();
 	saveGroupFormHandlers();
+	changeContactMethod();
 });

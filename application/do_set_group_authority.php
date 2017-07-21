@@ -39,20 +39,43 @@ $groupBo = GroupBo::newInstance($connection, $config["galette"]["db"]);
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 
 $group = array();
-$group["gro_id"] = $_REQUEST["gro_id"];
+$group["gro_id"] = $_REQUEST["gau_group_id"];
 
 if (!$groupBo->isMemberAdmin($group, $sessionUserId)) {
 	echo json_encode(array("error" => "group_not_admin"));
 	exit();
 }
 
-$group["gro_label"] = $_REQUEST["gro_label"];
-$group["gro_contact_type"] = isset($_REQUEST["gro_contact_type"]) ? $_REQUEST["gro_contact_type"] : null;
-$group["gro_contact"] = isset($_REQUEST["gro_contact"]) ? $_REQUEST["gro_contact"] : null;
+if ($_REQUEST["gau_authoritative_id"]) {
+	$galetteGroup = $galetteBo->getGroupById($_REQUEST["gau_authoritative_id"]);
+}
+else {
+	$galetteGroup = array("id_group" => 0, "group_name" => utf8_decode("Tous les membres"));
+}
 
-$groupBo->save($group);
+$manipulatedAuthoritatives = array();
 
-// TODO Update theme admin event
+if ($galetteGroup) {
 
-echo json_encode(array("ok" => "ok", "group" => $group));
+	$authoritative = array("gau_group_id" => $group["gro_id"], "gau_authoritative_id" => $galetteGroup["id_group"]);
+
+	if ($_REQUEST["action"] == "add_authority") {
+		$groupBo->addAuthorityAdmin($authoritative);
+	}
+	else {
+		$groupBo->removeAuthorityAdmin($authoritative);
+	}
+
+	$authoritative["gau_authoritative_name"] = utf8_encode($galetteGroup["group_name"]);
+
+	$manipulatedAuthoritatives[] = $authoritative;
+}
+else {
+	echo json_encode(array("error" => "group_no_galette_group"));
+	exit();
+}
+
+// TODO Update theme authoritative event
+
+echo json_encode(array("ok" => "ok", "authoritatives" => $manipulatedAuthoritatives));
 ?>
