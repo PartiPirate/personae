@@ -10,7 +10,7 @@
   * @author    Original author DiscourseHosting <richard@discoursehosting.com>
   * Additional work, timolaine, richp10 and others..
   * @copyright 2013, DiscourseHosting.com
-  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2 
+  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
   * @link      https://github.com/richp10/discourse-api-php
   */
 
@@ -45,9 +45,9 @@ class DiscourseAPI
         $ch = curl_init();
         $url = sprintf(
             '%s://%s%s?%s',
-            $this->_protocol, 
-            $this->_dcHostname, 
-            $reqString, 
+            $this->_protocol,
+            $this->_dcHostname,
+            $reqString,
             http_build_query($paramArray)
         );
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -84,41 +84,39 @@ class DiscourseAPI
         $ch = curl_init();
         $url = sprintf(
             '%s://%s%s?api_key=%s&api_username=%s',
-            $this->_protocol, 
-            $this->_dcHostname, 
-            $reqString, 
-            $this->_apiKey, 
+            $this->_protocol,
+            $this->_dcHostname,
+            $reqString,
+            $this->_apiKey,
             $apiUser
         );
+
         curl_setopt($ch, CURLOPT_URL, $url);
-	$query = '';
-	if (isset($paramArray['group'])) {
+    	$query = '';
+	    if (isset($paramArray['group'])) {
         	foreach ($paramArray['group'] as $param => $value) {
            		$query .= $param.'='.$value .'&';
         	}
-	} else {
+    	} 
+    	else {
         	foreach ($paramArray as $param => $value) {
            		$query .= $param.'='.$value .'&';
-        	}
-	}
+            }
+	    }
+
         $query = trim($query, '&');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $query );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $HTTPMETHOD );
+    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $HTTPMETHOD );
         $body = curl_exec($ch);
-        
-//        echo print_r($body, true) . "\n";
-        
         $rc = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        
-//        echo print_r($rc, true) . "\n";
-        
         curl_close($ch);
-	$resObj = new \stdClass();
+	    $resObj = new \stdClass();
         $json = json_decode($body);
         if (json_last_error() == JSON_ERROR_NONE) {
                 $resObj->apiresult = $json;
-        } else {
+        } 
+        else {
                 $resObj->apiresult = $body;
         }
         $resObj->http_code = $rc;
@@ -133,7 +131,6 @@ class DiscourseAPI
     
     function addUsersInGroup($groupname, $usernames) {
 		$groupId = $this->getGroupIdByGroupName($groupname);
-
 //		echo print_r($groupId, true) . "\n";
 		
         if (!$groupId) {
@@ -153,8 +150,8 @@ class DiscourseAPI
      *
      * @return mixed HTTP return code and API return object
      */
-    function addGroup($groupname, $usernames = array(), $aliaslevel = 3, $visible = 'true', 
-			$automemdomain = '', $automemretro = 'false', $title = '', 
+    function addGroup($groupname, $usernames = array(), $aliaslevel = 3, $visible = 'true',
+			$automemdomain = '', $automemretro = 'false', $title = '',
 			$primegroup = 'false', $trustlevel = '0' )
     {
 
@@ -190,29 +187,29 @@ class DiscourseAPI
 
      /**
      * Edit Category
-     * 
+     *
      * @param integer $catid
      * @param string  $allow_badges
      * @param string  $auto_close_based_on_last_post
-     * @param string  $auto_close_hours	
-     * @param string  $background_url	
+     * @param string  $auto_close_hours
+     * @param string  $background_url
      * @param string  $color
      * @param string  $contains_messages
-     * @param string  $email_in	
+     * @param string  $email_in
      * @param string  $email_in_allow_strangers
-     * @param string  $logo_url	
-     * @param string  $name	
-     * @param integer $parent_category_id	
-     * @param integer $position	
-     * @param string  $slug	
+     * @param string  $logo_url
+     * @param string  $name
+     * @param integer $parent_category_id
+     * @param integer $position
+     * @param string  $slug
      * @param string  $suppress_from_homepage
      * @param string  $text_color
-     * @param string  $topic_template	
-     * @param array   $permissions 
+     * @param string  $topic_template
+     * @param array   $permissions
      * @return mixed HTTP return code and API return object
      */
      function updatecat($catid, $allow_badges='true',$auto_close_based_on_last_post='false', $auto_close_hours='',$background_url,$color='0E76BD',
-		$contains_messages='false', $email_in='', $email_in_allow_strangers='false', $logo_url='', $name='', $parent_category_id='', 
+		$contains_messages='false', $email_in='', $email_in_allow_strangers='false', $logo_url='', $name='', $parent_category_id='',
 		$groupname, $position='', $slug='', $suppress_from_homepage='false', $text_color='FFFFFF', $topic_template='', $permissions )
      {
         $params = array(
@@ -234,10 +231,10 @@ class DiscourseAPI
 		'topic_template'		=> $topic_template
         );
 
-	# Add the permissions - this is an array of group names and integer permission values. 
+	# Add the permissions - this is an array of group names and integer permission values.
 	if (sizeof($permissions > 0)) {
 		foreach ($permissions as $key => $value)	{
-		 	$params['permissions['.$key.']'] = $permissions[$key] ; 
+		 	$params['permissions['.$key.']'] = $permissions[$key] ;
 		}
 	}
 
@@ -246,11 +243,23 @@ class DiscourseAPI
      }
 
      /**
+     * getSite
+     *
+     * @return mixed HTTP return code and API return object
+     */
+
+    function getSite()
+    {
+        return $this->_getRequest("/site.json");
+    }
+
+
+     /**
      * getCategories
      *
      * @return mixed HTTP return code and API return object
      */
-    
+
     function getCategories()
     {
         return $this->_getRequest("/categories.json");
@@ -279,22 +288,19 @@ class DiscourseAPI
      * @return mixed HTTP return code and API return object
      */
 
+
     function getGroupMembers($group, $limit = 0, $offset = 0)
     {
         $url = "/groups/{$group}/members.json";
-
         $separator = "?";
-
         if ($limit) {
             $url .= $separator . "limit=" . $limit;
             $separator = "&";
         }
-
         if ($offset) {
             $url .= $separator . "offset=" . $offset;
             $separator = "&";
         }
-
         return $this->_getRequest("$url");
     }
 
@@ -309,7 +315,7 @@ class DiscourseAPI
      * @return mixed HTTP return code and API return object
      */
 
-    function createUser($name, $userName, $emailAddress, $password, $active = false)
+    function createUser($name, $userName, $emailAddress, $password)
     {
         $obj = $this->_getRequest('/users/hp.json');
         if ($obj->http_code != 200) {
@@ -321,7 +327,6 @@ class DiscourseAPI
             'username' => $userName,
             'email' => $emailAddress,
             'password' => $password,
-        	'active' => $active,
             'challenge' => strrev($obj->apiresult->challenge),
             'password_confirmation' => $obj->apiresult->value
         );
@@ -334,7 +339,7 @@ class DiscourseAPI
      *
      * @param integer $userId      id of user to activate
      *
-     * @return mixed HTTP return code 
+     * @return mixed HTTP return code
      */
 
     function activateUser($userId)
@@ -353,15 +358,12 @@ class DiscourseAPI
     function getUsernameByEmail($email)
     {
         $users = $this->_getRequest("/admin/users/list/active.json?filter=".urlencode($email));
-        
-        if ($users->http_code == 429) throw new \Exception('HTTP CODE 429');
-        
         foreach($users->apiresult as $user) {
             if($user->email === $email) {
                 return $user->username;
             }
         }
-	
+
         return false;
     }
 
@@ -411,7 +413,7 @@ class DiscourseAPI
      * @return mixed HTTP return code and API return object
      */
 
-    function createTopic($topicTitle, $bodyText, $categoryId, $userName, $replyToId = 0) 
+    function createTopic($topicTitle, $bodyText, $categoryId, $userName, $replyToId = 0)
     {
         $params = array(
             'title' => $topicTitle,
@@ -420,12 +422,40 @@ class DiscourseAPI
             'archetype' => 'regular',
             'reply_to_post_number' => $replyToId,
         );
+                
         return $this->_postRequest('/posts', $params, $userName);
     }
 
-     function getCategory($categoryName) {
-	return $this->_getRequest("/c/{$categoryName}.json");	
-     }
+    function createPM($topicTitle, $bodyText, $targets, $userName, $replyToId = 0)
+    {
+        $params = array(
+            'title' => $topicTitle,
+            'raw' => $bodyText,
+//            'category' => $categoryId,
+            'archetype' => 'private_message',
+            'target_usernames' => implode(",", $targets),
+//            'target_usernames' => $targets,
+            'reply_to_post_number' => $replyToId,
+        );
+                
+        return $this->_postRequest('/posts', $params, $userName);
+    }
+
+    function getCategory($categoryName) {
+        return $this->_getRequest("/c/{$categoryName}.json");
+    }
+
+    function getCategoryById($categoryId) {
+        $datas = $this->_getRequest("/site.json");
+        $categories = $datas->apiresult->categories;
+        foreach($categories as $category) {
+            if(($category->id) == $categoryId) {
+                return $category;
+            }
+       }
+
+       return false;
+    }
 
     /**
      * getTopic
@@ -433,7 +463,7 @@ class DiscourseAPI
      */
 
     function getTopic($topicId) {
-	return $this->_getRequest("/t/{$topicId}.json");
+	    return $this->_getRequest("/t/{$topicId}.json");
     }
 
     /**
@@ -499,7 +529,7 @@ class DiscourseAPI
                 return $user;
             }
         }
-	
+
         return false;
     }
 
@@ -526,11 +556,11 @@ class DiscourseAPI
             $groupId = false;
         }
 
-	return $groupId;
+	    return $groupId;
     }
 
      /**
-     * joinGroup 
+     * joinGroup
      * @param string $groupname    name of group
      * @param string $username     user to add to the group
      *
@@ -539,15 +569,16 @@ class DiscourseAPI
 
     function joinGroup($groupname, $username)
     {
-	$groupId = $this->getGroupIdByGroupName($groupname);
+    	$groupId = $this->getGroupIdByGroupName($groupname);
         if (!$groupId) {
-	    return false;
-         } else {
+	        return false;
+        }
+        else {
             $params = array(
                 'usernames' => $username
             );
-         return $this->_putRequest('/groups/' . $groupId . '/members', $params);
-         }
+            return $this->_putRequest('/groups/' . $groupId . '/members', $params);
+        }
      }
 
     function leaveGroup($groupname, $username)
@@ -556,16 +587,16 @@ class DiscourseAPI
         $groupId = $this->getGroupIdByGroupName($groupname);
         if (!$groupId) {
             return false;
-         } else {
+         }
+         else {
             $params = array(
                 'user_id' => $userid
             );
-         return $this->_deleteRequest('/groups/'.$groupId.'/members.json', $params);
-	}
-     }
+            return $this->_deleteRequest('/groups/'.$groupId.'/members.json', $params);
+	    }
+    }
 
-
-     /**
+    /**
      * topTopics
      * @param string $category    slug of category
      * @param string $period      daily, weekly, monthly, yearly
@@ -576,7 +607,7 @@ class DiscourseAPI
     function topTopics($category, $period = 'daily')
     {
          return $this->_getRequest('/c/'.$category.'/l/top/'.$period.'.json');
-     }
+    }
 
      /**
      * latestTopics
@@ -588,8 +619,7 @@ class DiscourseAPI
     function latestTopics($category )
     {
          return $this->_getRequest('/c/'.$category.'/l/latest.json');
-     }
+    }
 
 
 }
-
