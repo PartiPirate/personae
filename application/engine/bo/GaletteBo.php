@@ -36,7 +36,7 @@ class GaletteBo {
 
 		$args = array();
 
-		$query = "	SELECT DISTINCT * ";
+		$query = "	SELECT DISTINCT *, diaf.field_val as discord_id_adh ";
 
 		if ($filters && isset($filters["with_skills"]) && $filters["with_skills"]) {
 			
@@ -50,6 +50,7 @@ class GaletteBo {
 			$query .= ") AS skills";
 		}
 		$query .= "	FROM ".$this->database."galette_adherents ga \n";
+		$query .= "	LEFT JOIN ".$this->database."galette_dynamic_fields diaf ON diaf.field_id = 2 AND diaf.field_form = 'adh' AND diaf.item_id = id_adh \n";
 
 		if ($filters && isset($filters["adh_group_names"])) {
 			foreach($filters["adh_group_names"] as $index => $groupName) {
@@ -86,6 +87,11 @@ class GaletteBo {
 					$args[$key] = $value . "%";
 				}
 			}
+		}
+
+		if ($filters && isset($filters["discord_id_adh"])) {
+			$query .= "	AND diaf.field_val =  :discord_id_adh \n";
+			$args["discord_id_adh"] = $filters["discord_id_adh"];
 		}
 
 		if ($filters && isset($filters["adh_group_names"])) {
@@ -129,6 +135,18 @@ class GaletteBo {
 
 	function getMemberByMail($email) {
 		$results = $this->getMembers(array("email_adh" => $email));
+
+		if (count($results)) {
+			$member = $results[0];
+
+			return $member;
+		}
+
+		return null;
+	}
+
+	function getMemberByDiscord($discordId) {
+		$results = $this->getMembers(array("discord_id_adh" => $discordId));
 
 		if (count($results)) {
 			$member = $results[0];
