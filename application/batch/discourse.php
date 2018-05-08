@@ -113,7 +113,7 @@ foreach($groups as $group) {
 $cachedUsers = array();
 
 $index = 0;
-$numberOfOperationsForSleeping = 2;
+$numberOfOperationsForSleeping = 1;
 
 foreach($groupedUsers as $groupLabel => $users) {
 	echo $groupLabel . "\n";

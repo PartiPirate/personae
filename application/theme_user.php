@@ -57,7 +57,7 @@
 </div>
 <?php }?>
 
-<?php if ($isElegible && !$showAdmin && $theme["the_delegate_only"] != "1") {?>
+<?php if ($isElegible && !$showAdmin && (true || $theme["the_delegate_only"] != "1")) {?>
 <div class="panel panel-default eligible">
 	<div class="panel-heading">
 		Candidature&nbsp;
@@ -248,7 +248,7 @@
 					</div>
 				</div>
 				<div>
-					<?php if ($eligible["can_text"]) {?>
+					<?php if (trim($eligible["can_text"])) {?>
 					Proposition de candidature : <br/>
 					<?php echo $eligible["can_text"]; ?>
 					<?php }?>

@@ -94,7 +94,7 @@ if (count($delegations)) {
 
 $delegation["del_power"] = $_REQUEST["del_power"];
 
-$instance["the_max_delegations"] = 1;
+//$instance["the_max_delegations"] = 1;
 
 if ($delegation["del_power"] > 0) {	
 	$actualDelegationNumbers = 0;
@@ -113,7 +113,7 @@ if ($delegation["del_power"] > 0) {
 //	echo "Number of delegations = " . $actualDelegationNumbers . "\n";
 
 	if ($instance["the_max_delegations"] && $actualDelegationNumbers >= $instance["the_max_delegations"]) {
-		echo json_encode(array("error" => "error_max_delegations"));
+		echo json_encode(array("error" => "error_max_delegations", "max_delegation" => $instance["the_max_delegations"]));
 		exit();
 	}
 }
@@ -128,5 +128,5 @@ else {
 
 // TODO Create delegation event
 
-echo json_encode(array("ok" => "ok"));
+echo json_encode(array("ok" => "ok", "max_delegation" => $instance["the_max_delegations"]));
 ?>

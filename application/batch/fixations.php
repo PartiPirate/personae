@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -46,18 +46,33 @@ $filters["with_fixation_information"] = true;
 
 $themes = $themeBo->getThemes($filters);
 
+$dayPeriodicThemes = $themeBo->getThemes(array("the_periodicity" => "day"));
+foreach($dayPeriodicThemes as $theme) {
+	$themes[] = $theme;
+}
+
+$tomorrow = new DateTime();
+$tomorrow = $tomorrow->add(new DateInterval("P1D"));
+
+
 // Foreach
 
 foreach($themes as $theme) {
 	echo "Fix " . $theme["the_id"] . "\n";
 // Get the fixation method
 
-	if ($theme["the_id"] != 25) continue;
+//	if ($theme["the_id"] != 44) continue;
 
 	$method = $theme["the_voting_method"];
 
 	$fixation = array();
-	$fixation["fix_until_date"] = $theme["the_next_fixed_until_date"];
+	if ($theme["the_type_date"] == "date") {
+		$fixation["fix_until_date"] = $theme["the_next_fixed_until_date"];
+	}
+	else if ($theme["the_periodicity"] == "day") {
+		$fixation["fix_until_date"] = $tomorrow->format("Y-m-d");
+	}
+
 	$fixation["fix_theme_id"] = $theme["the_id"];
 	$fixation["fix_theme_type"] = "dlp_themes";
 
@@ -171,14 +186,16 @@ foreach($themes as $theme) {
 		}
 	}
 
+	// Next fixed until date become, by default, the next fixation date, if it's date based
+		$themeToSave = array("the_id" => $theme["the_id"]);
+		$themeToSave["the_current_fixation_id"] = $fixation["fix_id"];
 
-// Next fixed until date become, by default, the next fixation date
-	$themeToSave = array("the_id" => $theme["the_id"]);
-	$themeToSave["the_next_fixation_date"] = $theme["the_next_fixed_until_date"];
-	$themeToSave["the_next_fixed_until_date"] = null;
-	$themeToSave["the_current_fixation_id"] = $fixation["fix_id"];
-
-	$themeBo->save($themeToSave);
+		if ($theme["the_type_date"] == "date") {
+			$themeToSave["the_next_fixation_date"] = $theme["the_next_fixed_until_date"];
+			$themeToSave["the_next_fixed_until_date"] = null;
+		}
+	
+		$themeBo->save($themeToSave);
 
 // Create fixation event
 

@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -120,6 +120,14 @@ class ThemeBo {
 		if ($filters && isset($filters["the_next_fixation_date"])) {
 			$args["the_next_fixation_date"] = $filters["the_next_fixation_date"];
 			$query .= " AND the_next_fixation_date = :the_next_fixation_date \n";
+		}
+
+		// periodic theme search, force the type date to periodicity
+		if ($filters && isset($filters["the_periodicity"])) {
+			$args["the_periodicity"] = $filters["the_periodicity"];
+			$args["the_type_date"] = "periodicity";
+			$query .= " AND the_periodicity = :the_periodicity \n";
+			$query .= " AND the_type_date = :the_type_date \n";
 		}
 
 		if (!isset($filters["with_deleted"])) {

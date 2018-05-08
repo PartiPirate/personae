@@ -239,6 +239,11 @@ class GroupBo {
 			$query .= " AND gro_id = :gro_id \n";
 		}
 
+		if (isset($filters["the_id"])) {
+			$args["the_id"] = $filters["the_id"];
+			$query .= " AND the_id = :the_id \n";
+		}
+
 		$query .= "	ORDER BY gro_label, the_label ";
 
 		$statement = $this->pdo->prepare($query);

@@ -202,18 +202,28 @@ function setDelegationPowerHandlers() {
 	});
 
 	$("#del_member_to").change(function() {
-		$(".delegative[data-eligible!=candidate]").hide();
-		$("#delegative-" + $("#del_member_to").val()).show();
+		if ($("#del_member_to").val() && $("#del_member_to").val() != "0") {
+			$(".delegative").hide();
+			$("#delegative-" + $("#del_member_to").val()).show();
+		}
+		else {
+			$(".delegative[data-eligible!=candidate]").hide();
+			$(".delegative[data-eligible=candidate]").show();
+		}
 		$("#del_power").val($("#delegative-" + $("#del_member_to").val() + " #delegative-power").val());
 		$("#del_previous_power").val($("#delegative-" + $("#del_member_to").val() + " #delegative-previous-power").val());
 	});
 
 	$(".delegative #delegative-power").change(function() {
 		$("#del_power").val($(this).val());
+		$(this).parents(".delegative").find("#delegateButton").removeClass("btn-primary").addClass("btn-warning");
 	});
 
 	$(".delegative #delegateButton").click(function() {
 		$("#del_member_to").val($(this).data("id"));
+
+		// TODO better on the handler
+		$(this).addClass("btn-primary").removeClass("btn-warning");
 
 		saveDelegation();
 	});
