@@ -60,7 +60,7 @@
 <?php if ($isElegible && !$showAdmin && (true || $theme["the_delegate_only"] != "1")) {?>
 <div class="panel panel-default eligible">
 	<div class="panel-heading">
-		Candidature&nbsp;
+		Moi, délégué·e…&nbsp;
 	</div>
 	<div class="panel-body">
 		<form id="candidateForm" action="do_candidate.php" method="post">
@@ -68,11 +68,11 @@
 		<input type="hidden" name="can_member_id" id="can_member_id" value="<?php echo $candidate["can_member_id"]; ?>" />
 		<input type="checkbox" value="candidate"
 			<?php echo $candidate["can_status"] == "candidate" ? 'checked="checked"' :  '';?>
-			id="can_status_candidate" name="can_status" /> Je suis candidat
+			id="can_status_candidate" name="can_status" /> J'accepte les délégations
 
 		<input type="checkbox" value="anti"
 			<?php echo $candidate["can_status"] == "anti" ? 'checked="checked"' :  '';?>
-			id="can_status_anti" name="can_status" /> Je ne suis surtout pas candidat
+			id="can_status_anti" name="can_status" /> Je refuse les délégations
 
 		<br/>
 		<!--
@@ -224,7 +224,7 @@
 				data-eligible="<?php echo $eligible["can_status"]; ?>"
 				style="display:<?php echo ($eligible["can_status"] == "candidate" ? "block" : "none"); ?>;">
 	<div class="panel-heading">
-		Délégué : <span id="delegate-name"><?php echo GaletteBo::showIdentity($eligible); ?></span>
+		Délégué·e : <span id="delegate-name"><?php echo GaletteBo::showIdentity($eligible); ?></span>
 		<?php
 
 		switch($eligible["can_status"]) {
@@ -244,6 +244,13 @@
 	</div>
 	<div class="panel-body">
 		<fieldset>
+			<div>
+				<?php if (trim($eligible["can_text"])) {?>
+<!--				Proposition de candidature : <br/>-->
+				<?php echo $eligible["can_text"]; ?>
+				<?php }?>
+			</div>
+			<hr>
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="tad_member_mail">Pouvoir de délégation confié : </label>
 				<div class="col-md-6">
@@ -253,12 +260,6 @@
 				<div class="col-md-2">
 					<button id="delegateButton" type="button" class="btn btn-primary" data-id="<?php echo $eligible["id_adh"]; ?>">Déléguer</button>
 				</div>
-			</div>
-			<div>
-				<?php if (trim($eligible["can_text"])) {?>
-				Proposition de candidature : <br/>
-				<?php echo $eligible["can_text"]; ?>
-				<?php }?>
 			</div>
 		</fieldset>
 	</div>
