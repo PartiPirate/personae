@@ -17,6 +17,7 @@
     along with PPMoney.  If not, see <http://www.gnu.org/licenses/>.
 */
 @include_once("config/config.php");
+@include_once("config/modules.config.php");
 @include_once("config/salt.php");
 @include_once("engine/bo/BoHelper.php");
 @include_once("engine/requests/sql/QueryFactory.php");
