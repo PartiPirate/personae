@@ -19,6 +19,7 @@
 session_start();
 include_once("config/database.php");
 include_once("language/language.php");
+require_once("engine/bo/UserPropertyBo.php");
 include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/SessionUtils.php");
@@ -48,6 +49,24 @@ $page = str_replace(".php", "", $page);
 
 $connection = openConnection();
 
+$userProperties = array();
+if ($sessionUserId) {
+	$userPropertyBo = UserPropertyBo::newInstance($connection, $config);
+	$userProperties = $userPropertyBo->getByFilters(array("upr_user_id" => $sessionUserId));
+}
+
+function getUserPropertyValue($property) {
+	global $userProperties;
+	
+	foreach($userProperties as $userProperty) {
+		if ($userProperty["upr_property"] == $property) {
+			return $userProperty["upr_value"];
+		}
+	}
+	
+	return null;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $language; ?>">
@@ -56,6 +75,8 @@ $connection = openConnection();
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?php echo lang("personae_title"); ?></title>
+
+<link href="favicon.ico" rel="shortcut icon"/>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="assets/js/jquery-1.11.1.min.js"></script>
@@ -78,6 +99,14 @@ $connection = openConnection();
     <!--link href="css/fileinput.min.css" rel="stylesheet" /-->
 <link href="assets/css/font-awesome.min.css" rel="stylesheet">
 
+<?php
+$themeProperty = getUserPropertyValue("theme");
+
+if ($themeProperty) {	?>
+<link href="themes/<?php echo $themeProperty; ?>/css/style.css" rel="stylesheet">
+<?php
+} ?>
+
 <link rel="shortcut icon" type="image/png" href="favicon.png" />
 </head>
 <body>
@@ -88,7 +117,7 @@ $connection = openConnection();
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#otb-navbar-collapse">
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.php"><img src="assets/images/logo.svg" style="position: relative; top: -14px; width: 48px; height: 48px; background-color: #ffffff;"
+				<a class="navbar-brand" href="index.php"><img src="assets/images/logo_voile_fond.svg" style="position: relative; top: -14px; width: 48px; height: 48px;"
 					data-toggle="tooltip" data-placement="bottom"
 					alt="Logo du Parti Pirate"
 					title="Personae" /> </a>

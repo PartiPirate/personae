@@ -18,6 +18,9 @@
 */
 @include_once("config/config.php");
 @include_once("config/salt.php");
+@include_once("engine/bo/BoHelper.php");
+@include_once("engine/requests/sql/QueryFactory.php");
+@include_once("engine/requests/sql/MySQLQuery.php");
 
 function openConnection($dbname = null) {
 	global $config;
@@ -25,7 +28,7 @@ function openConnection($dbname = null) {
 		$dbname = $config["database"]["database"];
 	}
 
-	$dns = 'mysql:host='.$config["database"]["host"].';dbname=' . $dbname;
+	$dns = $config["database"]["dialect"].':host='.$config["database"]["host"].';dbname=' . $dbname;
 
 	if (isset($config["database"]["port"])) {
 		$dns .= ";port=" . $config["database"]["port"];

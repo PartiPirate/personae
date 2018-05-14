@@ -97,6 +97,8 @@
 <?php }?>
 
 <?php if ($isVoting && !$showAdmin && $theme["the_voting_method"] == "demliq") {?>
+<form id="votingForm" action="do_voting.php" method="post" class="form-horizontal">
+
 <div class="panel panel-default voting">
 	<div class="panel-heading">
 		Délégation par démocratie liquide&nbsp;
@@ -175,33 +177,34 @@
 
 		<h3>Mes délégations</h3>
 
-		<form id="votingForm" action="do_voting.php" method="post" class="form-horizontal">
-			Mes délégations : <span id="delegations">xxx</span><br />
-			Pouvoir de délégation restant : <span id="delegative-remaining-power">2</span><br />
+		Mes délégations : <span id="delegations"></span><br />
+		Pouvoir de délégation restant : <span id="delegative-remaining-power">2</span><br />
 
-			<input type="hidden" name="del_theme_id" id="del_theme_id" value="<?php echo $theme["the_id"]; ?>" />
-			<input type="hidden" name="del_theme_type" id="del_theme_type" value="dlp_themes" />
-			<input type="hidden" name="del_member_from" id="del_member_from" value="<?php echo $sessionUserId; ?>" />
-			<input type="hidden" name="del_power" id="del_power" value="0" />
-			<input type="hidden" id="del_previous_power" value="0" />
+		<input type="hidden" name="del_theme_id" id="del_theme_id" value="<?php echo $theme["the_id"]; ?>" />
+		<input type="hidden" name="del_theme_type" id="del_theme_type" value="dlp_themes" />
+		<input type="hidden" name="del_member_from" id="del_member_from" value="<?php echo $sessionUserId; ?>" />
+		<input type="hidden" name="del_power" id="del_power" value="0" />
+		<input type="hidden" id="del_previous_power" value="0" />
 
-			<input type="hidden" name="del_member_to" id="del_member_to">
+		<input type="hidden" name="del_member_to" id="del_member_to">
 
-			<div class="form-group">
-				<label class="col-md-4 control-label" for="tad_member_mail">Donner ma délégation à : </label>
-				<div class="col-md-6">
-					<div class="input-group">
-						<input type="text" id="delegated_member_nickname" placeholder="email ou pseudo"
-							class="form-control"
-						/><span class="input-group-btn"><button
-							data-success-function="showDelegationFromSearchForm"
-							data-success-label="Donner ma délégation"
-							data-selection-type="single"
-							data-filter-theme-id="<?php echo $theme["the_id"]; ?>"
-							class="btn btn-default search-user"><span class="fa fa-search"></span></button></span>
-					</div>
+		<div class="form-group">
+			<label class="col-md-4 control-label" for="tad_member_mail">Donner ma délégation à : </label>
+			<div class="col-md-6">
+				<div class="input-group">
+					<input type="text" id="delegated_member_nickname" placeholder="email ou pseudo"
+						class="form-control"
+					/><span class="input-group-btn"><button
+						data-success-function="showDelegationFromSearchForm"
+						data-success-label="Donner ma délégation"
+						data-selection-type="single"
+						data-filter-theme-id="<?php echo $theme["the_id"]; ?>"
+						class="btn btn-default search-user"><span class="fa fa-search"></span></button></span>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
 
 	<?php foreach($eligibles as $eligible) {
 				$delegativePower = 0;
@@ -212,53 +215,56 @@
 					}
 				}
 			?>
-			<fieldset id="delegative-<?php echo $eligible["id_adh"]; ?>"
-					data-nickname="<?php echo strtolower($eligible["pseudo_adh"]); ?>"
-					data-mail="<?php echo strtolower($eligible["email_adh"]); ?>"
-					data-id="<?php echo $eligible["id_adh"]; ?>"
-					data-eligible="<?php echo $eligible["can_status"]; ?>"
-					class="delegative" style="display:<?php echo ($eligible["can_status"] == "candidate" ? "block" : "none"); ?>;">
-				<legend>
-					Délégué : <span id="delegate-name"><?php echo GaletteBo::showIdentity($eligible); ?></span>
-					<?php
 
-					switch($eligible["can_status"]) {
-						case "candidate":
-							echo "<span title='Candidat' class='text-success fa fa-thumbs-o-up'></span>";
-							break;
-						case "anti":
-							echo "<span title='Ne veut pas être élu' class='text-danger fa fa-thumbs-o-down'></span>";
-							break;
-						case "neutral":
-						case "voting":
-							echo "<span title='Eligible ou votant' class='text-primary fa fa-hand-paper-o'></span>";
-							break;
-					}
+<div class="panel panel-default voting delegative" 
+		id="delegative-<?php echo $eligible["id_adh"]; ?>"
+				data-nickname="<?php echo strtolower($eligible["pseudo_adh"]); ?>"
+				data-mail="<?php echo strtolower($eligible["email_adh"]); ?>"
+				data-id="<?php echo $eligible["id_adh"]; ?>"
+				data-eligible="<?php echo $eligible["can_status"]; ?>"
+				style="display:<?php echo ($eligible["can_status"] == "candidate" ? "block" : "none"); ?>;">
+	<div class="panel-heading">
+		Délégué : <span id="delegate-name"><?php echo GaletteBo::showIdentity($eligible); ?></span>
+		<?php
 
-					?>
-				</legend>
-				<div class="form-group">
-					<label class="col-md-4 control-label" for="tad_member_mail">Pouvoir de délégation confié : </label>
-					<div class="col-md-6">
-						<input id="delegative-power" type="number" min="0" value="<?php echo $delegativePower; ?>" class="form-control" />
-						<input type="hidden" id="delegative-previous-power" value="<?php echo $delegativePower; ?>" />
-					</div>
-					<div class="col-md-2">
-						<button id="delegateButton" type="button" class="btn btn-primary" data-id="<?php echo $eligible["id_adh"]; ?>">Déléguer</button>
-					</div>
+		switch($eligible["can_status"]) {
+			case "candidate":
+				echo "<span title='Candidat' class='text-success fa fa-thumbs-o-up'></span>";
+				break;
+			case "anti":
+				echo "<span title='Ne veut pas être élu' class='text-danger fa fa-thumbs-o-down'></span>";
+				break;
+			case "neutral":
+			case "voting":
+				echo "<span title='Eligible ou votant' class='text-primary fa fa-hand-paper-o'></span>";
+				break;
+		}
+
+		?>
+	</div>
+	<div class="panel-body">
+		<fieldset>
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="tad_member_mail">Pouvoir de délégation confié : </label>
+				<div class="col-md-6">
+					<input id="delegative-power" type="number" min="0" value="<?php echo $delegativePower; ?>" class="form-control" />
+					<input type="hidden" id="delegative-previous-power" value="<?php echo $delegativePower; ?>" />
 				</div>
-				<div>
-					<?php if (trim($eligible["can_text"])) {?>
-					Proposition de candidature : <br/>
-					<?php echo $eligible["can_text"]; ?>
-					<?php }?>
+				<div class="col-md-2">
+					<button id="delegateButton" type="button" class="btn btn-primary" data-id="<?php echo $eligible["id_adh"]; ?>">Déléguer</button>
 				</div>
-			</fieldset>
-	<?php }?>
-
-		</form>
+			</div>
+			<div>
+				<?php if (trim($eligible["can_text"])) {?>
+				Proposition de candidature : <br/>
+				<?php echo $eligible["can_text"]; ?>
+				<?php }?>
+			</div>
+		</fieldset>
 	</div>
 </div>
+	<?php }?>
+
+</form>
 
 <?php }?>
-
