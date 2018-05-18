@@ -103,6 +103,10 @@ $lang["mypreferences_validation_mail_not_valid"] = "Cette adresse mail n'est pas
 $lang["mypreferences_validation_mail_already_taken"] = "Cette adresse mail est déjà prise";
 $lang["mypreferences_form_mailInput"] = "Adresse mail";
 $lang["mypreferences_save"] = "Sauver mes préférences";
+$lang["mypreferences_style_legend"] = "Interface";
+$lang["mypreferences_style_themeSelect"] = "Thème";
+$lang["mypreferences_style_themeDefault"] = "Thème par défaut";
+$lang["mypreferences_style_themeSlate"] = "Slate";
 
 $lang["myrights_guide"] = "Une revue de vos droits.";
 $lang["myrights_scores_legend"] = "Mes validations possibles";
