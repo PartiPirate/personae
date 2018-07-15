@@ -80,11 +80,16 @@ foreach($themes as $theme) {
 			$groupedUsers[$discourseGroupLabel][] = $member;
 		}
 	}
+	
+	if ($theme["the_deleted"] == 1) {
+		$groupedUsers[$discourseGroupLabel] = array();
+	}
 
 //	echo "--------------\n";
 }
 
 // Get all groups with discourse parameters
+
 $filters = array("has_discourse" => true);
 $groups = $galetteBo->getGroups($filters);
 
@@ -101,11 +106,12 @@ foreach($groups as $group) {
 			$groupedUsers[$discourseGroupLabel] = array();
 		}
 
-		foreach($members as $member) {
-			$groupedUsers[$discourseGroupLabel][] = $member;
-		}
+//		foreach($members as $member) {
+//			$groupedUsers[$discourseGroupLabel][] = $member;
+//		}
 	}
 }
+
 
 //print_r($groupedUsers);
 //exit();
@@ -274,7 +280,7 @@ foreach($groupedUsers as $groupLabel => $users) {
 			print_r($answer);
 
 			if (($index++ % $numberOfOperationsForSleeping) == 0) {
-				sleep(1);
+				sleep(2);
 			}
 		}
 	}
@@ -289,6 +295,9 @@ foreach($groupedUsers as $groupLabel => $users) {
  		}
 	}
 */
+
+	sleep(10);
+
 	if (count($toAdd)) {
 		$answer = $discourseApi->addUsersInGroup($groupLabel, $toAdd);
 		print_r($answer);

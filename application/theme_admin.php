@@ -161,6 +161,33 @@
 						value="<?php echo htmlspecialchars($theme["the_discourse_group_labels"], ENT_QUOTES); ?>"/>
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="the_discord_export">Export discord : </label>
+				<div class="col-md-2 text-right">
+					<input type="checkbox" name="the_discord_export" id="the_discord_export"
+						placeholder="" class=""
+						<?php echo $theme["the_discord_export"] ? " checked " : ""; ?>
+						value="1"/>
+				</div>
+			</div>
+			<div class="form-group method demliq">
+				<label class="col-md-4 control-label" for="the_delegate_only">Delegation seule : </label>
+				<div class="col-md-2 text-right">
+					<input type="checkbox" name="the_delegate_only" id="the_delegate_only"
+						placeholder="" class=""
+						<?php echo $theme["the_delegate_only"] ? " checked " : ""; ?>
+						value="1"/>
+				</div>
+			</div>
+			<div class="form-group method external_results">
+				<label class="col-md-4 control-label" for="the_free_fixed">Entrée libre : </label>
+				<div class="col-md-2 text-right">
+					<input type="checkbox" name="the_free_fixed" id="the_free_fixed"
+						placeholder="" class=""
+						<?php echo $theme["the_free_fixed"] ? " checked " : ""; ?>
+						value="1"/>
+				</div>
+			</div>
 		</fieldset>
 	</div>
 </div>

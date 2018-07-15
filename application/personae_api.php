@@ -73,8 +73,8 @@ function computeGameUserId($userId) {
 }
 
 function testTokens() {
-    $token = $_GET["token"];
-    $secret = $_GET["secret"]; 
+    $token = $_REQUEST["token"];
+    $secret = $_REQUEST["secret"]; 
 
     global $config;
 

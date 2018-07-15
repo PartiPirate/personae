@@ -524,6 +524,11 @@ class DiscourseAPI
     function getUserByEmail($email)
     {
         $users = $this->_getRequest("/admin/users/list/active.json", array('filter' => $email));
+
+//        print_r($users);
+        
+//        exit();
+        
         foreach($users->apiresult as $user) {
             if(strtolower($user->email) === strtolower($email)) {
                 return $user;

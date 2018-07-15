@@ -44,6 +44,10 @@ $myEligibleGroups = array();
 if ($sessionUserId) {
 	$myVotingGroups = $groupBo->getMyGroups(array("userId" => $sessionUserId, "state" => "voting"));
 	$myEligibleGroups = $groupBo->getMyGroups(array("userId" => $sessionUserId, "state" => "eligible"));
+
+//	print_r($myVotingGroups);
+//	print_r($myEligibleGroups);
+	
 }
 
 function isInMyGroup($theme, $mygroups) {

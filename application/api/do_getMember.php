@@ -67,10 +67,14 @@ else {
 						case "Assemblée générale":
 							break;
 						case "Equipes":
-							if (!array_key_exists($theme["the_label"], $inGroups)) $inGroups[$theme["the_label"]] = array("label" => $theme["the_label"], "type" => "theme");
+							if ($theme["the_discord_export"] == 1) {
+								if (!array_key_exists($theme["the_label"], $inGroups)) $inGroups[$theme["the_label"]] = array("label" => $theme["the_label"], "type" => "theme");
+							}
 							break;
 						default:
-							if (!array_key_exists($theme["the_label"], $inGroups)) $inGroups[$theme["the_label"]] = array("label" => $theme["the_label"], "type" => "theme");
+							if ($theme["the_discord_export"] == 1) {
+								if (!array_key_exists($theme["the_label"], $inGroups)) $inGroups[$theme["the_label"]] = array("label" => $theme["the_label"], "type" => "theme");
+							}
 							if ($group["gro_label"]) {
 								if (!array_key_exists($group["gro_label"], $inGroups)) $inGroups[$group["gro_label"]] = array("label" => $group["gro_label"], "type" => "group");
 							}
@@ -98,7 +102,7 @@ else {
 		if (count($groupMembers)) {
 			$memberGroup = utf8_encode($galetteGroup["group_name"]);
 
-			if (!array_key_exists($memberGroup, $inGroups)) $inGroups[$memberGroup] = array("label" => $memberGroup, "type" => "section");
+//			if (!array_key_exists($memberGroup, $inGroups)) $inGroups[$memberGroup] = array("label" => $memberGroup, "type" => "section");
 			if (!array_key_exists("Pirates", $inGroups)) $inGroups["Pirates"] = array("label" => "Pirates", "type" => "member");
 		}
 	}

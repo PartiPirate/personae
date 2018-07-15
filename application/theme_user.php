@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -56,6 +56,27 @@
 	</div>
 </div>
 <?php }?>
+
+<?php 	
+	$isFixed = false;
+
+	if ($fixation) {
+		foreach($fixation["members"] as $memberId => $member) {
+			if ($memberId == $sessionUserId) {
+				$isFixed = true;
+				break;
+			}
+		}
+	}
+
+	if ($fixation && !$showAdmin && !$isFixed && $isElegible && $theme["the_free_fixed"] == 1) {?>
+<div class="row">
+	<div class="col-md-12">
+		<a href="#" id="free-theme-enter-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $theme["the_id"]; ?>">Entrer librement</a>
+	</div>
+</div>
+<br>
+<?php	} ?>
 
 <?php if ($isElegible && !$showAdmin && (true || $theme["the_delegate_only"] != "1")) {?>
 <div class="panel panel-default eligible">

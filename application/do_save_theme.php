@@ -76,6 +76,15 @@ $theme["the_voting_group_id"] = $_REQUEST["the_voting_group_id"];
 
 $theme["the_discourse_group_labels"] = $_REQUEST["the_discourse_group_labels"];
 
+// Discord exports
+$theme["the_discord_export"] = isset($_REQUEST["the_discord_export"]) ? 1 : 0;
+
+// Delegate only
+$theme["the_delegate_only"] = isset($_REQUEST["the_delegate_only"]) ? 1 : 0;
+
+// Permits the free theme entering
+$theme["the_free_fixed"] = isset($_REQUEST["the_free_fixed"]) ? 1 : 0;
+
 $isCreating = ($theme["the_id"] == 0);
 $themeBo->save($theme);
 

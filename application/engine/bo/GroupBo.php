@@ -82,15 +82,16 @@ class GroupBo {
 
 		$state = $filters["state"];
 
-		$filterField = "the_voting_group_";
+		$filterField = "dlp_themes.the_voting_group_";
 		if ($state != "voting") {
-			$filterField = "the_eligible_group_";
+			$filterField = "dlp_themes.the_eligible_group_";
 		}
 
 		$query = "	SELECT dlp_groups.*, dlp_themes.*,
 						_ggc.id_type_cotis AS gga_id_type_cotis, gga.id_adh AS gga_id_adh, gga.email_adh AS gga_email_adh, gga.pseudo_adh AS gga_pseudo_adh, gga.nom_adh AS gga_nom_adh, gga.prenom_adh AS gga_prenom_adh, ggc.can_status AS ggc_can_status, ggc.can_text AS ggc_can_text,
 						_dgc.id_type_cotis AS dga_id_type_cotis, dga.id_adh AS dga_id_adh, dga.email_adh AS dga_email_adh, dga.pseudo_adh AS dga_pseudo_adh, dga.nom_adh AS dga_nom_adh, dga.prenom_adh AS dga_prenom_adh, dgc.can_status AS dgc_can_status, dgc.can_text AS dgc_can_text,
-						_gc.id_type_cotis AS ga_id_type_cotis, ga.id_adh AS ga_id_adh, ga.email_adh AS ga_email_adh, ga.pseudo_adh AS ga_pseudo_adh, ga.nom_adh AS ga_nom_adh, ga.prenom_adh AS ga_prenom_adh, gc.can_status AS gc_can_status, gc.can_text AS gc_can_text
+						_gc.id_type_cotis AS ga_id_type_cotis, ga.id_adh AS ga_id_adh, ga.email_adh AS ga_email_adh, ga.pseudo_adh AS ga_pseudo_adh, ga.nom_adh AS ga_nom_adh, ga.prenom_adh AS ga_prenom_adh, gc.can_status AS gc_can_status, gc.can_text AS gc_can_text,
+						_tgc.id_type_cotis AS tga_id_type_cotis, tga.id_adh AS tga_id_adh, tga.email_adh AS tga_email_adh, tga.pseudo_adh AS tga_pseudo_adh, tga.nom_adh AS tga_nom_adh, tga.prenom_adh AS tga_prenom_adh, tgc.can_status AS tgc_can_status, tgc.can_text AS tgc_can_text
 					FROM  dlp_groups
 					RIGHT JOIN dlp_group_themes ON gth_group_id = gro_id
 					RIGHT JOIN dlp_themes ON gth_theme_id = the_id AND gth_theme_type = 'dlp_themes'
@@ -111,10 +112,17 @@ class GroupBo {
 					LEFT JOIN dlp_fixation_members dfm ON dfm.fme_fixation_id = df.fix_id
 					LEFT JOIN ".$this->database."galette_adherents dga ON dga.id_adh = dfm.fme_member_id
 
+					-- The source of voting is maybe a personae theme
+					LEFT JOIN dlp_themes tt ON tt.the_id = ".$filterField."id AND ".$filterField."type = 'dlp_themes'
+					LEFT JOIN dlp_fixations tf ON tf.fix_id = tt.the_current_fixation_id
+					LEFT JOIN dlp_fixation_members tfm ON tfm.fme_fixation_id = tf.fix_id
+					LEFT JOIN ".$this->database."galette_adherents tga ON tga.id_adh = tfm.fme_member_id
+
 					-- The candidate status
 					LEFT JOIN dlp_candidates ggc ON ggc.can_member_id = gga.id_adh AND dlp_themes.the_id = ggc.can_theme_id
 					LEFT JOIN dlp_candidates gc ON gc.can_member_id = ga.id_adh AND dlp_themes.the_id = gc.can_theme_id
-					LEFT JOIN dlp_candidates dgc ON dgc.can_member_id = dga.id_adh AND dlp_themes.the_id = dgc.can_theme_id ";
+					LEFT JOIN dlp_candidates dgc ON dgc.can_member_id = dga.id_adh AND dlp_themes.the_id = dgc.can_theme_id
+					LEFT JOIN dlp_candidates tgc ON tgc.can_member_id = tga.id_adh AND dlp_themes.the_id = tgc.can_theme_id ";
 
 		if (true) {
 
@@ -126,7 +134,10 @@ class GroupBo {
 					LEFT JOIN ".$this->database."galette_types_cotisation dgtc ON _dgc.id_type_cotis = dgtc.id_type_cotis AND dgtc.cotis_extension = 1
 
 					LEFT JOIN ".$this->database."galette_cotisations _ggc ON gga.id_adh = _ggc.id_adh AND _ggc.info_cotis = '' AND _ggc.date_fin_cotis > NOW()
-					LEFT JOIN ".$this->database."galette_types_cotisation ggtc ON _ggc.id_type_cotis = ggtc.id_type_cotis AND ggtc.cotis_extension = 1 ";
+					LEFT JOIN ".$this->database."galette_types_cotisation ggtc ON _ggc.id_type_cotis = ggtc.id_type_cotis AND ggtc.cotis_extension = 1 
+
+					LEFT JOIN ".$this->database."galette_cotisations _tgc ON tga.id_adh = _tgc.id_adh AND _tgc.info_cotis = '' AND _tgc.date_fin_cotis > NOW()
+					LEFT JOIN ".$this->database."galette_types_cotisation tgtc ON _tgc.id_type_cotis = tgtc.id_type_cotis AND tgtc.cotis_extension = 1 ";
 		}
 
 		$query .= " WHERE 1 = 1 AND (dt.the_deleted = 0 OR dt.the_deleted IS NULL) ";
@@ -143,7 +154,7 @@ class GroupBo {
 		if (isset($filters["userId"])) {
 			$userId = $filters["userId"];
 			$query .= "	-- TEST membering
-						AND (gga.id_adh = :id_adh OR ga.id_adh = :id_adh OR dga.id_adh = :id_adh)";
+						AND (gga.id_adh = :id_adh OR ga.id_adh = :id_adh OR dga.id_adh = :id_adh OR tga.id_adh = :id_adh)";
 			$args["id_adh"] = $userId;
 		}
 
@@ -159,6 +170,8 @@ class GroupBo {
 			$results = $statement->fetchAll();
 
 			foreach($results as $line) {
+//				print_r($line);
+				
 				$groupId = 0;
 				if ($line["gro_id"]) {
 					$groupId = $line["gro_id"];
@@ -173,14 +186,15 @@ class GroupBo {
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_id"] = $line["the_id"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_label"] = $line["the_label"];
 
-				$memberId = $line["gga_id_adh"] ? $line["gga_id_adh"] : ($line["dga_id_adh"] ? $line["dga_id_adh"] : $line["ga_id_adh"]);
-				$memberMail = $line["gga_email_adh"] ? $line["gga_email_adh"] : ($line["dga_email_adh"] ? $line["dga_email_adh"] : $line["ga_email_adh"]);
-				$memberPseudo = $line["gga_pseudo_adh"] ? $line["gga_pseudo_adh"] : ($line["dga_pseudo_adh"] ? $line["dga_pseudo_adh"] : $line["ga_pseudo_adh"]);
-				$memberNom = $line["gga_nom_adh"] ? $line["gga_nom_adh"] : ($line["dga_nom_adh"] ? $line["dga_nom_adh"] : $line["ga_nom_adh"]);
-				$memberPrenom = $line["gga_prenom_adh"] ? $line["gga_prenom_adh"] : ($line["dga_prenom_adh"] ? $line["dga_prenom_adh"] : $line["ga_prenom_adh"]);
-				$candidateStatus = $line["ggc_can_status"] ? $line["ggc_can_status"] : ($line["dgc_can_status"] ? $line["dgc_can_status"] : ($line["gc_can_status"] ? $line["gc_can_status"] : "neutral"));
-				$candidateText = $line["ggc_can_text"] ? $line["ggc_can_text"] : ($line["dgc_can_text"] ? $line["dgc_can_text"] : ($line["gc_can_text"] ? $line["gc_can_text"] : ""));
-				$isTodayAdherent = $line["gga_id_type_cotis"] ? $line["gga_id_type_cotis"] : ($line["dga_id_type_cotis"] ? $line["dga_id_type_cotis"] : ($line["ga_id_type_cotis"] ? $line["ga_id_type_cotis"] : ""));
+				$memberId = $line["gga_id_adh"] ? $line["gga_id_adh"] : ($line["dga_id_adh"] ? $line["dga_id_adh"] : ($line["tga_id_adh"] ? $line["tga_id_adh"] : $line["ga_id_adh"]));
+				$memberMail = $line["gga_email_adh"] ? $line["gga_email_adh"] : ($line["dga_email_adh"] ? $line["dga_email_adh"] : ($line["tga_email_adh"] ? $line["tga_email_adh"] : $line["ga_email_adh"]));
+				$memberPseudo = $line["gga_pseudo_adh"] ? $line["gga_pseudo_adh"] : ($line["dga_pseudo_adh"] ? $line["dga_pseudo_adh"] : ($line["tga_pseudo_adh"] ? $line["tga_pseudo_adh"] : $line["ga_pseudo_adh"]));
+				$memberNom = $line["gga_nom_adh"] ? $line["gga_nom_adh"] : ($line["dga_nom_adh"] ? $line["dga_nom_adh"] : ($line["tga_nom_adh"] ? $line["tga_nom_adh"] : $line["ga_nom_adh"]));
+				$memberPrenom = $line["gga_prenom_adh"] ? $line["gga_prenom_adh"] : ($line["dga_prenom_adh"] ? $line["dga_prenom_adh"] : ($line["tga_prenom_adh"] ? $line["tga_prenom_adh"] : $line["ga_prenom_adh"]));
+
+				$candidateStatus = $line["ggc_can_status"] ? $line["ggc_can_status"] : ($line["dgc_can_status"] ? $line["dgc_can_status"] : ($line["tgc_can_status"] ? $line["tgc_can_status"] : ($line["gc_can_status"] ? $line["gc_can_status"] : "neutral")));
+				$candidateText = $line["ggc_can_text"] ? $line["ggc_can_text"] : ($line["dgc_can_text"] ? $line["dgc_can_text"] : ($line["tgc_can_text"] ? $line["tgc_can_text"] : ($line["gc_can_text"] ? $line["gc_can_text"] : "")));
+				$isTodayAdherent = $line["gga_id_type_cotis"] ? $line["gga_id_type_cotis"] : ($line["dga_id_type_cotis"] ? $line["dga_id_type_cotis"] : ($line["tga_id_type_cotis"] ? $line["tga_id_type_cotis"] : ($line["ga_id_type_cotis"] ? $line["ga_id_type_cotis"] : "")));
 
 				if (!$memberId) continue;
 
@@ -204,7 +218,7 @@ class GroupBo {
 	}
 
 	function getGroup($groupId) {
-		$filters = array("gro_id" => $groupId);
+		$filters = array("gro_id" => $groupId, "gro_deleted" => "0");
 		$groups = $this->getGroups($filters);
 
 		foreach($groups as $groupId => $group) return $group;
@@ -239,9 +253,27 @@ class GroupBo {
 			$query .= " AND gro_id = :gro_id \n";
 		}
 
+		if (isset($filters["gro_deleted"])) {
+			$args["gro_deleted"] = $filters["gro_deleted"];
+			$query .= " AND gro_deleted = :gro_deleted \n";
+		}
+		else {
+//			$args["gro_deleted"] = "0";
+			$query .= " AND gro_deleted = 0 OR gro_deleted IS NULL \n";
+		}
+
 		if (isset($filters["the_id"])) {
 			$args["the_id"] = $filters["the_id"];
 			$query .= " AND the_id = :the_id \n";
+		}
+
+		if (isset($filters["the_deleted"])) {
+			$args["the_deleted"] = $filters["the_deleted"];
+			$query .= " AND the_deleted = :the_deleted \n";
+		}
+		else {
+//			$args["the_deleted"] = "0";
+			$query .= " AND the_deleted = 0 OR the_deleted IS NULL \n";
 		}
 
 		$query .= "	ORDER BY gro_label, the_label ";
@@ -272,6 +304,7 @@ class GroupBo {
 
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_id"] = $line["the_id"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_label"] = $line["the_label"];
+				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_discord_export"] = $line["the_discord_export"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["the_delegate_only"] = $line["the_delegate_only"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["gth_power"] = $line["gth_power"];
 				$groups[$groupId]["gro_themes"][$line["the_id"]]["fixation"]["fix_until_date"] = $line["fix_until_date"];

@@ -193,6 +193,8 @@ class DelegationBo {
 
 		error_log("After - Number of delegations : " . count($delegations));
 
+		$dilution = (((isset($instance["the_dilution"])  && $instance["the_dilution"]) ? $instance["the_dilution"] : 100) / 100);
+
 		// While there is delegation we need to compute the powers
 		while(count($delegations) > 0) {
 			$givers = array();
@@ -235,13 +237,193 @@ class DelegationBo {
 						foreach($members as $takerIndex => $takerMember) {
 							if ($takerMember["id_adh"] != $delegation["del_member_to"]) continue;
 
-							$toGive = $giverMember["power"] * $delegation["del_power"] *  (((isset($instance["the_dilution"])  && $instance["the_dilution"]) ? $instance["the_dilution"] : 100) / 100) / $instancePower;
-							$givenPower += $toGive;
+							$toGive = $giverMember["power"] * $delegation["del_power"] / $instancePower * $dilution;
+							$givenPower += $toGive / $dilution;
 
 							$members[$takerIndex]["power"] += $toGive;
 							$members[$takerIndex]["max_power"] = max($members[$takerIndex]["power"], $members[$takerIndex]["max_power"]);
 							$giverMember["given_power"] = $toGive;
 							$members[$takerIndex]["givers"][$giverMember["id_adh"]] = $giverMember;
+						}
+
+						unset($delegations[$delegationIndex]);
+					}
+
+					$members[$giverIndex]["power"] -= $givenPower;
+				}
+			}
+
+// 			echo "<br/>----- Members -------<br/>\n";
+// 			print_r($members);
+// 			echo "<br/>----- Delegations -------<br/>\n";
+// 			print_r($delegations);
+// 			echo "<br/>------------<br/>\n";
+		}
+
+		uasort($members, array('self', 'memberPowerComparator'));
+
+		return $members;
+	}
+
+	function computeFixationWithContext(&$instance, $motion, $votes) {
+		$filters = array();
+		$members = array();
+
+		// Clean members
+		foreach($instance["eligibles"] as $member) {
+
+//			print_r($member);
+//			exit();
+
+			if (!$member["id_type_cotis"]) continue;
+			$members[$member["id_adh"]] = $member;
+		}
+
+		// Clean members & Mer
+		foreach($instance["votings"] as $member) {
+			if (!$member["id_type_cotis"]) continue;
+			$members[$member["id_adh"]] = $member;
+		}
+
+		$instancePower = 0;
+
+		if (isset($instance["the_id"])) {
+			$filters["del_theme_id"] = $instance["the_id"];
+			$filters["del_theme_type"] = "dlp_themes";
+
+			$instancePower = $instance["the_voting_power"];
+		}
+
+		foreach($members as $index => $member) {
+//			$member["mem_nickname"] = GaletteBo::showIdentity($member);
+
+//			$members[$index]["nickname"] = "Toto";
+//			$members[$index]["keys"] = array();
+
+			if ($member["pseudo_adh"]) {
+				$members[$index]["nickname"] = $member["pseudo_adh"];
+			}
+			else {
+				$members[$index]["nickname"] = $member["nom_adh"] . " " . $member["prenom_adh"];
+			}
+
+			$members[$index]["nickname"] = htmlentities($members[$index]["nickname"]);
+
+			foreach($member as $key => $value) {
+//				$members[$index]["keys"][] = $key;
+				if ($key == "email_adh" || $key == "pseudo_adh" || $key == "nom_adh" || $key == "prenom_adh"
+					|| $key == "can_status" || $key == "can_text"
+					|| $key == "id_type_cotis") {
+					unset($members[$index][$key]);
+				}
+			}
+
+//			$members[$index]["nickname"] = GaletteBo::showIdentity($member);
+//			$members[$index]["nickname"] = "Cédric";
+			$members[$index]["power"] = $instancePower;
+			$members[$index]["max_power"] = $instancePower;
+			$members[$index]["delegation_level"] = 1;
+		}
+
+		$delegations = $this->getDelegations($filters);
+
+// 		echo "<br/>----- Start members -------<br/>\n";
+// 		print_r($members);
+// 		echo "<br/>----- Start delegations -------<br/>\n";
+// 		print_r($delegations);
+// 		echo "<br/>------------<br/>\n";
+
+		error_log("Before - Number of delegations : " . count($delegations));
+
+		// We need to clear all useless delegation
+		foreach($delegations as $index => $delegation) {
+			$fromFound = false;
+			$toFound = false;
+
+			foreach ($members as $member) {
+				if ($delegation["del_member_from"] == $member["id_adh"]) {
+					$fromFound = true;
+				}
+				if ($delegation["del_member_to"] == $member["id_adh"]) {
+					$toFound = true;
+				}
+
+				if ($fromFound && $toFound) break;
+			}
+
+			if (!$fromFound || !$toFound) {
+				unset($delegations[$index]);
+			}
+		}
+
+		error_log("After - Number of delegations : " . count($delegations));
+
+		$dilution = (((isset($instance["the_dilution"])  && $instance["the_dilution"]) ? $instance["the_dilution"] : 100) / 100);
+
+		// While there is delegation we need to compute the powers
+		while(count($delegations) > 0) {
+			$givers = array();
+			$takers = array();
+
+			error_log("Number of delegations : " . count($delegations));
+
+			foreach($delegations as $delegation) {
+				$givers[$delegation["del_member_from"]] = $delegation["del_member_from"];
+				$takers[$delegation["del_member_to"]] = $delegation["del_member_to"];
+			}
+
+// 			echo "<br/>---- Givers --------<br/>\n";
+// 			print_r($givers);
+// 			echo "<br/>---- Takers --------<br/>\n";
+// 			print_r($takers);
+// 			echo "<br/>------------<br/>\n";
+
+			foreach($takers as $taker) {
+				foreach($givers as $index => $giver) {
+					if ($taker == $giver) {
+						unset($givers[$index]);
+					}
+				}
+			}
+
+// 			echo "<br/>+++++ Givers +++++++<br/>\n";
+// 			print_r($givers);
+// 			echo "<br/>++++++++++++<br/>\n";
+
+			foreach($givers as $giver) {
+				$givenPower = 0;
+				foreach($members as $giverIndex => $giverMember) {
+					if ($giverMember["id_adh"] != $giver) continue;
+
+					foreach($delegations as $delegationIndex => $delegation) {
+						if ($delegation["del_member_from"] != $giver) continue;
+						if (!$delegation["del_power"]) continue;
+
+						foreach($members as $takerIndex => $takerMember) {
+							if ($takerMember["id_adh"] != $delegation["del_member_to"]) continue;
+
+							$toGive = ($giverMember["power"] * $delegation["del_power"] / $instancePower) * $dilution;
+							$givenPower += $toGive / $dilution;
+
+							$members[$takerIndex]["power"] += $toGive;
+							$members[$takerIndex]["max_power"] = max($members[$takerIndex]["power"], $members[$takerIndex]["max_power"]);
+							$giverMember["given_power"] = $toGive;
+
+/*							
+							foreach($giverMember as $key => $value) {
+								if ($key == "email_adh" || $key == "pseudo_adh" || $key == "nom_adh" || $key == "prenom_adh"
+									|| $key == "can_status" || $key == "can_text"
+									|| $key == "id_type_cotis") {
+									unset($giverMember[$key]);
+								}
+							}
+*/
+
+							$members[$takerIndex]["givers"][$giverMember["id_adh"]] = $giverMember;
+							
+							if ($members[$takerIndex]["delegation_level"] < ($giverMember["delegation_level"] + 1)) {
+								$members[$takerIndex]["delegation_level"] = $giverMember["delegation_level"] + 1;
+							}
 						}
 
 						unset($delegations[$delegationIndex]);

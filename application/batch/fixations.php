@@ -61,7 +61,7 @@ foreach($themes as $theme) {
 	echo "Fix " . $theme["the_id"] . "\n";
 // Get the fixation method
 
-//	if ($theme["the_id"] != 44) continue;
+	if ($theme["the_id"] != 46) continue;
 
 	$method = $theme["the_voting_method"];
 
