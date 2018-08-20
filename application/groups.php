@@ -134,7 +134,7 @@ foreach($groups as $groupId => $group) {
 			 -->
 
 				<?php if ($theme["fixation"]["fix_until_date"]) { ?>
-				<br/><span class="glyphicon glyphicon-time"></span> <span class="date"><?php echo $theme["fixation"]["fix_until_date"]; ?></span>
+				<br/><span class="glyphicon glyphicon-time" title="Fin théorique des mandats" data-toggle="tooltip" data-placement="bottom"></span> <span class="date"><?php echo $theme["fixation"]["fix_until_date"]; ?></span>
 				<?php }?>
 			</li>
 		<?php
