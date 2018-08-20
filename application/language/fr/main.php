@@ -83,6 +83,7 @@ $lang["index_my_groups_button"] = "Mes groupes";
 $lang["index_my_profile_button"] = "Mon profil";
 $lang["index_groups_button"] = "Les groupes";
 $lang["index_connect_button"] = "Se connecter";
+$lang["index_description"] = "Gestionnaire de groupes et de pouvoirs décisionnels : par résultat, par tirage au sort, par démocratie liquide";
 
 $lang["mypreferences_guide"] = "Changer mes préférences.";
 $lang["mypreferences_form_legend"] = "Configuration de vos accès";

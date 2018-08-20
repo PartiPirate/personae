@@ -22,12 +22,8 @@ require_once("engine/bo/CandidateBo.php");
 require_once("engine/bo/DelegationBo.php");
 require_once("engine/bo/GaletteBo.php");
 require_once("engine/bo/GroupBo.php");
-require_once("engine/bo/ThemeBo.php");
 
 $groupFilters = array();
-
-$themeBo = ThemeBo::newInstance($connection, $config["galette"]["db"]);
-$theme = $themeBo->getTheme($_REQUEST["id"]);
 
 // If there is no theme, this is a new theme
 if (!$theme) {

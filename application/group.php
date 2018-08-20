@@ -18,15 +18,11 @@
 */
 include_once("header.php");
 
-require_once("engine/bo/GroupBo.php");
 require_once("engine/bo/GaletteBo.php");
 
 $groupFilters = array();
 
 $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
-
-$groupBo = GroupBo::newInstance($connection, $config["galette"]["db"]);
-$group = $groupBo->getGroup($_GET["id"]);
 
 $isAdmin = false;
 $showAdmin = false;
