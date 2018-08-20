@@ -52,7 +52,7 @@
 		</tbody>
 	</table>
 	<div class="panel-footer text-right">
-		<span class="glyphicon glyphicon-time"></span> <span class="date"><?php echo $fixation["fix_until_date"]; ?>
+		<span class="glyphicon glyphicon-time"></span> <span clasœs="date"><?php echo $fixation["fix_until_date"]; ?>
 	</div>
 </div>
 <?php }?>
@@ -68,17 +68,32 @@
 			}
 		}
 	}
+?>
 
+<?php
 	if ($fixation && !$showAdmin && !$isFixed && $isElegible && $theme["the_free_fixed"] == 1) {?>
+	
 <div class="row">
 	<div class="col-md-12">
 		<a href="#" id="free-theme-enter-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $theme["the_id"]; ?>">Entrer librement</a>
 	</div>
 </div>
 <br>
-<?php	} ?>
+<?php	
+	} 
+	else if ($fixation && !$showAdmin && $isFixed && $isElegible && $theme["the_free_fixed"] == 1) { ?>
 
-<?php if ($isElegible && !$showAdmin && (true || $theme["the_delegate_only"] != "1")) {?>
+<div class="row">
+	<div class="col-md-12">
+		<a href="#" id="free-theme-exit-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $theme["the_id"]; ?>">Sortir librement</a>
+	</div>
+</div>
+<br>
+<?php	
+	}
+?>
+
+<?php if (($isElegible && !$showAdmin && (true || $theme["the_delegate_only"] != "1") && !$theme["the_delegation_closed"])) {?>
 <div class="panel panel-default eligible">
 	<div class="panel-heading">
 		Moi, délégué·e…&nbsp;
@@ -224,6 +239,7 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
 </div>
 
@@ -275,18 +291,17 @@
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="tad_member_mail">Pouvoir de délégation confié : </label>
 				<div class="col-md-6">
-					<input id="delegative-power" type="number" min="0" value="<?php echo $delegativePower; ?>" class="form-control" />
+					<input id="delegative-power" type="number" min="0" value="<?php echo $delegativePower; ?>" class="form-control"  <?php	if ($theme["the_delegation_closed"]) { echo "disabled=disabled"; } ?> />
 					<input type="hidden" id="delegative-previous-power" value="<?php echo $delegativePower; ?>" />
 				</div>
 				<div class="col-md-2">
-					<button id="delegateButton" type="button" class="btn btn-primary" data-id="<?php echo $eligible["id_adh"]; ?>">Déléguer</button>
+					<button id="delegateButton" type="button" class="btn btn-primary" data-id="<?php echo $eligible["id_adh"]; ?>" <?php	if ($theme["the_delegation_closed"]) { echo "disabled=disabled"; } ?>>Déléguer</button>
 				</div>
 			</div>
 		</fieldset>
 	</div>
 </div>
 	<?php }?>
-
 </form>
 
 <?php }?>

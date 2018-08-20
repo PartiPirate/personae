@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -176,6 +176,15 @@
 					<input type="checkbox" name="the_delegate_only" id="the_delegate_only"
 						placeholder="" class=""
 						<?php echo $theme["the_delegate_only"] ? " checked " : ""; ?>
+						value="1"/>
+				</div>
+			</div>
+			<div class="form-group method demliq">
+				<label class="col-md-4 control-label" for="the_delegation_closed">Delegations fermées : </label>
+				<div class="col-md-2 text-right">
+					<input type="checkbox" name="the_delegation_closed" id="the_delegation_closed"
+						placeholder="" class=""
+						<?php echo $theme["the_delegation_closed"] ? " checked " : ""; ?>
 						value="1"/>
 				</div>
 			</div>

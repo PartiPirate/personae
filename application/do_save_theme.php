@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -81,6 +81,9 @@ $theme["the_discord_export"] = isset($_REQUEST["the_discord_export"]) ? 1 : 0;
 
 // Delegate only
 $theme["the_delegate_only"] = isset($_REQUEST["the_delegate_only"]) ? 1 : 0;
+
+// Delegation closed
+$theme["the_delegation_closed"] = isset($_REQUEST["the_delegation_closed"]) ? 1 : 0;
 
 // Permits the free theme entering
 $theme["the_free_fixed"] = isset($_REQUEST["the_free_fixed"]) ? 1 : 0;

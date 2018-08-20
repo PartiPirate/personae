@@ -248,7 +248,9 @@ function computeDelegations(themePower) {
 			delegations += "<span>&nbsp;</span>";
 
 //			delegations += "<button class=\"btn btn-danger btn-xs btn-remove-delegation\" data-id='"+$(this).data("id")+"' style=\"display: none;\" title=\"Supprimer cette délégation\"><span class=\"glyphicon glyphicon-remove\" ></span></button>";
-			delegations += "<a href='#' class='link-delete-delegation text-danger' data-id='"+$(this).data("id")+"' data-mail='"+$(this).data("mail")+"' data-nickname='"+$(this).data("nickname")+"' title=\"Supprimer cette délégation\"><span class=\"glyphicon glyphicon-remove\" ></span></a>";
+			if (! $(this).find("#delegateButton").prop("disabled")) {
+				delegations += "<a href='#' class='link-delete-delegation text-danger' data-id='"+$(this).data("id")+"' data-mail='"+$(this).data("mail")+"' data-nickname='"+$(this).data("nickname")+"' title=\"Supprimer cette délégation\"><span class=\"glyphicon glyphicon-remove\" ></span></a>";
+			}
 
 			remainingPower -= delegativePower;
 		}
@@ -487,6 +489,17 @@ function addFreeFixedHandlers() {
 		event.stopPropagation();
 
 		$.post("do_free_enter.php", {the_id : $(this).data("theme-id"), action: "add_member"}, function(data) {
+			if (data.ok) {
+				window.location.reload();
+			}
+		}, "json");
+	});
+
+	$("body").on("click", "#free-theme-exit-btn", function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		$.post("do_free_enter.php", {the_id : $(this).data("theme-id"), action: "remove_member"}, function(data) {
 			if (data.ok) {
 				window.location.reload();
 			}

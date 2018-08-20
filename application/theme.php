@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2018 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -51,6 +51,11 @@ if (!$theme) {
 	// Voters persons source
 	$theme["the_voting_group_type"] = "galette_adherents";
 	$theme["the_voting_group_id"] = 0;
+
+	$theme["the_discourse_group_labels"] = "[]";
+	$theme["the_discord_export"] = 0;
+	$theme["the_delegate_only"] = 0;
+	$theme["the_delegation_closed"] = 0;
 }
 
 $isAdmin = false;
