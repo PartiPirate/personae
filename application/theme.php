@@ -150,26 +150,7 @@ foreach($groups as $groupId => $lgroup) {
 ?>
 
 <div class="container theme-showcase" role="main">
-	<ol class="breadcrumb">
-		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-		<li><a href="groups.php"><?php echo lang("breadcrumb_groups"); ?></a></li>
-
-<?php if (!$showAdmin) {?>
-		<li class="active"><?php echo $theme["the_label"]; ?></li>
-<?php } else {?>
-		<li><a href="theme.php?id=<?php echo $theme["the_id"];?>" id="theme_link"><?php echo $theme["the_label"]; ?></a></li>
-<?php }?>
-
-<?php if ($isAdmin) {?>
-<?php if (!$showAdmin) {?>
-		<li><a href="theme.php?id=<?php echo $theme["the_id"];?>&admin=" id="theme_admin_link"><?php echo lang("breadcrumb_theme_administration"); ?></a></li>
-<?php } else {?>
-		<li class="active"><?php echo lang("breadcrumb_theme_administration"); ?></li>
-<?php }?>
-<?php }?>
-
-	</ol>
-
+	<?php echo getBreadcrumb(); ?>
 
 <!-- User part -->
 <?php include("theme_user.php"); ?>

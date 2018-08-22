@@ -24,7 +24,17 @@ include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/SessionUtils.php");
 
+$connection = openConnection();
+$page = $_SERVER["SCRIPT_NAME"];
+if (strrpos($page, "/") !== false) {
+	$page = substr($page, strrpos($page, "/") + 1);
+}
+$page = str_replace(".php", "", $page);
+
 xssCleanArray($_REQUEST);
+
+include_once("CardHandler.php");
+include_once("BreadcrumbHandler.php");
 
 // $user = SessionUtils::getUser($_SESSION);
 // $userId = SessionUtils::getUserId($_SESSION);
@@ -40,14 +50,6 @@ if (SessionUtils::getUserId($_SESSION)) {
 }
 
 $language = SessionUtils::getLanguage($_SESSION);
-
-$page = $_SERVER["SCRIPT_NAME"];
-if (strrpos($page, "/") !== false) {
-	$page = substr($page, strrpos($page, "/") + 1);
-}
-$page = str_replace(".php", "", $page);
-
-$connection = openConnection();
 
 $userProperties = array();
 if ($sessionUserId) {
@@ -110,56 +112,8 @@ if ($themeProperty) {	?>
 <link rel="shortcut icon" type="image/png" href="favicon.png" />
 
 <?php 
-
-$current_url = $config["server"]["base"] . $_SERVER["REQUEST_URI"];
-$page_title = lang("personae_title");
-$page_description = lang("index_description");
-
-$currentPage = basename($_SERVER["SCRIPT_FILENAME"]);
-
-if ($currentPage == "theme.php") {
-	require_once("engine/bo/ThemeBo.php");
-	$themeBo = ThemeBo::newInstance($connection, $config["galette"]["db"]);
-	$theme = $themeBo->getTheme($_REQUEST["id"]);
-
-	$page_title .= " - " . @$theme["the_label"];
-	$page_description = "Thème";
-}
-else if ($currentPage == "group.php") {
-	require_once("engine/bo/GroupBo.php");
-	$groupBo = GroupBo::newInstance($connection, $config["galette"]["db"]);
-	$group = $groupBo->getGroup($_GET["id"]);
-
-	$page_title .= " - " . @$group["gro_label"];
-	$page_description = "Groupe de thèmes";
-}
-
+echo $CARD;
 ?>
-
-<!-- Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content="<?php echo $current_url; ?>" />
-<meta property="og:title" content="Parti Pirate <?php echo $page_title;?>" />
-<meta property="og:description" content="<?php echo $page_description;?>" />
-<meta property="og:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo_voile_fond.png" />
-<meta property="og:locale" content="fr_FR" />
-<meta property="og:locale:alternate" content="en_US" />
-<meta property="fb:page_id" content="partipiratefr" />
-<!-- Google +1 -->
-<meta itemprop="name" content="Parti Pirate <?php echo $page_title;?>" />
-<meta itemprop="description" content="<?php echo $page_description;?>" />
-<meta itemprop="image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo_voile_fond.png" />
-<meta itemprop="author" content="farlistener" />
-<!-- Twitter -->
-<meta name="twitter:site" content="@partipirate" />
-<meta name="twitter:creator" content="@farlistener" />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:url" content="<?php echo $current_url; ?>" />
-<meta name="twitter:title" content="Parti Pirate <?php echo $page_title;?>" />
-<meta name="twitter:description" content="<?php echo $page_description;?>" />
-<meta name="twitter:image" content="<?php echo $config["server"]["base"]; ?>assets/images/logo_voile_fond.png" />
-<meta name="twitter:image:alt" content="Logo de Personae" />
-
 
 </head>
 <body>

@@ -66,29 +66,7 @@ function isInMyGroup($theme, $mygroups) {
 ?>
 
 <div class="container theme-showcase" role="main">
-	<ol class="breadcrumb">
-		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-		<li><a href="groups.php"><?php echo lang("breadcrumb_groups"); ?></a></li>
-
-<?php 	if (false) {?>
-		<li><a href="groups.php?limit=mine"><?php echo lang("breadcrumb_my_groups"); ?></a></li>
-<?php 	}?>
-
-<?php if (!$showAdmin) {?>
-		<li class="active"><?php echo $group["gro_label"]; ?></li>
-<?php } else {?>
-		<li><a href="group.php?id=<?php echo $group["gro_id"];?>" id="group_link"><?php echo $group["gro_label"]; ?></a></li>
-<?php }?>
-
-<?php if ($isAdmin) {?>
-<?php if (!$showAdmin) {?>
-		<li><a href="group.php?id=<?php echo $group["gro_id"];?>&admin=" id="group_admin_link"><?php echo lang("breadcrumb_group_administration"); ?></a></li>
-<?php } else {?>
-		<li class="active"><?php echo lang("breadcrumb_group_administration"); ?></li>
-<?php }?>
-<?php }?>
-
-	</ol>
+	<?php echo getBreadcrumb(); ?>
 
 <?php
 foreach($group["gro_themes"] as $themeId => $theme) {

@@ -21,10 +21,7 @@ require_once("engine/utils/SessionUtils.php");
 
 ?>
 <div class="container theme-showcase" role="main">
-	<ol class="breadcrumb">
-		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?> </a></li>
-		<li class="active"><?php echo lang("breadcrumb_connect"); ?></li>
-	</ol>
+	<?php echo getBreadcrumb(); ?>
 
 	<div class="well well-sm">
 		<p>

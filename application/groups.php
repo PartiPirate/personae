@@ -63,24 +63,7 @@ function isInMyGroup($theme, $mygroups) {
 ?>
 
 <div class="container theme-showcase" role="main">
-	<ol class="breadcrumb">
-		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-
-<?php if ($limit == "all") {?>
-		<li class="active"><?php echo lang("breadcrumb_groups"); ?></li>
-<?php 	if ($isConnected) {?>
-		<li><a href="groups.php?limit=mine"><?php echo lang("breadcrumb_my_groups"); ?></a></li>
-<?php 	}?>
-<?php }
-	  else if ($limit == "mine" && $isConnected) {?>
-		<li><a href="groups.php"><?php echo lang("breadcrumb_groups"); ?></a></li>
-<?php if ($isConnected) {?>
-		<li class="active"><?php echo lang("breadcrumb_my_groups"); ?></li>
-<?php 	}?>
-<?php }?>
-
-	</ol>
-
+	<?php echo getBreadcrumb(); ?>
 
 
 <?php

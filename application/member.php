@@ -48,14 +48,7 @@ if ($member) {
 ?>
 
 <div class="container theme-showcase" role="main">
-	<ol class="breadcrumb">
-		<li><a href="index.php"><?php echo lang("breadcrumb_index"); ?></a></li>
-<!--
-		TODO add members page
-		<li><a href="groups.php"><?php echo lang("breadcrumb_groups"); ?></a></li>
- -->
-		<li class="active"><?php echo GaletteBo::showPseudo($member); ?></li>
-	</ol>
+	<?php echo getBreadcrumb(); ?>
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
