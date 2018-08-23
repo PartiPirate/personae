@@ -155,10 +155,10 @@ foreach($groups as $groupId => $lgroup) {
 	<?php echo getBreadcrumb(); ?>
 
 <!-- User part -->
-<?php include("theme_user.php"); ?>
+<?php include("theme/theme_user.php"); ?>
 
 <!-- Administration part -->
-<?php include("theme_admin.php"); ?>
+<?php include("theme/theme_admin.php"); ?>
 
 <?php include("connect_button.php"); ?>
 
