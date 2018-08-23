@@ -20,7 +20,7 @@
 
 <!-- Administration part -->
 
-<?php if ($isAdmin && $showAdmin) {?>
+<?php if (!$showAdmin || !$isAdmin) return; ?>
 
 <form id="saveThemeForm" action="do_save_theme.php" method="post" class="form-horizontal">
 	<div class="saved" style="display: none;">Sauv&eacute;</div>
@@ -463,5 +463,3 @@ themeAdmins[themeAdmins.length] = {	tad_member_identity: "<?php echo GaletteBo::
 <?php 	}?>
 
 </script>
-
-<?php }?>

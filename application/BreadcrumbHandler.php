@@ -79,13 +79,25 @@ function getBreadcrumb() {
         }
     }
     else if ($currentPage == "theme.php") {
-        global $showAdmin, $isAdmin, $theme;
+        global $showAdmin, $isAdmin, $theme, $themeGroups;
 
         $crumb = array("isActive" => false, "links" => array("groups.php"), "labels" => array(lang(breadcrumb_groups)));
         $crumbs[] = $crumb;
 
         if (false) {
             $crumb = array("isActive" => false, "links" => array("groups.php?limit=mine"), "labels" => array(lang(breadcrumb_my_groups)));
+            $crumbs[] = $crumb;
+        }
+
+        if (count($themeGroups)) {
+            // there is parent groups (at least one)
+            $crumb = array("isActive" => false, "links" => array(), "labels" => array());
+
+            foreach($themeGroups as $themeGroup) {
+                $crumb["links"][] = "group.php?id=" . $themeGroup["gro_id"];
+                $crumb["labels"][] = $themeGroup["gro_label"];
+            }
+
             $crumbs[] = $crumb;
         }
 

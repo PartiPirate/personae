@@ -105,6 +105,11 @@ class ThemeBo {
 			$query .= "	LEFT JOIN dlp_fixations ON fix_id = the_current_fixation_id";
 		}
 
+		if ($filters && isset($filters["with_group_information"]) && $filters["with_group_information"]) {
+			$query .= "	LEFT JOIN ".$this->personaeDatabase."dlp_group_themes ON gth_theme_id = the_id";
+			$query .= "	LEFT JOIN ".$this->personaeDatabase."dlp_groups ON gth_group_id = gro_id";
+		}
+
 		$query .= "	WHERE
 						1 = 1 \n";
 

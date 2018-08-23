@@ -72,6 +72,8 @@ if ($isConnected) {
 	}
 }
 
+$themeGroups = $themeBo->getThemes(array("the_id" => $theme["the_id"], "with_group_information" => true));
+
 $candidateBo = CandidateBo::newInstance($connection);
 $delegationBo = DelegationBo::newInstance($connection);
 

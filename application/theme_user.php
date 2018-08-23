@@ -24,7 +24,9 @@
 <link href="assets/css/editor.css" type="text/css" rel="stylesheet"/>
 <?php }?>
 
-<?php if ($fixation && !$showAdmin && $theme["the_delegate_only"] != "1") {?>
+<?php if ($showAdmin && $isAdmin) return; ?>
+
+<?php if ($fixation && $theme["the_delegate_only"] != "1") {?>
 <div class="panel panel-default currentFixation">
 	<div class="panel-heading">
 		Mandats en cours&nbsp;
@@ -71,7 +73,7 @@
 ?>
 
 <?php
-	if ($fixation && !$showAdmin && !$isFixed && $isElegible && $theme["the_free_fixed"] == 1) {?>
+	if ($fixation && !$isFixed && $isElegible && $theme["the_free_fixed"] == 1) {?>
 	
 <div class="row">
 	<div class="col-md-12">
@@ -81,7 +83,7 @@
 <br>
 <?php	
 	} 
-	else if ($fixation && !$showAdmin && $isFixed && $isElegible && $theme["the_free_fixed"] == 1) { ?>
+	else if ($fixation && $isFixed && $isElegible && $theme["the_free_fixed"] == 1) { ?>
 
 <div class="row">
 	<div class="col-md-12">
@@ -93,7 +95,7 @@
 	}
 ?>
 
-<?php if (($isElegible && !$showAdmin && (true || $theme["the_delegate_only"] != "1") && !$theme["the_delegation_closed"])) {?>
+<?php if (($isElegible && (true || $theme["the_delegate_only"] != "1") && !$theme["the_delegation_closed"])) {?>
 <div class="panel panel-default eligible">
 	<div class="panel-heading">
 		Moi, délégué·e…&nbsp;
@@ -124,7 +126,7 @@
 </div>
 <?php }?>
 
-<?php if ($isVoting && !$showAdmin && $theme["the_voting_method"] == "sort") {?>
+<?php if ($isVoting && $theme["the_voting_method"] == "sort") {?>
 <div class="panel panel-default voting">
 	<div class="panel-heading">
 		Délégation par tirage au sort&nbsp;
@@ -132,7 +134,7 @@
 </div>
 <?php }?>
 
-<?php if ($isVoting && !$showAdmin && $theme["the_voting_method"] == "demliq") {?>
+<?php if ($isVoting && $theme["the_voting_method"] == "demliq") {?>
 <form id="votingForm" action="do_voting.php" method="post" class="form-horizontal">
 
 <div class="panel panel-default voting">
