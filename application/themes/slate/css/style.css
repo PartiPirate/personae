@@ -75,3 +75,24 @@ body {
 .group ul li.voting, .group ul li.eligible, .group ul li.not-connected {
     background: inherit;
 }
+
+/* custom inclusion of right, left and below tabs */
+.tabs-bottom > .nav-tabs {
+  border-top: 1px solid rgba(0,0,0,0.6);
+}
+
+.tabs-bottom > .nav-tabs > li > a:hover,
+.tabs-bottom > .nav-tabs > li > a:focus {
+  border-top-color: rgba(0,0,0,0.6);
+  border-bottom-color: transparent;
+}
+
+.tabs-bottom > .nav-tabs > .active > a,
+.tabs-bottom > .nav-tabs > .active > a:hover,
+.tabs-bottom > .nav-tabs > .active > a:focus {
+  border-color: transparent rgba(0,0,0,0.6) rgba(0,0,0,0.6) rgba(0,0,0,0.6);
+}
+
+.tabs-bottom {
+    padding-bottom: 0;
+}

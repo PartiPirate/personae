@@ -103,6 +103,5 @@
 </div>
 <?php }?>
 
-<?php include("theme/theme_user_delegation_standard.php"); ?>
-<?php include("theme/theme_user_delegation_advanced.php"); ?>
+<?php include("theme/theme_user_delegation.php"); ?>
 

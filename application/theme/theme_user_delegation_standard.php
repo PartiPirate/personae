@@ -24,11 +24,6 @@
 
 <form id="votingForm" action="do_voting.php" method="post" class="form-horizontal">
 
-<div class="panel panel-default voting">
-	<div class="panel-heading">
-		Délégation par démocratie liquide&nbsp;
-	</div>
-	<div class="panel-body">
 
 		<?php if (count($powers) && $theme["the_secret_until_fixation"] == "0") {?>
 		<h3>Délégation en cours</h3>
@@ -129,9 +124,6 @@
 			</div>
 		</div>
 
-	</div>
-</div>
-
 	<?php foreach($eligibles as $eligible) {
 		
 				if ($eligible["id_adh"] == $sessionUserId) continue;
@@ -173,13 +165,13 @@
 	</div>
 	<div class="panel-body">
 		<fieldset>
+		<?php if (trim($eligible["can_text"])) {?>
 			<div>
-				<?php if (trim($eligible["can_text"])) {?>
 <!--				Proposition de candidature : <br/>-->
 				<?php echo $eligible["can_text"]; ?>
-				<?php }?>
 			</div>
 			<hr>
+		<?php }?>
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="tad_member_mail">Pouvoir de délégation confié : </label>
 				<div class="col-md-6">
