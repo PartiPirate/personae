@@ -180,5 +180,7 @@ foreach($groups as $groupId => $lgroup) {
 </script>
 <?php include("footer.php");?>
 
+<script src="assets/js/perpage/theme_user_delegation_advanced.js"></script>
+
 </body>
 </html>

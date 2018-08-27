@@ -89,7 +89,7 @@ function getBreadcrumb() {
             $crumbs[] = $crumb;
         }
 
-        if (count($themeGroups)) {
+        if (count($themeGroups) > 1 || (count($themeGroups) == 1 && $themeGroups[0]["gro_label"])) {
             // there is parent groups (at least one)
             $crumb = array("isActive" => false, "links" => array(), "labels" => array());
 
