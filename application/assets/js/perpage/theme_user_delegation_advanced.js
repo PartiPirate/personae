@@ -257,5 +257,6 @@ $(function() {
 	checkRemoveButtons();
 	checkInteractions();
 
+    $("#conditional-delegetation-container").sortable();
 	$("select[name=operator-select]").change();
 });
