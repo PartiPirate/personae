@@ -48,7 +48,56 @@
 	    }
 ?>
 
+<?php 
+
+// print_r($delegations); 
+
+$conditionalDelegations = array();
+$hasConditionDelegations = false;
+
+foreach($delegations as $delegation) {
+    if (!$delegation["dco_id"]) {
+        $delegation["dco_id"] = 0;
+    }
+    else {
+        $hasConditionDelegations = true;
+    }
+
+    if (! isset($conditionalDelegations[$delegation["dco_id"]])) {
+        $conditionalDelegations[$delegation["dco_id"]] = $delegation;
+        $conditionalDelegations[$delegation["dco_id"]]["delegations"] = array();
+        
+        if (!$delegation["dco_conditions"]) {
+            $delegation["dco_conditions"] = "[]";
+        }
+
+        $conditionalDelegations[$delegation["dco_id"]]["conditions"] = json_decode($delegation["dco_conditions"], true);
+    }
+
+    $conditionalDelegations[$delegation["dco_id"]]["delegations"][] = $delegation;
+}
+
+// print_r($conditionalDelegations);
+
+?>
+
 <div id="conditional-delegetation-container">
+
+<?php
+
+if (!$hasConditionDelegations) {
+    $conditionalDelegations[-1] = array();
+    $conditionalDelegations[-1]["delegations"] = array();
+    $conditionalDelegations[-1]["conditions"] = array();
+    $conditionalDelegations[-1]["dco_end_of_delegation"] = false;
+}
+
+?>
+
+<?php
+    foreach($conditionalDelegations as $conditionalDelegationId => $conditionalDelegation) {
+        if ($conditionalDelegationId == 0) continue;
+?>        
 
 <div class="panel panel-default conditional-delegation">
 	<div class="panel-heading">
@@ -67,25 +116,35 @@
         <div class="clearfix"></div>
 
         <div class="condition-container">
+            
+<?php
+            $currentCondtions = $conditionalDelegation["conditions"];
+            if (!count($currentCondtions)) {
+                $currentCondtions[] = array();
+            }
+
+            foreach($currentCondtions as $condition) {
+?>
+            
             <div class="form-group condition clearfix">
                 <div class="col-md-2">
                     <select name="condition-interaction-select" class="form-control">
-                        <option value="if">Si</option>
-                        <option value="and">Et</option>
-                        <option value="or">Ou</option>
-                        <option value="andif">Et si</option>
-                        <option value="orif">Ou si</option>
+                        <option value="if"      <?php if (@$condition["interaction"] == "if")     echo 'selected="selected"' ?>>Si</option>
+                        <option value="and"     <?php if (@$condition["interaction"] == "and")    echo 'selected="selected"' ?>>Et</option>
+                        <option value="or"      <?php if (@$condition["interaction"] == "or")     echo 'selected="selected"' ?>>Ou</option>
+                        <option value="andif"   <?php if (@$condition["interaction"] == "andif")  echo 'selected="selected"' ?>>Et si</option>
+                        <option value="orif"    <?php if (@$condition["interaction"] == "orif")   echo 'selected="selected"' ?>>Ou si</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <select name="field-select" class="form-control">
                         <option value=""></option>
                         <optgroup label="Motion">
-                            <option value="motion_title" data-type="string">Le titre de la motion</option>
-                            <option value="motion_description" data-type="string">La description de la motion</option>
+                            <option value="motion_title"       <?php if (@$condition["field"] == "motion_title")       echo 'selected="selected"' ?> data-type="string">Le titre de la motion</option>
+                            <option value="motion_description" <?php if (@$condition["field"] == "motion_description") echo 'selected="selected"' ?> data-type="string">La description de la motion</option>
                         </optgroup>
                         <optgroup label="Votants">
-                            <option value="voter_me" data-type="me">Moi en tant que votant</option>
+                            <option value="voter_me"           <?php if (@$condition["field"] == "voter_me")           echo 'selected="selected"' ?> data-type="me">Moi en tant que votant</option>
                         </optgroup>
                     </select>
                 </div>
@@ -93,22 +152,28 @@
                     <select name="operator-select" class="form-control">
                         <option value="" data-need-value="false"></option>
                         <optgroup label="Chaîne" data-type="string">
-                            <option value="contains" data-need-value="true">contient</option>
-                            <option value="do_not_contain" data-need-value="true">ne contient pas</option>
+                            <option value="contains"        <?php if (@$condition["operator"] == "contains")        echo 'selected="selected"' ?> data-need-value="true">contient</option>
+                            <option value="do_not_contain"  <?php if (@$condition["operator"] == "do_not_contain")  echo 'selected="selected"' ?> data-need-value="true">ne contient pas</option>
                         </optgroup>
                         <optgroup label="Moi" data-type="me">
-                            <option value="do vote" data-need-value="false">, j'ai voté</option>
+                            <option value="do_vote"         <?php if (@$condition["operator"] == "do_vote")         echo 'selected="selected"' ?> data-need-value="false">, j'ai voté</option>
                         </optgroup>
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <input name="value-input" type="text" placeholder="" class="form-control input-md">
+                    <input name="value-input" type="text" placeholder="" value="<?php echo @$condition["value"]; ?>" class="form-control input-md">
                 </div>
                 <div class="col-md-2">
                     <button type="button" class="btn btn-primary add-condition-btn" title="Ajouter une condition"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     <button type="button" class="btn btn-danger remove-condition-btn" title="Retirer une condition"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 </div>
             </div>
+
+<?php
+            }
+?>
+
+
         </div>
 
         <hr>
@@ -122,6 +187,25 @@
         <div class="clearfix"></div>
 
         <div class="delegation-container">
+
+<?php
+
+/*
+            $currentDelegations = array(array());
+            if (isset($conditionalDelegations[0])) {
+                $currentDelegations = $conditionalDelegations[0]["delegations"];
+            }
+*/
+
+            $currentDelegations = $conditionalDelegation["delegations"];
+            if (!count($currentDelegations)) {
+                $currentDelegations[] = array();
+            }
+
+            foreach($currentDelegations as $delegation) {
+
+?>
+
             <div class="form-group delegation clearfix">
                 <div class="col-md-2" style="padding-top:  10px; text-align: right; ">
                     Je donne à
@@ -131,46 +215,53 @@
                         <option value=""></option>
                         <optgroup label="Volontaire pour recevoir des délégations">
                             <?php   foreach($statusEligibles["candidate"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>"><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                         <optgroup label="Peut recevoir des délégations">
                             <?php   foreach($statusEligibles["voting"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>"><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                         <optgroup label="Ne veut pas de délégation">
                             <?php   foreach($statusEligibles["anti"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>"><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <input name="value-input" type="number" min="0" max="<?php echo $theme["the_voting_power"]; ?>" placeholder="" class="form-control input-md">
+                    <input name="value-input" type="number" min="0" max="<?php echo $theme["the_voting_power"]; ?>" value="<?php echo @$delegation["del_power"]; ?>" placeholder="" class="form-control input-md">
                 </div>
                 <div class="col-md-2">
                     <button type="button" class="btn btn-primary add-delegation-btn" title="Ajouter une délégation"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     <button type="button" class="btn btn-danger remove-delegation-btn" title="Retirer une délégation"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 </div>
             </div>
+
+<?php       } ?>
+
         </div>            
 
         <div class="form-group">
             <div class="col-md-2 text-right">
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="end-of-delegation" value="1">
+                    <input type="checkbox" name="end-of-delegation" <?php if(@$conditionalDelegation["dco_end_of_delegation"]) echo 'checked="checked"'; ?> value="1">
                 </label>
             </div>
             <label class="col-md-10 control-label" style="padding-top:  10px; ">Et c'est la fin des délégations (les délégations suivantes, conditionnelles et par défaut, ne seront pas prises en compte)</label>
         </div>
 
     </div>
+    
+<?php
+    }
+?>
+    
+    
 </div>
 
 </div>
-
-
 
 <button id="add-conditional-delegation-btn" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter des délégations conditionnelles</button>
 
@@ -192,6 +283,18 @@
         <div class="clearfix"></div>
 
         <div class="delegation-container">
+
+<?php
+
+            $currentDelegations = array(array());
+            if (isset($conditionalDelegations[0])) {
+                $currentDelegations = $conditionalDelegations[0]["delegations"];
+            }
+
+            foreach($currentDelegations as $delegation) {
+
+?>
+
             <div class="form-group delegation clearfix">
                 <div class="col-md-2" style="padding-top:  10px; text-align: right; ">
                     Je donne à
@@ -201,29 +304,32 @@
                         <option value=""></option>
                         <optgroup label="Volontaire pour recevoir des délégations">
                             <?php   foreach($statusEligibles["candidate"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>"><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                         <optgroup label="Peut recevoir des délégations">
                             <?php   foreach($statusEligibles["voting"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>"><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                         <optgroup label="Ne veut pas de délégation">
                             <?php   foreach($statusEligibles["anti"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>"><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <input name="value-input" type="number" min="0" max="<?php echo $theme["the_voting_power"]; ?>" placeholder="" class="form-control input-md">
+                    <input name="value-input" type="number" min="0" max="<?php echo $theme["the_voting_power"]; ?>" value="<?php echo @$delegation["del_power"]; ?>" placeholder="" class="form-control input-md">
                 </div>
                 <div class="col-md-2">
                     <button type="button" class="btn btn-primary add-delegation-btn" title="Ajouter une délégation"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     <button type="button" class="btn btn-danger remove-delegation-btn" title="Retirer une délégation"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 </div>
             </div>
+
+<?php       } ?>
+
         </div>            
 
     </div>

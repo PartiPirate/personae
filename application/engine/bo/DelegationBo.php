@@ -450,6 +450,7 @@ class DelegationBo {
 
 		$query = "	SELECT *
 					FROM  dlp_delegations
+					LEFT JOIN dlp_delegation_conditions ON del_delegation_condition_id = dco_id
 					WHERE
 						1 = 1
 					AND del_power > 0 \n";
@@ -474,7 +475,7 @@ class DelegationBo {
 			$query .= " AND del_member_to = :del_member_to \n";
 		}
 
-//		$query .= "	ORDER BY gro_label, the_label ";
+		$query .= "	ORDER BY dco_order ASC ";
 
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
