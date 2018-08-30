@@ -215,17 +215,17 @@ if (!$hasConditionDelegations) {
                         <option value=""></option>
                         <optgroup label="Volontaire pour recevoir des délégations">
                             <?php   foreach($statusEligibles["candidate"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                         <optgroup label="Peut recevoir des délégations">
                             <?php   foreach($statusEligibles["voting"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                         <optgroup label="Ne veut pas de délégation">
                             <?php   foreach($statusEligibles["anti"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                     </select>
@@ -254,12 +254,12 @@ if (!$hasConditionDelegations) {
 
     </div>
     
+</div>
+
 <?php
     }
 ?>
-    
-    
-</div>
+
 
 </div>
 
@@ -304,17 +304,17 @@ if (!$hasConditionDelegations) {
                         <option value=""></option>
                         <optgroup label="Volontaire pour recevoir des délégations">
                             <?php   foreach($statusEligibles["candidate"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                         <optgroup label="Peut recevoir des délégations">
                             <?php   foreach($statusEligibles["voting"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                         <optgroup label="Ne veut pas de délégation">
                             <?php   foreach($statusEligibles["anti"] as $eligible) { ?>
-                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_power"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
+                                <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
                     </select>

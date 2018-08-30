@@ -234,8 +234,28 @@ function addSaveDelegationHandler() {
         });
 
         delegation["default"] = dumpDelegations($("#default-delegation").find(".delegation-container"));
-    
-        console.log(delegation);
+
+//        console.log(delegation);
+
+        var form = {};
+        form.del_theme_id = $("#votingForm input[name=del_theme_id]").val();
+        form.del_theme_type = $("#votingForm input[name=del_theme_type]").val();
+        form.delegation = JSON.stringify(delegation);
+
+        $.post("do_save_advanced_delegations.php", form, function(data) {
+            if (data.ok) {
+                $("#success_theme_votingAlert").parents(".container").show();
+    			$("#success_theme_votingAlert").show().delay(2000).fadeOut(1000, function() {
+    				$(this).parents(".container").hide();
+    			});
+    		}
+    		else {
+    			$("#" + data.error + "Alert").parents(".container").show();
+    			$("#" + data.error + "Alert").show().delay(2000).fadeOut(1000, function() {
+    				$(this).parents(".container").hide();
+    			});
+    		}
+        }, "json");
     });
 }
 

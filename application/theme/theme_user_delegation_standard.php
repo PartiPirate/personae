@@ -130,7 +130,7 @@
 
 				$delegativePower = 0;
 				foreach($delegations as $delegation) {
-					if ($eligible["id_adh"] == $delegation["del_member_to"]) {
+					if ($eligible["id_adh"] == $delegation["del_member_to"] && !$delegation["dco_id"]) { // we are in simple mode, so there is no condition taken in account
 						$delegativePower = $delegation["del_power"];
 						break;
 					}

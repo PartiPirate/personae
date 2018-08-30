@@ -32,7 +32,7 @@ class DelegationBo {
 		$query = "	INSERT INTO dlp_delegations () VALUES ()	";
 
 		$statement = $this->pdo->prepare($query);
-//				echo showQuery($query, $args);
+//				echo showQuery($query, array());
 
 		try {
 			$statement->execute();
@@ -74,7 +74,7 @@ class DelegationBo {
 	}
 
 	function deleteByUniqueKey($delegation) {
-			if (isset($delegation["del_id"])) {
+		if (isset($delegation["del_id"])) {
 			unset($delegation["del_id"]);
 		}
 		if (isset($delegation["del_power"])) {
@@ -90,6 +90,24 @@ class DelegationBo {
 
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($delegation);
+	}
+
+	function deleteById($delegation) {
+		$args = array();
+
+		if (is_array($delegation)) {
+			$args["del_id"] = $delegation["del_id"];
+		}
+		else {
+			$args["del_id"] = $delegation;
+		}
+
+		$query = "	DELETE FROM dlp_delegations
+					WHERE
+						del_id = :del_id ";
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute($args);
 	}
 
 	static function testGivers($givers, $memberFrom) {
@@ -188,6 +206,9 @@ class DelegationBo {
 				unset($delegations[$index]);
 
 				// TODO delete delegation
+			}
+			else if ($delegation["dco_id"]) { // if there is a condition, in this case it's not taken in account
+				unset($delegations[$index]);
 			}
 		}
 
@@ -448,6 +469,8 @@ class DelegationBo {
 	function getDelegations($filters = null) {
 		$args = array();
 
+		/* LEFT */
+
 		$query = "	SELECT *
 					FROM  dlp_delegations
 					LEFT JOIN dlp_delegation_conditions ON del_delegation_condition_id = dco_id
@@ -473,6 +496,42 @@ class DelegationBo {
 		if (isset($filters["del_member_to"])) {
 			$args["del_member_to"] = $filters["del_member_to"];
 			$query .= " AND del_member_to = :del_member_to \n";
+		}
+
+		if (isset($filters["no_condition"]) && $filters["no_condition"]) {
+			$query .= " AND dco_id IS NULL";
+		}
+
+		/* UNION */
+		
+		$query .= " \nUNION\n ";
+
+		/* RIGHT */
+		
+		$query .= "	SELECT *
+			FROM  dlp_delegations
+			RIGHT JOIN dlp_delegation_conditions ON del_delegation_condition_id = dco_id
+			WHERE
+				1 = 1
+			\n";
+
+		if (isset($filters["del_theme_id"])) {
+			$args["del_theme_id"] = $filters["del_theme_id"];
+			$query .= " AND dco_theme_id = :del_theme_id \n";
+		}
+
+		if (isset($filters["del_theme_type"])) {
+			$args["del_theme_type"] = $filters["del_theme_type"];
+			$query .= " AND dco_theme_type = :del_theme_type \n";
+		}
+
+		if (isset($filters["del_member_from"])) {
+			$args["del_member_from"] = $filters["del_member_from"];
+			$query .= " AND dco_member_from = :del_member_from \n";
+		}
+
+		if (isset($filters["no_condition"]) && $filters["no_condition"]) {
+			$query .= " AND dco_id IS NULL";
 		}
 
 		$query .= "	ORDER BY dco_order ASC ";

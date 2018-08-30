@@ -84,9 +84,12 @@ if ($isCycling) {
 	exit();
 }
 
-// Retrieve previous candidate
+// Retrieve previous delegation
 $exists = false;
-$delegations = $delegationBo->getDelegations($delegation);
+$filter = $delegation;
+$filter["no_condition"] = true;
+
+$delegations = $delegationBo->getDelegations($filter);
 if (count($delegations)) {
 	$delegation = $delegations[0];
 	$exists = true;
@@ -123,7 +126,7 @@ if ($delegation["del_power"] > 0) {
 	$delegationBo->save($delegation);
 }
 else {
-	$delegationBo->deleteByUniqueKey($delegation);
+	$delegationBo->deleteById($delegation);
 }
 
 // TODO Create delegation event
