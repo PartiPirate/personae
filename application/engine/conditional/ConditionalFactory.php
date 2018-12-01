@@ -1,7 +1,7 @@
 <?php
 
 /*
- Copyright 208 Cédric Levieux, Parti Pirate
+ Copyright 2018 Cédric Levieux, Parti Pirate
 
 This file is part of Personae.
 
@@ -22,6 +22,7 @@ along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 class ConditionalFactory {
 
     static function getConditionInstance($condition) {
+        if (strtolower($condition["field"]) == "motion_date") return new MotionDateCondition();
         if (strtolower($condition["field"]) == "motion_title") return new MotionTitleCondition();
         if (strtolower($condition["field"]) == "motion_description") return new MotionDescriptionCondition();
         if (strtolower($condition["field"]) == "voter_me") return new VoterMeCondition();
@@ -30,6 +31,8 @@ class ConditionalFactory {
     }
 
     static function getOperatorInstance($condition) {
+        if (strtolower($condition["operator"]) == "is_after") return new IsAfterOperator();
+        if (strtolower($condition["operator"]) == "is_before") return new IsBeforeOperator();
         if (strtolower($condition["operator"]) == "contains") return new ContainsOperator();
         if (strtolower($condition["operator"]) == "do_not_contain") return new DoNotContainOperator();
         if (strtolower($condition["operator"]) == "do_vote") return new DoVoteOperator();

@@ -19,20 +19,15 @@ You should have received a copy of the GNU General Public License
 along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class MotionDescriptionCondition implements ICondition
+class IsBeforeOperator implements IOperator
 {
     /**
-     * @return <code>true</code> if the evaluation of this condition succeeds
+     * @return <code>true</code> if the evaluation of this operator succeeds
     */
-    public function evaluateCondition($condition, $context) {
-        $motion = $context["motion"];
-        $value = $motion["mot_description"];
+    public function operate($value, $compareTo, $context) {
+        if ($value <= $compareTo) return true;
 
-        $operator = ConditionalFactory::getOperatorInstance($condition);
-
-        $result = $operator->operate($value, explode(",", $condition["value"]), $context);
-
-        return $result;
+        return false;
     }
 }
 

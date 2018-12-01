@@ -19,18 +19,18 @@ You should have received a copy of the GNU General Public License
 along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class MotionDescriptionCondition implements ICondition
+class MotionDateCondition implements ICondition
 {
     /**
      * @return <code>true</code> if the evaluation of this condition succeeds
     */
     public function evaluateCondition($condition, $context) {
         $motion = $context["motion"];
-        $value = $motion["mot_description"];
+        $value = $motion["mot_date"];
 
         $operator = ConditionalFactory::getOperatorInstance($condition);
 
-        $result = $operator->operate($value, explode(",", $condition["value"]), $context);
+        $result = $operator->operate($value, $condition["value"], $context);
 
         return $result;
     }

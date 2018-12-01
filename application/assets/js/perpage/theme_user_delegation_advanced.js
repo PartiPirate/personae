@@ -154,11 +154,20 @@ function changeOperatorHandler() {
 
         var condition = $(this).parents(".condition");
 
-        if (needValue) {
+        var typeOption = condition.find("select[name=field-select] option:selected");
+        var type = typeOption.data("type");
+
+        if (needValue && type == "string") {
             condition.find("input[name=value-input]").show();
+            condition.find("input[name=value-date-input]").hide();
+        }
+        else if (needValue && type == "date") {
+            condition.find("input[name=value-input]").hide();
+            condition.find("input[name=value-date-input]").show();
         }
         else {
             condition.find("input[name=value-input]").hide();
+            condition.find("input[name=value-date-input]").hide();
         }
     });
 }
@@ -206,16 +215,20 @@ function addSaveDelegationHandler() {
             var conditions = [];
 
             conditionContainer.find(".condition").each(function() {
-               var currentCondition = {};
+                var currentCondition = {};
 
-               currentCondition["interaction"] = $(this).find("select[name=condition-interaction-select]").val();
-               currentCondition["field"] = $(this).find("select[name=field-select]").val();
-               currentCondition["operator"] = $(this).find("select[name=operator-select]").val();
-               currentCondition["value"] = $(this).find("input[name=value-input]").val();
+                currentCondition["interaction"] = $(this).find("select[name=condition-interaction-select]").val();
+                currentCondition["field"] = $(this).find("select[name=field-select]").val();
+                currentCondition["operator"] = $(this).find("select[name=operator-select]").val();
+               
+                var typeOption = condition.find("select[name=field-select] option:selected");
+                var type = typeOption.data("type");
 
-               if (currentCondition["field"] && currentCondition["operator"]) {
-                   conditions.push(currentCondition);
-               }
+                currentCondition["value"] = (type == "date" ? $(this).find("input[name=value-date-input]").val() : $(this).find("input[name=value-input]").val());
+
+                if (currentCondition["field"] && currentCondition["operator"]) {
+                    conditions.push(currentCondition);
+                }
             });
 
             return conditions;

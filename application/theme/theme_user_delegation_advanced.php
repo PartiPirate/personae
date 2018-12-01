@@ -141,6 +141,7 @@ if (!$hasConditionDelegations) {
                         <optgroup label="Motion">
                             <option value="motion_title"       <?php if (@$condition["field"] == "motion_title")       echo 'selected="selected"' ?> data-type="string">Le titre de la motion</option>
                             <option value="motion_description" <?php if (@$condition["field"] == "motion_description") echo 'selected="selected"' ?> data-type="string">La description de la motion</option>
+                            <option value="motion_date"        <?php if (@$condition["field"] == "motion_date")        echo 'selected="selected"' ?> data-type="date">La date finale de la motion</option>
                         </optgroup>
                         <optgroup label="Votants">
                             <option value="voter_me"           <?php if (@$condition["field"] == "voter_me")           echo 'selected="selected"' ?> data-type="me">Moi en tant que votant</option>
@@ -157,10 +158,15 @@ if (!$hasConditionDelegations) {
                         <optgroup label="Moi" data-type="me">
                             <option value="do_vote"         <?php if (@$condition["operator"] == "do_vote")         echo 'selected="selected"' ?> data-need-value="false">, j'ai voté</option>
                         </optgroup>
+                        <optgroup label="Moi" data-type="date">
+                            <option value="is_before"       <?php if (@$condition["operator"] == "is_before")       echo 'selected="selected"' ?> data-need-value="true">se déroule avant le</option>
+                            <option value="is_after"        <?php if (@$condition["operator"] == "is_after")        echo 'selected="selected"' ?> data-need-value="true">se déroule après le</option>
+                        </optgroup>
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <input name="value-input" type="text" placeholder="" value="<?php echo @$condition["value"]; ?>" class="form-control input-md">
+                    <input name="value-input"       type="text" placeholder="" value="<?php echo @$condition["value"]; ?>" class="form-control input-md">
+                    <input name="value-date-input"  type="date" placeholder="" value="<?php echo @$condition["value"]; ?>" class="form-control input-md" style="height: 38px;">
                 </div>
                 <div class="col-md-2">
                     <button type="button" class="btn btn-primary add-condition-btn" title="Ajouter une condition"><i class="fa fa-plus" aria-hidden="true"></i></button>
