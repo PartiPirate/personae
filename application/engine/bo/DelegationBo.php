@@ -346,6 +346,8 @@ class DelegationBo {
 			$members[$index]["delegation_level"] = 1;
 		}
 
+		$filters["with_conditions"] = true;
+
 		$delegations = $this->getDelegations($filters);
 
 // 		echo "<br/>----- Start members -------<br/>\n";
@@ -356,26 +358,184 @@ class DelegationBo {
 
 		error_log("Before - Number of delegations : " . count($delegations));
 
+		$context = array("motion" => $motion, "votes" => $votes);
+
 		// We need to clear all useless delegation
 		foreach($delegations as $index => $delegation) {
 			$fromFound = false;
 			$toFound = false;
 
+			$fromMember = null;
+			$toMember = null;
+
 			foreach ($members as $member) {
 				if ($delegation["del_member_from"] == $member["id_adh"]) {
 					$fromFound = true;
+					$fromMember = $member;
 				}
 				if ($delegation["del_member_to"] == $member["id_adh"]) {
 					$toFound = true;
+					$toMember = $member;
 				}
 
 				if ($fromFound && $toFound) break;
 			}
 
-			if (!$fromFound || !$toFound) {
+			$context["me"] = $fromMember;
+			$conditioned = true;
+
+			if (isset($delegation["dco_conditions"])) {
+				$conditions = json_decode($delegation["dco_conditions"], true);
+
+				$result = ConditionalFactory::testConditions($conditions, $context);
+
+				if (!$result) $conditioned = false;
+			}
+
+			if (!$fromFound || !$toFound || !$conditioned) {
 				unset($delegations[$index]);
 			}
 		}
+
+		function sortDelegations($delegationA, $delegationB) {
+			if ($delegationA["del_member_from"] != $delegationB["del_member_from"]) return ($delegationA["del_member_from"] > $delegationB["del_member_from"] ? 1 : -1);
+			
+			if (!$delegationA["del_delegation_condition_id"]) return 1;
+			if (!$delegationB["del_delegation_condition_id"]) return -1;
+
+			if (!$delegationA["del_delegation_condition_id"] && !$delegationB["del_delegation_condition_id"]) return 0;
+
+			return ($delegationA["dco_order"] > $delegationB["dco_order"] ? 1 : -1);
+		}
+
+		usort($delegations, "sortDelegations");
+
+// 		print_r($delegations);
+// 		echo "\n";
+
+//		$toChangePowers = array();
+		$newDelegations = array();
+ 		
+		$count = count($delegations);
+		for($index = 0; $index < $count; $index++) {
+			$delegation = $delegations[$index];
+
+			$memberFrom = $delegation["del_member_from"];
+
+//			echo "Index : $index \n";
+//			echo "Member : " . $memberFrom;
+//			echo "\n";
+
+			$memberDelegations = array();
+
+			for($jndex = $index; $jndex < $count; $jndex++) {
+				$delegation = $delegations[$jndex];
+
+				if ($memberFrom == $delegation["del_member_from"]) {
+					$delegation["del_index"] = $jndex;
+					$memberDelegations[] = $delegation;
+				}
+				else {
+					break;
+				}
+			}
+
+//			echo "Number of delegation : " . count($memberDelegations);
+//			echo "\n";
+
+			$availablePower = $instancePower;
+
+			$stopDelegation = null;
+
+			for($jndex = 0; $jndex < count($memberDelegations); $jndex++) {
+				$memberDelegation = $memberDelegations[$jndex];
+
+//				print_r($memberDelegation);
+
+//				echo "Power : ";
+//				echo ($delegations[$memberDelegation["del_index"]]["del_power"]);
+//				echo "\n";
+
+//				echo "Available power : ";
+//				echo "$availablePower";
+//				echo "\n";
+
+				if (!$stopDelegation || $stopDelegation == $memberDelegation["dco_id"]) {
+
+
+					if ($availablePower >= $memberDelegation["del_power"]) {
+//						echo "Power available\n";
+						$newDelegations[] = $memberDelegation;
+						$availablePower -= $memberDelegation["del_power"];
+					}
+					else {
+						$memberDelegation["del_power"] = $availablePower;
+						if ($memberDelegation["del_power"]) $newDelegations[] = $memberDelegation;
+
+//						$toChangePowers[] = array("del_index" => $memberDelegation["del_index"], "del_id" => $memberDelegation["del_id"], "del_power" => $availablePower);
+						$availablePower = 0;
+//				echo ($delegations[$memberDelegation["del_index"]]["del_power"]);
+/*
+						$delegations[$memberDelegation["del_index"]]["del_power"] = 0;
+*/						
+					}
+
+					if ($memberDelegation["dco_end_of_delegation"]) {
+						$stopDelegation = $memberDelegation["dco_id"];
+//						echo "Stop delegation\n";
+					}
+
+				}
+				else {
+					$memberDelegation["del_power"] = $availablePower;
+//					if ($memberDelegation["del_power"]) $newDelegations[] = $memberDelegation;
+					
+//					echo "Delegation stopped\n";
+//					$toChangePowers[] = array("del_index" => $memberDelegation["del_index"], "del_id" => $memberDelegation["del_id"], "del_power" => 0);
+
+//					echo ($delegations[$memberDelegation["del_index"]]["del_power"]);
+				
+//					$delegations[$memberDelegation["del_index"]]["del_power"] = 0;
+/*
+					$delegations[$memberDelegation["del_index"]]["del_power"] = 0;
+*/					
+				}
+
+//				echo "--\n";
+			}
+
+			$index += (count($memberDelegations) - 1);
+		}
+
+/*
+		foreach($delegations as &$delegation) {
+			foreach($toChangePowers as $index => $toChangePower) {
+				if ($delegation["del_id"] == $toChangePower["del_id"]) {
+					echo "del_id : " . $delegation["del_id"];
+					echo " - del_member_from : " . $delegation["del_member_from"];
+					echo " - del_power : " . $delegation["del_power"];
+					echo " => " . $toChangePower["del_power"];
+					echo "\n";
+
+//					$delegation["del_power"] = $toChangePower["del_power"];
+					unset($toChangePowers[$index]);
+					break;
+				}
+			}
+		}
+*/
+
+/*
+		foreach($toChangePowers as $toChangePower) {
+			$delegations[$toChangePower["del_index"]]["del_power"] = $toChangePower["del_power"];
+		}
+*/
+
+// 		echo "\n";
+// 		print_r($delegations);
+// 		echo "\n";
+
+		$delegations = $newDelegations;
 
 		error_log("After - Number of delegations : " . count($delegations));
 
@@ -473,8 +633,8 @@ class DelegationBo {
 
 		$query = "	SELECT *
 					FROM  dlp_delegations
-					LEFT JOIN dlp_delegation_conditions ON del_delegation_condition_id = dco_id
-					WHERE
+					LEFT JOIN dlp_delegation_conditions ON del_delegation_condition_id = dco_id ";
+		$query .= "	WHERE
 						1 = 1
 					AND del_power > 0 \n";
 

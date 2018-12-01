@@ -17,6 +17,16 @@
     along with Personae.  If age, see <http://www.gnu.org/licenses/>.
 */
 
+include_once("engine/conditional/ICondition.php");
+include_once("engine/conditional/IOperator.php");
+include_once("engine/conditional/ContainsOperator.php");
+include_once("engine/conditional/DoNotContainOperator.php");
+include_once("engine/conditional/DoVoteOperator.php");
+include_once("engine/conditional/MotionDescriptionCondition.php");
+include_once("engine/conditional/MotionTitleCondition.php");
+include_once("engine/conditional/VoterMeCondition.php");
+include_once("engine/conditional/ConditionalFactory.php");
+
 require_once("engine/bo/DelegationBo.php");
 require_once("engine/bo/FixationBo.php");
 require_once("engine/bo/GroupBo.php");

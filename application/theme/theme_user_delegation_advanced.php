@@ -23,8 +23,7 @@
 <?php   if (!$isVoting || $theme["the_voting_method"] != "demliq") return; ?>
 
 <!-- DEV -->
-<?php   if ($sessionUserId != 12 && $sessionUserId != 1 && $sessionUserId != 649 && $sessionUserId != 338 && $sessionUserId != 887 && $sessionUserId != 731) return; ?>
-
+<?php   //if ($sessionUserId != 12 && $sessionUserId != 1 && $sessionUserId != 649 && $sessionUserId != 338 && $sessionUserId != 887 && $sessionUserId != 731 && $sessionUserId != 928) return; ?>
 
 <?php   
         $statusEligibles = array("candidate" => array(), "anti" => array(), "voting" => array());
@@ -335,6 +334,6 @@ if (!$hasConditionDelegations) {
     </div>
 </div>
 
-<button type="button" id="save-delegations-btn" class="btn btn-success" title="Sauver les délégation"><i class="fa fa-save" aria-hidden="true"></i> Sauver les délégation</button>
+<button type="button" id="save-delegations-btn" class="btn btn-success" title="Sauver les délégation" <?php	if ($theme["the_delegation_closed"]) { echo "disabled=disabled"; } ?> ><i class="fa fa-save" aria-hidden="true"></i> Sauver les délégation</button>
 
 <br><br>
