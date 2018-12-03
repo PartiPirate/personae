@@ -358,7 +358,7 @@ class DelegationBo {
 
 		error_log("Before - Number of delegations : " . count($delegations));
 
-		$context = array("motion" => $motion, "votes" => $votes);
+		$context = array("motion" => $motion, "votes" => $votes, "me" => null);
 
 		// We need to clear all useless delegation
 		foreach($delegations as $index => $delegation) {
@@ -366,13 +366,34 @@ class DelegationBo {
 			$toFound = false;
 
 			$fromMember = null;
+			$fromMember2 = null;
 			$toMember = null;
 
+//			print_r($delegation);
+
 			foreach ($members as $member) {
+//				$context["me"] = $member;
+
 				if ($delegation["del_member_from"] == $member["id_adh"]) {
+
+//					echo "Member found\n";
+					
 					$fromFound = true;
 					$fromMember = $member;
+//					$context["me"] = $member;
 				}
+
+				if (!$delegation["del_member_from"] && ($delegation["dco_member_from"] == $member["id_adh"])) {
+
+//					echo "Owner found\n";
+
+					$fromFound = true;
+					$toFound = true;
+					$fromMember2 = $member;
+
+//					$context["me"] = $member;
+				}
+
 				if ($delegation["del_member_to"] == $member["id_adh"]) {
 					$toFound = true;
 					$toMember = $member;
@@ -381,7 +402,11 @@ class DelegationBo {
 				if ($fromFound && $toFound) break;
 			}
 
+//			if ($fromMember2) $fromMember = $fromMember2;
 			$context["me"] = $fromMember;
+
+//			print_r($fromMember2);
+
 			$conditioned = true;
 
 			if (isset($delegation["dco_conditions"])) {
@@ -398,6 +423,9 @@ class DelegationBo {
 		}
 
 		function sortDelegations($delegationA, $delegationB) {
+			if (!$delegationA["del_member_from"]) $delegationA["del_member_from"] = $delegationA["dco_member_from"];
+			if (!$delegationB["del_member_from"]) $delegationB["del_member_from"] = $delegationB["dco_member_from"];
+			
 			if ($delegationA["del_member_from"] != $delegationB["del_member_from"]) return ($delegationA["del_member_from"] > $delegationB["del_member_from"] ? 1 : -1);
 			
 			if (!$delegationA["del_delegation_condition_id"]) return 1;
@@ -420,6 +448,7 @@ class DelegationBo {
 		for($index = 0; $index < $count; $index++) {
 			$delegation = $delegations[$index];
 
+			if (!$delegation["del_member_from"]) $delegation["del_member_from"] = $delegation["dco_member_from"];
 			$memberFrom = $delegation["del_member_from"];
 
 //			echo "Index : $index \n";
@@ -465,8 +494,13 @@ class DelegationBo {
 
 					if ($availablePower >= $memberDelegation["del_power"]) {
 //						echo "Power available\n";
-						$newDelegations[] = $memberDelegation;
-						$availablePower -= $memberDelegation["del_power"];
+//						print_r($memberDelegation);
+//						echo "\n";
+
+						if ($memberDelegation["del_power"] && $memberDelegation["del_member_from"] != $memberDelegation["del_member_to"]) {
+							$newDelegations[] = $memberDelegation;
+							$availablePower -= $memberDelegation["del_power"];
+						}
 					}
 					else {
 						$memberDelegation["del_power"] = $availablePower;

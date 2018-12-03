@@ -221,7 +221,7 @@ function addSaveDelegationHandler() {
                 currentCondition["field"] = $(this).find("select[name=field-select]").val();
                 currentCondition["operator"] = $(this).find("select[name=operator-select]").val();
                
-                var typeOption = condition.find("select[name=field-select] option:selected");
+                var typeOption = $(this).find("select[name=field-select] option:selected");
                 var type = typeOption.data("type");
 
                 currentCondition["value"] = (type == "date" ? $(this).find("input[name=value-date-input]").val() : $(this).find("input[name=value-input]").val());

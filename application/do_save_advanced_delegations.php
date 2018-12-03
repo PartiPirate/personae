@@ -112,14 +112,31 @@ foreach($delegations["conditionals"] as $conditionalDelegation) {
 
 //	print_r($condition);
 
-	foreach($conditionalDelegation["delegations"] as $currentDelegation) {
+	if (count($conditionalDelegation["delegations"])) {
+		foreach($conditionalDelegation["delegations"] as $currentDelegation) {
+			$delegation = array();
+			$delegation["del_theme_id"] = $themeId;
+			$delegation["del_theme_type"] = $themeType;
+			$delegation["del_member_from"] = $sessionUserId;
+	
+			$delegation["del_member_to"] = $currentDelegation["id"];
+			$delegation["del_power"] = $currentDelegation["power"];
+	
+			$delegation["del_delegation_condition_id"] = $condition["dco_id"];
+	
+	//		print_r($delegation);
+	
+			$delegationBo->save($delegation);
+		}
+	}
+	else {
 		$delegation = array();
 		$delegation["del_theme_id"] = $themeId;
 		$delegation["del_theme_type"] = $themeType;
 		$delegation["del_member_from"] = $sessionUserId;
 
-		$delegation["del_member_to"] = $currentDelegation["id"];
-		$delegation["del_power"] = $currentDelegation["power"];
+		$delegation["del_member_to"] = $sessionUserId;
+		$delegation["del_power"] = 1;
 
 		$delegation["del_delegation_condition_id"] = $condition["dco_id"];
 

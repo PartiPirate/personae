@@ -236,7 +236,7 @@ if (!$hasConditionDelegations) {
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <input name="value-input" type="number" min="0" max="<?php echo $theme["the_voting_power"]; ?>" value="<?php echo @$delegation["del_power"]; ?>" placeholder="" class="form-control input-md">
+                    <input name="value-input" type="number" min="0" max="<?php echo $theme["the_voting_power"]; ?>" value="<?php echo (@$delegation["del_member_to"] != @$delegation["del_member_from"] ? @$delegation["del_power"] : ""); ?>" placeholder="" class="form-control input-md">
                 </div>
                 <div class="col-md-2">
                     <button type="button" class="btn btn-primary add-delegation-btn" title="Ajouter une délégation"><i class="fa fa-plus" aria-hidden="true"></i></button>
