@@ -114,7 +114,11 @@ $instance = $theme;
 $instance["eligibles"] = $eligibles;
 $instance["votings"] = $votings;
 
+//print_r($instance);
+
 $powers = $delegationBo->computeFixation($instance);
+
+//print_r($powers);
 
 // Candidate part
 

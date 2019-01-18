@@ -148,20 +148,6 @@ class DelegationBo {
 		$filters = array();
 		$members = array();
 
-		foreach($instance["eligibles"] as $member) {
-
-//			print_r($member);
-//			exit();
-
-			if (!$member["id_type_cotis"]) continue;
-			$members[$member["id_adh"]] = $member;
-		}
-
-		foreach($instance["votings"] as $member) {
-			if (!$member["id_type_cotis"]) continue;
-			$members[$member["id_adh"]] = $member;
-		}
-
 		$instancePower = 0;
 
 		if (isset($instance["the_id"])) {
@@ -171,11 +157,29 @@ class DelegationBo {
 			$instancePower = $instance["the_voting_power"];
 		}
 
+		foreach($instance["eligibles"] as $member) {
+
+//			print_r($member);
+//			exit();
+
+			if (!$member["id_type_cotis"]) continue;
+			$members[$member["id_adh"]] = $member;
+			$members[$member["id_adh"]]["power"] = 0;
+			$members[$member["id_adh"]]["max_power"] = 0;
+		}
+
+		foreach($instance["votings"] as $member) {
+			if (!$member["id_type_cotis"]) continue;
+			$members[$member["id_adh"]] = $member;
+			$members[$member["id_adh"]]["power"] = $instancePower;
+			$members[$member["id_adh"]]["max_power"] = $instancePower;
+		}
+/*
 		foreach($members as $index => $member) {
 			$members[$index]["power"] = $instancePower;
 			$members[$index]["max_power"] = $instancePower;
 		}
-
+*/
 		$delegations = $this->getDelegations($filters);
 
 // 		echo "<br/>----- Start members -------<br/>\n";
@@ -290,22 +294,6 @@ class DelegationBo {
 		$filters = array();
 		$members = array();
 
-		// Clean members
-		foreach($instance["eligibles"] as $member) {
-
-//			print_r($member);
-//			exit();
-
-			if (!$member["id_type_cotis"]) continue;
-			$members[$member["id_adh"]] = $member;
-		}
-
-		// Clean members & Mer
-		foreach($instance["votings"] as $member) {
-			if (!$member["id_type_cotis"]) continue;
-			$members[$member["id_adh"]] = $member;
-		}
-
 		$instancePower = 0;
 
 		if (isset($instance["the_id"])) {
@@ -314,6 +302,30 @@ class DelegationBo {
 
 			$instancePower = $instance["the_voting_power"];
 		}
+
+		foreach($instance["eligibles"] as $member) {
+
+//			print_r($member);
+//			exit();
+
+			if (!$member["id_type_cotis"]) continue;
+			$members[$member["id_adh"]] = $member;
+			$members[$member["id_adh"]]["power"] = 0;
+			$members[$member["id_adh"]]["max_power"] = 0;
+		}
+
+		foreach($instance["votings"] as $member) {
+			if (!$member["id_type_cotis"]) continue;
+			$members[$member["id_adh"]] = $member;
+			$members[$member["id_adh"]]["power"] = $instancePower;
+			$members[$member["id_adh"]]["max_power"] = $instancePower;
+		}
+/*
+		foreach($members as $index => $member) {
+			$members[$index]["power"] = $instancePower;
+			$members[$index]["max_power"] = $instancePower;
+		}
+*/
 
 		foreach($members as $index => $member) {
 //			$member["mem_nickname"] = GaletteBo::showIdentity($member);
@@ -341,8 +353,8 @@ class DelegationBo {
 
 //			$members[$index]["nickname"] = GaletteBo::showIdentity($member);
 //			$members[$index]["nickname"] = "Cédric";
-			$members[$index]["power"] = $instancePower;
-			$members[$index]["max_power"] = $instancePower;
+//			$members[$index]["power"] = $instancePower;
+//			$members[$index]["max_power"] = $instancePower;
 			$members[$index]["delegation_level"] = 1;
 		}
 
