@@ -141,6 +141,7 @@ if (!$hasConditionDelegations) {
                         <optgroup label="Motion">
                             <option value="motion_title"       <?php if (@$condition["field"] == "motion_title")       echo 'selected="selected"' ?> data-type="string">Le titre de la motion</option>
                             <option value="motion_description" <?php if (@$condition["field"] == "motion_description") echo 'selected="selected"' ?> data-type="string">La description de la motion</option>
+                            <option value="motion_tags"        <?php if (@$condition["field"] == "motion_tags")        echo 'selected="selected"' ?> data-type="string">L'un des tags de la motion</option>
                             <option value="motion_date"        <?php if (@$condition["field"] == "motion_date")        echo 'selected="selected"' ?> data-type="date">La date finale de la motion</option>
                         </optgroup>
                         <optgroup label="Votants">

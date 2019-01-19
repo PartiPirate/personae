@@ -25,6 +25,7 @@ class ConditionalFactory {
         if (strtolower($condition["field"]) == "motion_date") return new MotionDateCondition();
         if (strtolower($condition["field"]) == "motion_title") return new MotionTitleCondition();
         if (strtolower($condition["field"]) == "motion_description") return new MotionDescriptionCondition();
+        if (strtolower($condition["field"]) == "motion_tags") return new MotionTagsCondition();
         if (strtolower($condition["field"]) == "voter_me") return new VoterMeCondition();
 
         return null;

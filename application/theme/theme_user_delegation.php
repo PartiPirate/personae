@@ -37,14 +37,14 @@
         <?php include("theme/theme_user_delegation_advanced.php"); ?>
             </div>
         </div
-        
+
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist" style="margin: 0 -16px -15px -16px;">
         	<li role="presentation" class="active">
-        		<a href="#delegation-standard" aria-controls="home" role="tab" data-toggle="tab">Délégations standards<?php //echo lang("construction_arguments"); ?></a>
+        		<a href="#delegation-standard" aria-controls="delegation-standard" role="tab" data-toggle="tab">Délégations standards<?php //echo lang("construction_arguments"); ?></a>
         	</li>
         	<li role="presentation">
-        		<a href="#delegation-advanced" aria-controls="profile" role="tab" data-toggle="tab">Délégations avancées<?php //echo lang("construction_sources"); ?></a>
+        		<a href="#delegation-advanced" aria-controls="delegation-advanced" role="tab" data-toggle="tab">Délégations avancées<?php //echo lang("construction_sources"); ?></a>
         	</li>
         </ul>
         
