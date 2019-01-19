@@ -17,20 +17,11 @@
     along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function orderByIdentity($eliglibleA, $eliglibleB) {
-    if (strtolower(GaletteBo::showIdentity($eligibleA) > strtolower(GaletteBo::showIdentity($eligibleB)) return 1;
-    if (strtolower(GaletteBo::showIdentity($eligibleA) < strtolower(GaletteBo::showIdentity($eligibleB)) return -1;
-    return 0;
+function orderByIdentity($eligibleA, $eligibleB) {
+    $compare = strcasecmp(GaletteBo::showIdentity($eligibleA), GaletteBo::showIdentity($eligibleB));
+
+    return $compare;
 }
-
-$candidates = $statusEligibles["candidate"];
-uasort($candidates, "orderByIdentity");
-
-$votings = $statusEligibles["candidate"];
-uasort($votings, "orderByIdentity");
-
-$antis = $statusEligibles["candidate"];
-uasort($antis, "orderByIdentity");
 
 ?>
 
@@ -61,6 +52,16 @@ uasort($antis, "orderByIdentity");
     				break;
 		    }
 	    }
+
+        $candidates = $statusEligibles["candidate"];
+        usort($candidates, "orderByIdentity");
+
+        $votings = $statusEligibles["voting"];
+        usort($votings, "orderByIdentity");
+
+        $antis = $statusEligibles["anti"];
+        usort($antis, "orderByIdentity");
+
 ?>
 
 <?php 
@@ -325,7 +326,7 @@ if (!$hasConditionDelegations) {
                     <select name="person-select" class="form-control">
                         <option value=""></option>
                         <optgroup label="<?php echo lang("conditional_delegation_delegate_candidate"); ?>">
-                            <?php   foreach($statusEligibles["candidate"] as $eligible) { ?>
+                            <?php   foreach($candidates as $eligible) { ?>
                                 <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>

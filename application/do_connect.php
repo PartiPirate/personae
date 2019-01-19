@@ -47,7 +47,11 @@ session_write_close();
 
 $referer = $_SERVER["HTTP_REFERER"];
 
-if ($referer) {
+echo $referer;
+
+exit();
+
+if ($referer && $referer != "connect.php") {
 	header("Location: $referer");
 }
 else {

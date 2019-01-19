@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -25,6 +25,7 @@ $lang["common_validate"] = "Validate";
 $lang["common_delete"] = "Delete";
 $lang["common_fork"] = "Fork";
 $lang["common_reject"] = "Reject";
+$lang["common_connect"] = "Connect";
 $lang["common_ask_for_modification"] = "Ask modification";
 
 $lang["language_fr"] = "French";
@@ -35,6 +36,8 @@ $lang["personae_title"] = "Personae";
 
 $lang["menu_language"] = "Language : {language}";
 $lang["menu_index"] = "Home";
+$lang["menu_groups"] = "Groups";
+$lang["menu_my_groups"] = "My groups";
 $lang["menu_myprofile"] = "My profile";
 $lang["menu_myrights"] = "My rights";
 $lang["menu_mypreferences"] = "My preferences";
@@ -51,159 +54,47 @@ $lang["register_link"] = "or sign in";
 $lang["forgotten_link"] = "I forgot my password";
 
 $lang["breadcrumb_index"] = "Home";
-$lang["breadcrumb_validation"] = "Validation";
-$lang["breadcrumb_seeTweetValidation"] = "Current validation";
-$lang["breadcrumb_history"] = "History";
-$lang["breadcrumb_timelines"] = "Timelines";
+$lang["breadcrumb_groups"] = "Groups";
+$lang["breadcrumb_my_groups"] = "My groups";
+$lang["breadcrumb_group_administration"] = "Administration";
+$lang["breadcrumb_theme_administration"] = "Administration";
+$lang["breadcrumb_connect"] = "Log in";
 $lang["breadcrumb_mypreferences"] = "My preferences";
-$lang["breadcrumb_myaccounts"] = "My accounts";
-$lang["breadcrumb_myrights"] = "My rights";
-$lang["breadcrumb_mypage"] = "My page";
 $lang["breadcrumb_register"] = "Sign in";
 $lang["breadcrumb_activation"] = "Activation";
 $lang["breadcrumb_forgotten"] = "I forgot my password";
 $lang["breadcrumb_about"] = "About";
 
-$lang["index_guide"] = "Personae is an application letting you share a tweeter account with a group of users.
-The tweets can or must be validated by other users before being published.";
+$lang["index_guide"] = "<p>Personae allows you to liquidally manage the delegation of power through
+various instances and groups of powers.</p>
+<p>So you can define who can collect the powers, who can distribute it, how (liquid, draw, simple
+reporting) and how long.</p>
+<p>Today Personae relies on information from Galette, the member management tool, to retrieve members
+and their distribution.</p>";
 $lang["index_my_groups_button"] = "My groups";
 $lang["index_my_profile_button"] = "My profile";
 $lang["index_groups_button"] = "Groups";
 $lang["index_connect_button"] = "Connect";
-
-// $lang["index_options_validationDurationPlaceholder"] = "yyyy-mm-dd hh:mm";
-// $lang["index_options_validationDurationGuide"] = "Laisser vide si départ juste après validation";
-$lang["anonymous_form_nicknameInput"] = "Nickname";
-$lang["anonymous_form_mailInput"] = "Mail address (following purpose)";
-$lang["anonymous_form_passwordInput"] = "Password";
-$lang["anonymous_form_iamabot"] = "I'm a bot and i don't know how to uncheck a checkbox";
-$lang["anonymous_form_legend"] = "Informations";
-
-$lang["add_tweet_mail_subject"] = "[OTB] Tweet requested validation";
-$lang["add_tweet_mail_content"] = "Hello {login},
-
-You're in a list of validators of the account {account}, and, a tweet is waiting for you on Personae here is the content :
-
-{tweet}
-
-You can directly validate this tweet by clicking on this link below :
-{validationLink}
-
-The @Personae Team";
-$lang["add_tweet_mail_only_a_retweet"] = "Retweet proposition of :";
-
-$lang["ask_for_modification_mail_subject"] = "[OTB] Tweet modification request";
-$lang["ask_for_modification_mail_content"] = "Hello {login},
-
-You're the author of a tweet on the account {account}, and, a validator request you to modify it.
-
-You can modify this tweet by clicking on this link below :
-{validationUrl}
-
-The @Personae Team";
-
-$lang["history_guide"] = "List of tweets that have been validated.";
-$lang["history_button_validators"] = "Validators";
-$lang["history_account_title"] = "Tweets History for <strong><em>{account}</em></strong>";
-$lang["history_cron_datetime_format"] = "Won't be emitted before the {date} at {time}";
-$lang["history_retweet_proposition"] = "This a retweet proposition of :";
-
-$lang["validation_guide"] = "List of tweets waiting for validation.";
-$lang["validation_account_title"] = "Tweets for <strong><em>{account}</em></strong> in validation";
-$lang["validation_anonymous"] = "(anonymous)";
-$lang["validation_tooltip_author_validation"] = "Author validation";
-$lang["validation_tooltip_mine_validation"] = "My validation";
-$lang["validation_tooltip_other_validation"] = "Validation from other users";
-$lang["validation_cron_datetime_format"] = "Won't be emitted before the {date} at {time}";
-$lang["validation_duration_remaining"] = "Remaining time before expiration : {duration}";
-$lang["validation_ask_modification"] = "Modification requested";
-$lang["validation_retweet_proposition"] = "This a retweet proposition of :";
-
-$lang["do_validation_error"] = "Your validation failed (already done, tweet already sent or erased)";
-$lang["do_validation_ok"] = "Your tweet validation has been taken into account";
-
-$lang["timelines_guide"] = "Your different timelines";
-$lang["timelines_account_title"] = "Tweets for <strong><em>{account}</em></strong>";
-$lang["timelines_search_header"] = "Tweet search";
-$lang["timelines_search_label"] = "Tweet";
-$lang["timelines_search_placeholder"] = "tweet id or its url";
-$lang["timelines_waiting_tweets"] = "See \${numberOfTweets} new Tweets";
-$lang["timelines_waiting_tweet"] = "See 1 new Tweet";
-$lang["property_retweet_by"] = "RT by \${tweet_user_name} @\${tweet_user_screen_name}";
+$lang["index_description"] = "Manager of groups and decision-making powers: by result, by draw, by liquid democracy";
 
 $lang["mypreferences_guide"] = "Change my preferences.";
 $lang["mypreferences_form_legend"] = "Configuration of your access";
 $lang["mypreferences_form_passwordInput"] = "Password";
 $lang["mypreferences_form_passwordPlaceholder"] = "the password of your connection";
+$lang["mypreferences_form_oldInput"] = "Your current password";
+$lang["mypreferences_form_oldPlaceholder"] = "Your current connection password";
+$lang["mypreferences_form_confirmationInput"] = "Confirmation";
+$lang["mypreferences_form_confirmationPlaceholder"] = "Confirm your new password";
 $lang["mypreferences_form_languageInput"] = "Language";
 $lang["mypreferences_form_mailInput"] = "Mail address";
-$lang["mypreferences_form_notificationInput"] = "Validation notification";
-$lang["mypreferences_form_notification_none"] = "None";
-$lang["mypreferences_form_notification_mail"] = "By mail";
-$lang["mypreferences_form_notification_simpledm"] = "By simple DM";
-$lang["mypreferences_form_notification_dm"] = "By multiple DM";
 $lang["mypreferences_validation_mail_empty"] = "The mail field can't be empty";
 $lang["mypreferences_validation_mail_not_valid"] = "This mail is not a valid mail";
 $lang["mypreferences_validation_mail_already_taken"] = "This mail is already taken";
+$lang["mypreferences_style_legend"] = "Interface";
+$lang["mypreferences_style_themeSelect"] = "Theme";
+$lang["mypreferences_style_themeDefault"] = "Default theme";
+$lang["mypreferences_style_themeSlate"] = "Slate";
 $lang["mypreferences_save"] = "Save my preferences";
-
-$lang["myaccounts_guide"] = "Set my accounts.";
-$lang["myaccounts_newaccount_form_legend"] = "New account configuration";
-$lang["myaccounts_existingaccount_form_legend"] = "Account configuration for <em>{account}</em>";
-$lang["myaccounts_account_form_nameInput"] = "Account name";
-$lang["myaccounts_account_form_anonymousPermitted"] = "Anonymous tweet proposition permitted";
-$lang["myaccounts_account_form_anonymousPasswordInput"] = "Anonymous password";
-$lang["myaccounts_account_form_validationScoreInput"] = "Tweet score validation";
-$lang["myaccounts_twitter_form_legend"] = "Twitter Configuration";
-$lang["myaccounts_twitter_form_apiKeyInput"] = "API Key";
-$lang["myaccounts_twitter_form_apiSecretInput"] = "API Secret";
-$lang["myaccounts_twitter_form_accessTokenInput"] = "Access Token";
-$lang["myaccounts_twitter_form_accessTokenSecretInput"] = "Access Token Secret";
-$lang["myaccounts_facebook_page_form_legend"] = "Facebook Page Configuration";
-$lang["myaccounts_facebook_page_form_pageIdInput"] = "Page id";
-$lang["myaccounts_facebook_page_form_fpAccessTokenInput"] = "Page Access Token";
-$lang["myaccounts_facebook_page_form_applicationIdInput"] = "Application Id";
-$lang["myaccounts_facebook_page_form_applicationSecretKeyInput"] = "Application Secret Key";
-$lang["myaccounts_facebook_page_form_shortLiveUserAccessTokenInput"] = "Short live User Access Token";
-$lang["myaccounts_facebook_page_form_createFacebookPageAccessTokenButton"] = "Create a Page Access Token";
-$lang["myaccounts_administrators_form_legend"] = "Administrators management";
-$lang["myaccounts_administrators_form_addUserInput"] = "User";
-$lang["myaccounts_validators_form_legend"] = "Validators management";
-$lang["myaccounts_validators_form_groupNameInput"] = "Group name";
-$lang["myaccounts_validators_form_groupScoreInput"] = "Score";
-$lang["myaccounts_validators_form_addUserInput"] = "Utilisateur";
-$lang["myaccounts_validators_form_deleteGroupInput"] = "Delete group";
-$lang["myaccounts_validators_form_addGroupInput"] = "Add groupe";
-$lang["myaccount_button_testTwitter"] = "Test";
-$lang["myaccount_add"] = "Add this account";
-$lang["myaccount_save"] = "Save the parameters";
-
-$lang["myrights_guide"] = "A rights review.";
-$lang["myrights_scores_legend"] = "My possible validations";
-$lang["myrights_scores_no_score"] = "You have no power of validation";
-$lang["myrights_scores_my_score"] = "Your validation power";
-$lang["myrights_scores_validation_score"] = "The needed validation points";
-$lang["myrights_administration_legend"] = "My administrated accounts";
-$lang["myrights_scores_no_adminstation"] = "You have no power of administration";
-
-$lang["mypage_guide"] = "This a page compiling your statistics";
-$lang["mypage_tweets_legend"] = "My tweets";
-$lang["mypage_validations_legend"] = "My validations";
-$lang["mypage_scores_legend"] = "My scores";
-$lang["mypage_tweet_and_validations_chart_legend"] = "My tweets and validations in time";
-$lang["mypage_tweet_and_validations_chart_axisY"] = "Quantity";
-$lang["mypage_score_chart_axisY"] = "Score";
-$lang["mypage_tweet_and_validations_chart_axisX"] = "Date";
-$lang["mypage_tweet_and_validations_chart_formatDate"] = "MM/DD/YYYY";
-$lang["mypage_tweet_and_validations_chart_jsFormatDate"] = "(date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1) + '/' + (date.getDate() < 10 ? '0' : '') + date.getDate() + '/' + date.getFullYear()";
-
-$lang["property_tweet"] = "Tweet";
-$lang["property_author"] = "Author";
-$lang["property_date"] = "Date";
-$lang["property_validators"] = "Validators";
-$lang["property_validation"] = "Validation";
-$lang["property_actions"] = "Actions";
-$lang["property_supports"] = "Supports";
 
 $lang["register_guide"] = "Welcome to the register page of Personae";
 $lang["register_form_legend"] = "Configuration of your access";
@@ -238,6 +129,13 @@ $lang["register_validation_mail_not_valid"] = "This mail is not a valid mail";
 $lang["register_validation_mail_already_taken"] = "This mail is already taken";
 $lang["register_validation_password_empty"] = "The password field can't be empty";
 
+$lang["connect_guide"] = "Welcome on the Personae connection screen";
+$lang["connect_form_legend"] = "Connection";
+$lang["connect_form_loginInput"] = "Login";
+$lang["connect_form_loginHelp"] = "Your login or email";
+$lang["connect_form_passwordInput"] = "Password";
+$lang["connect_form_passwordHelp"] = "Your password";
+
 $lang["activation_guide"] = "Welcome on the activation screen of your user account";
 $lang["activation_title"] = "Activation status";
 $lang["activation_information_success"] = "The activation of your user account succeeded. You can now <a id=\"connectButton\" href=\"#\">sign-in</a> yourself.";
@@ -257,15 +155,16 @@ Please change it as soon as you are connected.
 
 The @Personae Team";
 
-$lang["okTweet"] = "Your tweet is gone in validation";
-$lang["koTweet"] = "Problem in the handling of your tweet";
-$lang["okDeleteTweet"] = "Your tweet has been deleted";
-$lang["okAskForModificationTweet"] = "A modification has been asked for this tweet";
-$lang["okValidateTweet"] = "Your tweet validation has been taken into account";
-$lang["okRejectTweet"] = "Your tweet rejection has been taken into account";
-$lang["okFinalValidateTweet"] = "Your tweet validation has been taken into account, and the tweet has been completly validated";
+$lang["success_theme_candidate"] = "Votre candidature a été mise à jour";
+$lang["success_theme_voting"] = "Votre délégation de pouvoir a été mise à jour";
+$lang["success_theme_theme"] = "Le thème a été mis à jour";
+$lang["success_group_group"] = "Le groupe a été mis à jour";
 $lang["error_cant_change_password"] = "The password change failed";
 $lang["ok_operation_success"] = "Succeeded operation";
+
+$lang["error_voting_cycling"] = "This delegation is not possible because you already receive his delegation";
+$lang["error_max_delegations"] = "This delegation is not possible because the person already receiving enough delegations";
+
 $lang["error_passwords_not_equal"] = "Your password and its confirmation are different";
 $lang["error_cant_send_mail"] = "Personae can not send mail to your mail address";
 $lang["error_cant_register"] = "Personae can not process your registration";
@@ -275,11 +174,6 @@ $lang["error_database_already_exists"] = "The database already exists";
 $lang["error_database_dont_exist"] = "The database does not exist";
 $lang["error_login_ban"] = "Your IP has been blocked for 10mn.";
 $lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
-$lang["ok_twitter_success"] = "The Twitter configuration works";
-$lang["error_twitter_cant_authenticate"] = "The Twitter configuration doesn't work, verify the differents connection parameters";
-$lang["error_media_typeError"] = "The uploaded file must be an image";
-$lang["error_media_sizeError"] = "The uploaded file is too large (maximum size : <span id='maxSize'></span>)";
-$lang["error_media_defaultError"] = "An error occurred in the processing of a file upload, please try again later";
 
 $lang["install_guide"] = "Welcome on the installation page of Personae.";
 $lang["install_tabs_database"] = "Database";
@@ -333,6 +227,12 @@ $lang["install_application_operation"] = "Operations";
 $lang["install_application_saveButton"] = "Save configuration";
 $lang["install_autodestruct_guide"] = "You have tested everything, everything configured ? Then clicking <em>autodestruction</em> to remove this installer.";
 $lang["install_autodestruct"] = "Autodestruction";
+
+$lang["skill_level_concepts"] = "Notions";
+$lang["skill_level_average"] = "Average";
+$lang["skill_level_good"] = "Good";
+$lang["skill_level_advanced"] = "Advanced";
+$lang["skill_level_expert"] = "Expert";
 
 $lang["about_footer"] = "About";
 $lang["personae_footer"] = "<a href=\"https://www.personae.net/\" target=\"_blank\">Personae</a> is an application provided by <a href=\"https://www.partipirate.org\" target=\"_blank\">Parti Pirate</a>";

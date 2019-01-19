@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -59,15 +59,7 @@ $lang["breadcrumb_my_groups"] = "Mes groupes";
 $lang["breadcrumb_group_administration"] = "Administration";
 $lang["breadcrumb_theme_administration"] = "Administration";
 $lang["breadcrumb_connect"] = "Se connecter";
-
-$lang["breadcrumb_validation"] = "Validation";
-$lang["breadcrumb_seeTweetValidation"] = "Validation en cours";
-$lang["breadcrumb_history"] = "Historique";
-$lang["breadcrumb_timelines"] = "Timelines";
 $lang["breadcrumb_mypreferences"] = "Mes préférences";
-$lang["breadcrumb_myaccounts"] = "Mes comptes";
-$lang["breadcrumb_myrights"] = "Mes droits";
-$lang["breadcrumb_mypage"] = "Ma page";
 $lang["breadcrumb_register"] = "Enregistrement";
 $lang["breadcrumb_activation"] = "Activation";
 $lang["breadcrumb_forgotten"] = "J'ai oublié mon mot de passe";
@@ -94,11 +86,6 @@ $lang["mypreferences_form_oldPlaceholder"] = "votre mot de passe de connexion ac
 $lang["mypreferences_form_confirmationInput"] = "Confirmation";
 $lang["mypreferences_form_confirmationPlaceholder"] = "confirmation de votre nouveau mot de passe";
 $lang["mypreferences_form_languageInput"] = "Langage";
-$lang["mypreferences_form_notificationInput"] = "Notification pour validation";
-$lang["mypreferences_form_notification_none"] = "Aucune";
-$lang["mypreferences_form_notification_mail"] = "Par mail";
-$lang["mypreferences_form_notification_simpledm"] = "Par simple DM";
-$lang["mypreferences_form_notification_dm"] = "DM multiple";
 $lang["mypreferences_validation_mail_empty"] = "Le champ mail ne peut être vide";
 $lang["mypreferences_validation_mail_not_valid"] = "Cette adresse mail n'est pas une adresse valide";
 $lang["mypreferences_validation_mail_already_taken"] = "Cette adresse mail est déjà prise";
@@ -108,14 +95,6 @@ $lang["mypreferences_style_legend"] = "Interface";
 $lang["mypreferences_style_themeSelect"] = "Thème";
 $lang["mypreferences_style_themeDefault"] = "Thème par défaut";
 $lang["mypreferences_style_themeSlate"] = "Slate";
-
-$lang["myrights_guide"] = "Une revue de vos droits.";
-$lang["myrights_scores_legend"] = "Mes validations possibles";
-$lang["myrights_scores_no_score"] = "Vous n'avez aucun pouvoir de validation";
-$lang["myrights_scores_my_score"] = "Votre pouvoir de validation";
-$lang["myrights_scores_validation_score"] = "Les points requis pour valider";
-$lang["myrights_administration_legend"] = "Mes comptes administrés";
-$lang["myrights_scores_no_adminstation"] = "Vous n'avez aucun droit d'administration";
 
 $lang["register_guide"] = "Bienvenue sur la page d'enregistrement d'Personae";
 $lang["register_form_legend"] = "Configuration de votre accès";

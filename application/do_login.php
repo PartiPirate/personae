@@ -62,9 +62,21 @@ else {
 	header("Location: index.php");
 }
 */
+/*
+echo $_POST["referer"];
+echo "<br>";
+echo substr($_POST["referer"], -strlen("connect.php"));
+echo "<br>";
+exit();
+*/
 
 if (isset($data["ok"]) && $_POST["referer"]) {
-	header('Location: ' . $_POST["referer"]);
+	if (substr($_POST["referer"], -strlen("connect.php")) != "connect.php" && substr($_POST["referer"], -strlen("activate.php")) != "activate.php") {
+		header('Location: ' . $_POST["referer"]);
+	}
+	else {
+		header('Location: index.php');
+	}
 }
 else if (!isset($data["ok"]) && $_POST["referer"]) {
 	header('Location: connect.php?error=' . $data["message"] . "&referer=" . urlencode($_POST["referer"]));
