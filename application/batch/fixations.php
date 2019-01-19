@@ -177,7 +177,7 @@ foreach($themes as $theme) {
 			$fixationMember["fme_member_id"] = $memberId;
 			$fixationMember["fme_power"] = $member["power"];
 
-			echo $member["pseudo_adh"] . " gains power with " . $member["power"] . "\n";
+			echo ($member["pseudo_adh"] ? $member["pseudo_adh"] : ($member["nom_adh"] . " " . $member["prenom_adh"])) . " gains power with " . $member["power"] . "\n";
 			//print_r($fixationMember);
 
 			$fixationBo->addFixationMember($fixationMember);
