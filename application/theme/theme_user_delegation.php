@@ -24,7 +24,7 @@
 
 <div class="panel panel-default voting">
 	<div class="panel-heading">
-		Délégation par démocratie liquide&nbsp;
+		<?php echo lang("theme_demliq_label"); ?>&nbsp;
 	</div>
 	<div class="panel-body tabs-bottom">
 
@@ -41,10 +41,10 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist" style="margin: 0 -16px -15px -16px;">
         	<li role="presentation" class="active">
-        		<a href="#delegation-standard" aria-controls="delegation-standard" role="tab" data-toggle="tab">Délégations standards<?php //echo lang("construction_arguments"); ?></a>
+        		<a href="#delegation-standard" aria-controls="delegation-standard" role="tab" data-toggle="tab"><?php echo lang("theme_demliq_delegation_standard"); ?></a>
         	</li>
         	<li role="presentation">
-        		<a href="#delegation-advanced" aria-controls="delegation-advanced" role="tab" data-toggle="tab">Délégations avancées<?php //echo lang("construction_sources"); ?></a>
+        		<a href="#delegation-advanced" aria-controls="delegation-advanced" role="tab" data-toggle="tab"><?php echo lang("theme_demliq_delegation_advanced"); ?></a>
         	</li>
         </ul>
         
