@@ -16,6 +16,22 @@
     You should have received a copy of the GNU General Public License
     along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+function orderByIdentity($eliglibleA, $eliglibleB) {
+    if (strtolower(GaletteBo::showIdentity($eligibleA) > strtolower(GaletteBo::showIdentity($eligibleB)) return 1;
+    if (strtolower(GaletteBo::showIdentity($eligibleA) < strtolower(GaletteBo::showIdentity($eligibleB)) return -1;
+    return 0;
+}
+
+$candidates = $statusEligibles["candidate"];
+uasort($candidates, "orderByIdentity");
+
+$votings = $statusEligibles["candidate"];
+uasort($votings, "orderByIdentity");
+
+$antis = $statusEligibles["candidate"];
+uasort($antis, "orderByIdentity");
+
 ?>
 
 <!-- DELEGATION ADVANCED part -->
@@ -219,18 +235,18 @@ if (!$hasConditionDelegations) {
                 <div class="col-md-4">
                     <select name="person-select" class="form-control">
                         <option value=""></option>
-                        <optgroup label="Volontaire pour recevoir des délégations">
-                            <?php   foreach($statusEligibles["candidate"] as $eligible) { ?>
+                        <optgroup label="<?php echo lang("conditional_delegation_delegate_candidate"); ?>">
+                            <?php   foreach($candidates as $eligible) { ?>
                                 <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
-                        <optgroup label="Peut recevoir des délégations">
-                            <?php   foreach($statusEligibles["voting"] as $eligible) { ?>
+                        <optgroup label="<?php echo lang("conditional_delegation_delegate_eligible"); ?>">
+                            <?php   foreach($votings as $eligible) { ?>
                                 <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
-                        <optgroup label="Ne veut pas de délégation">
-                            <?php   foreach($statusEligibles["anti"] as $eligible) { ?>
+                        <optgroup label="<?php echo lang("conditional_delegation_delegate_dont"); ?>">
+                            <?php   foreach($antis as $eligible) { ?>
                                 <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
@@ -308,18 +324,18 @@ if (!$hasConditionDelegations) {
                 <div class="col-md-4">
                     <select name="person-select" class="form-control">
                         <option value=""></option>
-                        <optgroup label="Volontaire pour recevoir des délégations">
+                        <optgroup label="<?php echo lang("conditional_delegation_delegate_candidate"); ?>">
                             <?php   foreach($statusEligibles["candidate"] as $eligible) { ?>
                                 <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
-                        <optgroup label="Peut recevoir des délégations">
-                            <?php   foreach($statusEligibles["voting"] as $eligible) { ?>
+                        <optgroup label="<?php echo lang("conditional_delegation_delegate_eligible"); ?>">
+                            <?php   foreach($votings as $eligible) { ?>
                                 <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
-                        <optgroup label="Ne veut pas de délégation">
-                            <?php   foreach($statusEligibles["anti"] as $eligible) { ?>
+                        <optgroup label="<?php echo lang("conditional_delegation_delegate_dont"); ?>">
+                            <?php   foreach($antis as $eligible) { ?>
                                 <option value="<?php echo $eligible["id_adh"]; ?>" <?php if(@$delegation["del_member_to"] == $eligible["id_adh"]) echo 'selected="selected"'; ?>><?php echo GaletteBo::showIdentity($eligible); ?></option>
                             <?php   } ?>
                         </optgroup>
