@@ -46,7 +46,7 @@
 	
 <div class="row">
 	<div class="col-md-12">
-		<a href="#" id="free-theme-enter-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $theme["the_id"]; ?>">Entrer librement</a>
+		<a href="#" id="free-theme-enter-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $theme["the_id"]; ?>"><?php echo lang("theme_free_entry"); ?></a>
 	</div>
 </div>
 <br>
@@ -56,7 +56,7 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<a href="#" id="free-theme-exit-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $theme["the_id"]; ?>">Sortir librement</a>
+		<a href="#" id="free-theme-exit-btn" class="btn btn-default btn-lg btn-full-width" data-theme-id="<?php echo $theme["the_id"]; ?>"><?php echo lang("theme_free_exit"); ?></a>
 	</div>
 </div>
 <br>
@@ -67,7 +67,7 @@
 <?php if (($isElegible && (true || $theme["the_delegate_only"] != "1") && !$theme["the_delegation_closed"])) {?>
 <div class="panel panel-default eligible">
 	<div class="panel-heading">
-		Moi, délégué·e…&nbsp;
+		<?php echo lang("theme_delegation_label"); ?>&nbsp;
 	</div>
 	<div class="panel-body">
 		<form id="candidateForm" action="do_candidate.php" method="post">
@@ -75,11 +75,11 @@
 		<input type="hidden" name="can_member_id" id="can_member_id" value="<?php echo $candidate["can_member_id"]; ?>" />
 		<input type="checkbox" value="candidate"
 			<?php echo $candidate["can_status"] == "candidate" ? 'checked="checked"' :  '';?>
-			id="can_status_candidate" name="can_status" /> J'accepte les délégations
+			id="can_status_candidate" name="can_status" /> <?php echo lang("theme_delegation_candidate"); ?>
 
 		<input type="checkbox" value="anti"
 			<?php echo $candidate["can_status"] == "anti" ? 'checked="checked"' :  '';?>
-			id="can_status_anti" name="can_status" /> Je refuse les délégations
+			id="can_status_anti" name="can_status" /> <?php echo lang("theme_delegation_anti"); ?>
 
 		<br/>
 		<!--
@@ -98,7 +98,7 @@
 <?php if ($isVoting && $theme["the_voting_method"] == "sort") {?>
 <div class="panel panel-default voting">
 	<div class="panel-heading">
-		Délégation par tirage au sort&nbsp;
+		<?php echo lang("theme_random_label"); ?>&nbsp;
 	</div>
 </div>
 <?php }?>

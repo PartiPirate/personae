@@ -24,13 +24,13 @@
 
 <div class="panel panel-default currentFixation">
 	<div class="panel-heading">
-		Mandats en cours&nbsp;
+		<?php echo lang("theme_mandates_label"); ?>&nbsp;
 	</div>
 	<table class="table no-pagination">
 		<thead>
 			<tr>
-				<th>Nom</th>
-				<th>Pouvoir</th>
+				<th><?php echo lang("theme_mandates_name"); ?></th>
+				<th><?php echo lang("theme_mandates_power"); ?></th>
 				<!--
 				<th>Actions</th>
 				 -->

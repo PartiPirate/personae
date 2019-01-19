@@ -17,8 +17,21 @@
     along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+$lang["theme_mandates_label"] = "Current mandates";
+$lang["theme_mandates_name"] = "Name";
+$lang["theme_mandates_power"] = "Power";
+
 $lang["theme_demliq_label"] = "Liquid democracy delegations";
 $lang["theme_demliq_delegation_standard"] = "Standards delegations";
 $lang["theme_demliq_delegation_advanced"] = "Advanced delegations";
+
+$lang["theme_random_label"] = "Random delegation";
+
+$lang["theme_delegation_label"] = "Me, delegate…";
+$lang["theme_delegation_candidate"] = "I accept delegations";
+$lang["theme_delegation_anti"] = "I refuse delegations";
+
+$lang["theme_free_entry"] = "Enter free";
+$lang["theme_free_exit"] = "Exit free";
 
 ?>
