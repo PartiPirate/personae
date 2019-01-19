@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -100,16 +100,16 @@ if (!$hasConditionDelegations) {
 
 <div class="panel panel-default conditional-delegation">
 	<div class="panel-heading">
-        <button type="button" class="btn btn-danger remove-conditional-delegation-btn pull-right" title="Retirer une règle de délégation"><i class="fa fa-minus" aria-hidden="true"></i></button>
-		<input class="conditional-delegation-label-input form-control" placeholder="Libellé de la règle de délégation" style="width: calc(100% - 42px); display: inline-block;">
+        <button type="button" class="btn btn-danger remove-conditional-delegation-btn pull-right" title="<?php echo lang("conditional_remove_conditional") ;?>"><i class="fa fa-minus" aria-hidden="true"></i></button>
+		<input class="conditional-delegation-label-input form-control" placeholder="<?php echo lang("conditional_conditional_label") ;?>" style="width: calc(100% - 42px); display: inline-block;">
 	</div>
 	<div class="panel-body">
 
         <div class="form-group form-headers">
             <label class="col-md-2 control-label" ></label>
-            <label class="col-md-3 control-label" >Champ</label>
-            <label class="col-md-3 control-label" >Operateur</label>
-            <label class="col-md-2 control-label" >Valeur</label>
+            <label class="col-md-3 control-label" ><?php echo lang("conditional_condition_headers_field"); ?></label>
+            <label class="col-md-3 control-label" ><?php echo lang("conditional_condition_headers_operator"); ?></label>
+            <label class="col-md-2 control-label" ><?php echo lang("conditional_condition_headers_value"); ?></label>
             <label class="col-md-2 control-label" ></label>
         </div>
         <div class="clearfix"></div>
@@ -128,40 +128,40 @@ if (!$hasConditionDelegations) {
             <div class="form-group condition clearfix">
                 <div class="col-md-2">
                     <select name="condition-interaction-select" class="form-control">
-                        <option value="if"      <?php if (@$condition["interaction"] == "if")     echo 'selected="selected"' ?>>Si</option>
-                        <option value="and"     <?php if (@$condition["interaction"] == "and")    echo 'selected="selected"' ?>>Et</option>
-                        <option value="or"      <?php if (@$condition["interaction"] == "or")     echo 'selected="selected"' ?>>Ou</option>
-                        <option value="andif"   <?php if (@$condition["interaction"] == "andif")  echo 'selected="selected"' ?>>Et si</option>
-                        <option value="orif"    <?php if (@$condition["interaction"] == "orif")   echo 'selected="selected"' ?>>Ou si</option>
+                        <option value="if"      <?php if (@$condition["interaction"] == "if")     echo 'selected="selected"' ?>><?php echo lang("conditional_condition_operator_if"); ?></option>
+                        <option value="and"     <?php if (@$condition["interaction"] == "and")    echo 'selected="selected"' ?>><?php echo lang("conditional_condition_operator_and"); ?></option>
+                        <option value="or"      <?php if (@$condition["interaction"] == "or")     echo 'selected="selected"' ?>><?php echo lang("conditional_condition_operator_or"); ?></option>
+                        <option value="andif"   <?php if (@$condition["interaction"] == "andif")  echo 'selected="selected"' ?>><?php echo lang("conditional_condition_operator_andif"); ?></option>
+                        <option value="orif"    <?php if (@$condition["interaction"] == "orif")   echo 'selected="selected"' ?>><?php echo lang("conditional_condition_operator_orif"); ?></option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <select name="field-select" class="form-control">
                         <option value=""></option>
-                        <optgroup label="Motion">
-                            <option value="motion_title"       <?php if (@$condition["field"] == "motion_title")       echo 'selected="selected"' ?> data-type="string">Le titre de la motion</option>
-                            <option value="motion_description" <?php if (@$condition["field"] == "motion_description") echo 'selected="selected"' ?> data-type="string">La description de la motion</option>
-                            <option value="motion_tags"        <?php if (@$condition["field"] == "motion_tags")        echo 'selected="selected"' ?> data-type="string">L'un des tags de la motion</option>
-                            <option value="motion_date"        <?php if (@$condition["field"] == "motion_date")        echo 'selected="selected"' ?> data-type="date">La date finale de la motion</option>
+                        <optgroup label="<?php echo lang("conditional_condition_field_motion"); ?>">
+                            <option value="motion_title"       <?php if (@$condition["field"] == "motion_title")       echo 'selected="selected"' ?> data-type="string"><?php echo lang("conditional_condition_field_motion_title"); ?></option>
+                            <option value="motion_description" <?php if (@$condition["field"] == "motion_description") echo 'selected="selected"' ?> data-type="string"><?php echo lang("conditional_condition_field_motion_description"); ?></option>
+                            <option value="motion_tags"        <?php if (@$condition["field"] == "motion_tags")        echo 'selected="selected"' ?> data-type="string"><?php echo lang("conditional_condition_field_motion_tags"); ?></option>
+                            <option value="motion_date"        <?php if (@$condition["field"] == "motion_date")        echo 'selected="selected"' ?> data-type="date"><?php echo lang("conditional_condition_field_motion_date"); ?></option>
                         </optgroup>
-                        <optgroup label="Votants">
-                            <option value="voter_me"           <?php if (@$condition["field"] == "voter_me")           echo 'selected="selected"' ?> data-type="me">Moi en tant que votant</option>
+                        <optgroup label="<?php echo lang("conditional_condition_field_motion_voters"); ?>">
+                            <option value="voter_me"           <?php if (@$condition["field"] == "voter_me")           echo 'selected="selected"' ?> data-type="me"><?php echo lang("conditional_condition_field_motion_me"); ?></option>
                         </optgroup>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <select name="operator-select" class="form-control">
                         <option value="" data-need-value="false"></option>
-                        <optgroup label="Chaîne" data-type="string">
-                            <option value="contains"        <?php if (@$condition["operator"] == "contains")        echo 'selected="selected"' ?> data-need-value="true">contient</option>
-                            <option value="do_not_contain"  <?php if (@$condition["operator"] == "do_not_contain")  echo 'selected="selected"' ?> data-need-value="true">ne contient pas</option>
+                        <optgroup label="<?php echo lang("conditional_condition_operator_string"); ?>" data-type="string">
+                            <option value="contains"        <?php if (@$condition["operator"] == "contains")        echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_string_contains"); ?></option>
+                            <option value="do_not_contain"  <?php if (@$condition["operator"] == "do_not_contain")  echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_string_does_not_contain"); ?></option>
                         </optgroup>
-                        <optgroup label="Moi" data-type="me">
-                            <option value="do_vote"         <?php if (@$condition["operator"] == "do_vote")         echo 'selected="selected"' ?> data-need-value="false">, j'ai voté</option>
+                        <optgroup label="<?php echo lang("conditional_condition_operator_me"); ?>" data-type="me">
+                            <option value="do_vote"         <?php if (@$condition["operator"] == "do_vote")         echo 'selected="selected"' ?> data-need-value="false"><?php echo lang("conditional_condition_operator_me_voted"); ?></option>
                         </optgroup>
-                        <optgroup label="Moi" data-type="date">
-                            <option value="is_before"       <?php if (@$condition["operator"] == "is_before")       echo 'selected="selected"' ?> data-need-value="true">se déroule avant le</option>
-                            <option value="is_after"        <?php if (@$condition["operator"] == "is_after")        echo 'selected="selected"' ?> data-need-value="true">se déroule après le</option>
+                        <optgroup label="<?php echo lang("conditional_condition_operator_date"); ?>" data-type="date">
+                            <option value="is_before"       <?php if (@$condition["operator"] == "is_before")       echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_date_before"); ?></option>
+                            <option value="is_after"        <?php if (@$condition["operator"] == "is_after")        echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_date_after"); ?></option>
                         </optgroup>
                     </select>
                 </div>
@@ -170,8 +170,8 @@ if (!$hasConditionDelegations) {
                     <input name="value-date-input"  type="date" placeholder="" value="<?php echo @$condition["value"]; ?>" class="form-control input-md" style="height: 38px;">
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-primary add-condition-btn" title="Ajouter une condition"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-danger remove-condition-btn" title="Retirer une condition"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-primary add-condition-btn"   title="<?php echo lang("conditional_add_condition");    ?>"><i class="fa fa-plus"  aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-danger remove-condition-btn" title="<?php echo lang("conditional_remove_condition"); ?>"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 </div>
             </div>
 
@@ -186,8 +186,8 @@ if (!$hasConditionDelegations) {
 
         <div class="form-group form-headers">
             <label class="col-md-2 control-label" ></label>
-            <label class="col-md-4 control-label" >Délégataire</label>
-            <label class="col-md-4 control-label" >Pouvoir</label>
+            <label class="col-md-4 control-label" ><?php echo lang("conditional_delegation_delegate"); ?></label>
+            <label class="col-md-4 control-label" ><?php echo lang("conditional_delegation_power");    ?></label>
             <label class="col-md-2 control-label" ></label>
         </div>
         <div class="clearfix"></div>
@@ -214,7 +214,7 @@ if (!$hasConditionDelegations) {
 
             <div class="form-group delegation clearfix">
                 <div class="col-md-2" style="padding-top:  10px; text-align: right; ">
-                    Je donne à
+                    <?php echo lang("conditional_delegation_give_to"); ?>
                 </div>
                 <div class="col-md-4">
                     <select name="person-select" class="form-control">
@@ -240,8 +240,8 @@ if (!$hasConditionDelegations) {
                     <input name="value-input" type="number" min="0" max="<?php echo $theme["the_voting_power"]; ?>" value="<?php echo (@$delegation["del_member_to"] != @$delegation["del_member_from"] ? @$delegation["del_power"] : ""); ?>" placeholder="" class="form-control input-md">
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-primary add-delegation-btn" title="Ajouter une délégation"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-danger remove-delegation-btn" title="Retirer une délégation"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-primary add-delegation-btn"   title="<?php echo lang("conditional_add_delegation");    ?>"><i class="fa fa-plus"  aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-danger remove-delegation-btn" title="<?php echo lang("conditional_remove_delegation"); ?>"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 </div>
             </div>
 
@@ -255,7 +255,7 @@ if (!$hasConditionDelegations) {
                     <input type="checkbox" name="end-of-delegation" <?php if(@$conditionalDelegation["dco_end_of_delegation"]) echo 'checked="checked"'; ?> value="1">
                 </label>
             </div>
-            <label class="col-md-10 control-label" style="padding-top:  10px; ">Et c'est la fin des délégations (les délégations suivantes, conditionnelles et par défaut, ne seront pas prises en compte)</label>
+            <label class="col-md-10 control-label" style="padding-top:  10px; "><?php echo lang("conditional_end_of_delegations"); ?></label>
         </div>
 
     </div>
@@ -269,21 +269,21 @@ if (!$hasConditionDelegations) {
 
 </div>
 
-<button id="add-conditional-delegation-btn" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter des délégations conditionnelles</button>
+<button id="add-conditional-delegation-btn" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> <?php echo lang("conditional_add_conditional"); ?></button>
 
 <br>
 <br>
 
 <div class="panel panel-default" id="default-delegation">
 	<div class="panel-heading">
-		Délégations par défaut&nbsp;
+        <?php echo lang("conditional_default_delegations"); ?>
 	</div>
 	<div class="panel-body">
 
         <div class="form-group form-headers">
             <label class="col-md-2 control-label" ></label>
-            <label class="col-md-4 control-label" >Délégataire</label>
-            <label class="col-md-4 control-label" >Pouvoir</label>
+            <label class="col-md-4 control-label" ><?php echo lang("conditional_delegation_delegate"); ?></label>
+            <label class="col-md-4 control-label" ><?php echo lang("conditional_delegation_power");    ?></label>
             <label class="col-md-2 control-label" ></label>
         </div>
         <div class="clearfix"></div>
@@ -303,7 +303,7 @@ if (!$hasConditionDelegations) {
 
             <div class="form-group delegation clearfix">
                 <div class="col-md-2" style="padding-top:  10px; text-align: right; ">
-                    Je donne à
+                    <?php echo lang("conditional_delegation_give_to"); ?>
                 </div>
                 <div class="col-md-4">
                     <select name="person-select" class="form-control">
@@ -329,8 +329,8 @@ if (!$hasConditionDelegations) {
                     <input name="value-input" type="number" min="0" max="<?php echo $theme["the_voting_power"]; ?>" value="<?php echo @$delegation["del_power"]; ?>" placeholder="" class="form-control input-md">
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-primary add-delegation-btn" title="Ajouter une délégation"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-danger remove-delegation-btn" title="Retirer une délégation"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-primary add-delegation-btn"   title="<?php echo lang("conditional_add_delegation");    ?>"><i class="fa fa-plus"  aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-danger remove-delegation-btn" title="<?php echo lang("conditional_remove_delegation"); ?>"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 </div>
             </div>
 
@@ -341,6 +341,6 @@ if (!$hasConditionDelegations) {
     </div>
 </div>
 
-<button type="button" id="save-delegations-btn" class="btn btn-success" title="Sauver les délégation" <?php	if ($theme["the_delegation_closed"]) { echo "disabled=disabled"; } ?> ><i class="fa fa-save" aria-hidden="true"></i> Sauver les délégation</button>
+<button type="button" id="save-delegations-btn" class="btn btn-success" title="<?php echo lang("conditional_save_delegations"); ?>" <?php	if ($theme["the_delegation_closed"]) { echo "disabled=disabled"; } ?> ><i class="fa fa-save" aria-hidden="true"></i> <?php echo lang("conditional_save_delegations"); ?></button>
 
 <br><br>

@@ -1,7 +1,7 @@
 <?php
 
 /*
- Copyright 2018 Cédric Levieux, Parti Pirate
+ Copyright 2018-2019 Cédric Levieux, Parti Pirate
 
 This file is part of Personae.
 
