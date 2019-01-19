@@ -27,6 +27,7 @@ include_once("engine/conditional/IsBeforeOperator.php");
 include_once("engine/conditional/MotionDateCondition.php");
 include_once("engine/conditional/MotionDescriptionCondition.php");
 include_once("engine/conditional/MotionTitleCondition.php");
+include_once("engine/conditional/MotionTagsCondition.php");
 include_once("engine/conditional/VoterMeCondition.php");
 include_once("engine/conditional/ConditionalFactory.php");
 

@@ -26,11 +26,11 @@ class MotionTagsCondition implements ICondition
     */
     public function evaluateCondition($condition, $context) {
         $motion = $context["motion"];
-        $tags = isset($motion["mot_tags"]) : $motion["mot_tags"] : array();
+        $tags = isset($motion["mot_tags"]) ? $motion["mot_tags"] : array();
 
         $operator = ConditionalFactory::getOperatorInstance($condition);
 
-        foreach($tags in $tag) {
+        foreach($tags as $tag) {
             if (($result = $operator->operate($tag["tag_label"], $condition["value"], $context))) {
                 return true;
             }
