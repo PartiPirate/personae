@@ -36,7 +36,7 @@ class MotionTagsCondition implements ICondition
             }
         }
 
-        return $result;
+        return false;
     }
 }
 
