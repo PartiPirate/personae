@@ -19,6 +19,7 @@
 
 $lang["date_format"] = "m/d/Y";
 $lang["time_format"] = "H:iA";
+$lang["fulldate_format"] = "dddd DD/MM/YYYY";
 $lang["datetime_format"] = "the {date} at {time}";
 
 $lang["common_validate"] = "Validate";
@@ -158,6 +159,7 @@ The @Personae Team";
 $lang["success_theme_candidate"] = "Votre candidature a été mise à jour";
 $lang["success_theme_voting"] = "Votre délégation de pouvoir a été mise à jour";
 $lang["success_theme_theme"] = "Le thème a été mis à jour";
+$lang["success_theme_fixation"] = "La fixation a été mise à jour";
 $lang["success_group_group"] = "Le groupe a été mis à jour";
 $lang["error_cant_change_password"] = "The password change failed";
 $lang["ok_operation_success"] = "Succeeded operation";

@@ -47,12 +47,16 @@ function saveTheme() {
 
 function changeDateMethod() {
 	$(".type-date").hide();
-	$("." + $("#the_type_date").val()).show();
+	if ($("#the_type_date").val()) {
+		$("." + $("#the_type_date").val()).show();
+	}
 }
 
 function changeVotingMethod() {
 	$(".method").hide();
-	$("." + $("#the_voting_method").val()).show();
+	if ($("#the_voting_method").val()) {
+		$("." + $("#the_voting_method").val()).show();
+	}
 }
 
 function saveThemeFormHandlers() {
@@ -432,6 +436,27 @@ function showDelegationFromSearchForm(rows) {
 	$("#del_member_to").change();
 }
 
+function fixationHandlers() {
+	$("#endDateButton").click(function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		var form = $("#newFixationForm");
+
+		var formData = {"fix_id": form.find("input[name=fix_id]").val(), "property": "fix_until_date", "value": form.find("input[name=fix_until_date]").val()};
+
+		$.post("do_set_fixation_property.php", formData, function(data) {
+			if (data.ok) {
+				$("#success_theme_fixationAlert").parents(".container").show();
+				$("#success_theme_fixationAlert").show().delay(2000).fadeOut(1000, function() {
+					$(this).parents(".container").hide();
+				});
+			}
+		}, "json");
+
+	});
+}
+
 function newFixationFormHandlers() {
 	$("#newFixationButton").click(function(event) {
 		event.preventDefault();
@@ -550,6 +575,7 @@ $(function() {
 	adminFormHandlers();
 	electedFormHandlers();
 	newFixationFormHandlers();
+	fixationHandlers();
 	deleteThemeFormHandlers();
 	toggleAdmins();
 	toggleElecteds();

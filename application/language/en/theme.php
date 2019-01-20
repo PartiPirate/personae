@@ -34,4 +34,15 @@ $lang["theme_delegation_anti"] = "I refuse delegations";
 $lang["theme_free_entry"] = "Enter free";
 $lang["theme_free_exit"] = "Exit free";
 
+$lang["theme_admin_fixation_label"] = "Fixation management";
+$lang["theme_admin_fixation_new_button"] = "New fixation";
+$lang["theme_admin_fixation_end_date_button"] = "Change end date";
+$lang["theme_admin_fixation_in_office"] = "In office";
+
+$lang["theme_admin_fixation_add_label"] = "User with power :";
+$lang["theme_admin_fixation_add_identity"] = "email or login";
+$lang["theme_admin_fixation_add_power"] = "power";
+$lang["theme_admin_fixation_add_button"] = "Add";
+$lang["theme_admin_fixation_remove_user_button"] = "Remove this user";
+
 ?>

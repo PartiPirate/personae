@@ -333,28 +333,38 @@
 <div class="method external_results">
 	<div class="panel panel-default fixation">
 		<div class="panel-heading">
-			Gestion de la fixation&nbsp;
+			<?php echo lang("theme_admin_fixation_label"); ?>&nbsp;
 		</div>
 		<div class="panel-body">
 
-
 			<form id="newFixationForm" action="do_set_new_fixation_theme.php" method="post">
 				<input type="hidden" name="the_id" value="<?php echo $theme["the_id"]; ?>" />
-				<button id="newFixationButton" class="btn btn-success">Nouvelle fixation <span class="glyphicon glyphicon-refresh"></span></button>
+				<button id="newFixationButton" class="btn btn btn-xs btn-success"><?php echo lang("theme_admin_fixation_new_button"); ?> <span class="glyphicon glyphicon-refresh"></span></button>
+
+				<?php
+						if ($fixation) {
+							$date = new DateTime($fixation["fix_until_date"]);
+							$date = $date->format("Y-m-d");
+				?>
+				<input type="hidden" name="fix_id" value="<?php echo $theme["the_current_fixation_id"]; ?>" />
+				<input style="height: 20px; width: 130px;" class="input-date" type="date" id="fix_until_date" name="fix_until_date" value="<?php echo $date; ?>" />
+				<button id="endDateButton" class="btn btn-xs btn-success"><?php echo lang("theme_admin_fixation_end_date_button"); ?> <i class="fa fa-calendar-check-o" aria-hidden="true"></i></button>
+				<?php
+						}
+				?>
 			</form>
 
-
 			<div id="fixedMembers">
-				<h3>En poste</h3>
+				<h3><?php echo lang("theme_admin_fixation_add_label"); ?></h3>
 
 				<form id="addElectedForm" action="do_set_fixation_member.php" method="post" class="form-horizontal">
 					<input type="hidden" name="action" value="add_member" />
 					<input type="hidden" name="fme_fixation_id" value="<?php echo $theme["the_current_fixation_id"]; ?>" />
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="tad_member_mail">Utilisateur qui a du pouvoir : </label>
+						<label class="col-md-4 control-label" for="tad_member_mail"><?php echo lang("theme_admin_fixation_new_button"); ?></label>
 						<div class="col-md-4">
 							<div class="input-group">
-								<input type="text" id="fme_member_mail" name="fme_member_mail" placeholder="email ou pseudo"
+								<input type="text" id="fme_member_mail" name="fme_member_mail" placeholder="<?php echo lang("theme_admin_fixation_add_identity"); ?>"
 								class="form-control"
 								/><span class="input-group-btn"><button
 									data-success-function="showFixedMemberFromSearchForm"
@@ -367,10 +377,10 @@
 						</div>
 						<div class="col-md-2">
 							<input type="text" class="form-control"
-								name="fme_power" placeholder="pouvoir" style="text-align: right;"/>
+								name="fme_power" placeholder="<?php echo lang("theme_admin_fixation_add_power"); ?>" style="text-align: right;"/>
 						</div>
 						<div class="col-md-2">
-							<button id="addElectedButton" class=" btn btn-primary">Ajouter <span class="glyphicon glyphicon-plus"></span></button>
+							<button id="addElectedButton" class=" btn btn-primary"><?php echo lang("theme_admin_fixation_add_button"); ?> <span class="glyphicon glyphicon-plus"></span></button>
 						</div>
 					</div>
 				</form>
@@ -384,7 +394,7 @@
 						<tr>
 							<td><?php echo GaletteBo::showIdentity($member); ?></td>
 							<td class="text-right"><?php echo $member["fme_power"]?></td>
-							<td>&nbsp;<a href="#" class="removeElectedLink text-danger" data-fixation-id="<?php echo $theme["the_current_fixation_id"]; ?>" data-member-id="<?php echo $memberId; ?>"><span class="glyphicon glyphicon-remove"></span></td>
+							<td>&nbsp;<a href="#" class="removeElectedLink text-danger" data-fixation-id="<?php echo $theme["the_current_fixation_id"]; ?>" data-member-id="<?php echo $memberId; ?>"><span class="glyphicon glyphicon-remove" title="<?php echo lang("theme_admin_fixation_remove_user_button"); ?>"></span></td>
 						</tr>
 						<?php 		}
 								}?>

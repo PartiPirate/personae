@@ -172,6 +172,7 @@ foreach($groups as $groupId => $lgroup) {
 	<?php echo addAlertDialog("success_theme_candidateAlert", lang("success_theme_candidate"), "success"); ?>
 	<?php echo addAlertDialog("success_theme_votingAlert", lang("success_theme_voting"), "success"); ?>
 	<?php echo addAlertDialog("success_theme_themeAlert", lang("success_theme_theme"), "success"); ?>
+	<?php echo addAlertDialog("success_theme_fixationAlert", lang("success_theme_fixation"), "success"); ?>
 
 	<?php echo addAlertDialog("error_voting_cyclingAlert", lang("error_voting_cycling"), "danger"); ?>
 	<?php echo addAlertDialog("error_max_delegationsAlert", lang("error_max_delegations"), "danger"); ?>

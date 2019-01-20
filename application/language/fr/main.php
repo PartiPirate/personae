@@ -158,6 +158,7 @@ L'équipe @Personae";
 $lang["success_theme_candidate"] = "Votre candidature a été mise à jour";
 $lang["success_theme_voting"] = "Votre délégation de pouvoir a été mise à jour";
 $lang["success_theme_theme"] = "Le thème a été mis à jour";
+$lang["success_theme_fixation"] = "La fixation a été mise à jour";
 $lang["success_group_group"] = "Le groupe a été mis à jour";
 $lang["error_cant_change_password"] = "Le changement de mot de passe a échoué";
 $lang["ok_operation_success"] = "Opération réussie";
