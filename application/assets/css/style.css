@@ -1,21 +1,31 @@
 /*
-    Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2014-2019 Cédric Levieux, Parti Pirate
 
-    This file is part of PPMoney.
+	This file is part of Personae.
 
-    PPMoney is free software: you can redistribute it and/or modify
+    Personae is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    PPMoney is distributed in the hope that it will be useful,
+    Personae is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with PPMoney.  If not, see <http://www.gnu.org/licenses/>.
+    along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+@font-face {
+    font-family: 'ubunturegular';
+    src: url('../fonts/ubuntu-r-webfont.woff2') format('woff2'),
+         url('../fonts/ubuntu-r-webfont.woff') format('woff'),
+         url('../fonts/ubuntu-r-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 nav.footer {
 	margin-top: 20px;
 	text-align: center;
@@ -81,8 +91,28 @@ h2, h3 {
 }
 
 body {
-    background-image: url(../images/background_lightgrey.png);
-    background-size: cover;	
+/*
+	background-image: url(../images/background_lightgrey.png);
+    background-size: cover;
+*/    
+}
+
+.watermark {
+    position: absolute;
+    top: 500px;
+    left: -150px;
+    z-index: -10;
+    width: 50%;
+    height: 0;
+    overflow: hidden;
+}
+
+.watermark-inside {
+	background-image: url(../images/logo_pp_voile.svg) !important; 
+    background-repeat: no-repeat;
+    opacity: 0.02;
+    background-size: contain;
+    height: 1000px;
 }
 
 .breadcrumb {
@@ -176,4 +206,8 @@ a.skip-main:focus, a.skip-main:active {
 
 .tabs-bottom {
     padding-bottom: 0;
+}
+
+div, p ul, li, h1, h2, h3, h4, h5, h6, button, label {
+	font-family: ubunturegular, ubuntu !important;
 }

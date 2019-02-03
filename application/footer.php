@@ -18,6 +18,11 @@
 */
 
 ?>
+
+<div class="watermark">
+    <div class="watermark-inside"></div>    
+</div>
+
 <nav id="footer" class="navbar navbar-inverse navbar-bottom" role="navigation">
 
 	<ul class="nav navbar-nav">
