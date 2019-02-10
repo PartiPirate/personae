@@ -96,3 +96,11 @@ body {
 .tabs-bottom {
     padding-bottom: 0;
 }
+
+.row-striped > .row:nth-of-type(odd) {
+    background-color: #272c31;
+}
+
+.row-hover > .row:hover {
+    background-color: #2b3035;
+}
