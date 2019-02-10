@@ -45,4 +45,7 @@ $lang["theme_admin_fixation_add_power"] = "pouvoir";
 $lang["theme_admin_fixation_add_button"] = "Ajouter";
 $lang["theme_admin_fixation_remove_user_button"] = "Retirer cet utilisateur";
 
+$lang["theme_giver"] = "+{points} de <a href='member.php?id={giver_id}'>{giver}</a>";
+$lang["theme_giver_has_givers"] = " <button class='btn btn-xs btn-default btn-open-givers' data-id='{uuid}' id='button-{uuid}'><i class='fa fa-plus' aria-hidden='true'></i></button><span id='span-{uuid}' class='span-close-minus' style='display: none;'> qui avait : <button class='btn btn-xs btn-default btn-close-givers' data-id='{uuid}'><i class='fa fa-minus' aria-hidden='true'></i></button></span>";
+
 ?>

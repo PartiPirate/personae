@@ -566,6 +566,27 @@ $(function() {
 	});
 	$("#the_voting_group_type").change();
 
+	$("body").on("click", ".btn-open-givers", function(event) {
+		event.stopImmediatePropagation();
+		event.preventDefault();
+
+		var id = $(this).data("id");
+		
+		$(this).hide();
+		$("span#span-" + id).show();
+		$("ul#ul-" + id).show();
+	});
+	$("body").on("click", ".btn-close-givers", function(event) {
+		event.stopImmediatePropagation();
+		event.preventDefault();
+
+		var id = $(this).data("id");
+
+		$("button#button-" + id).show();
+		$("span#span-" + id).hide();
+		$("ul#ul-" + id).hide();
+	});
+
 	computeDelegations(themePower);
 	addFreeFixedHandlers();
 	addCandidateFormHandlers();

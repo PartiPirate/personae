@@ -58,7 +58,7 @@ if ($member) {
 
 Pseudo : <?php echo GaletteBo::showPseudo($member); ?><br />
 
-<?php if ($isConnected) {?>
+<?php if ($isConnected && false) {?>
 Identité : <?php echo GaletteBo::showFullname($member); ?><br />
 Mail : <?php echo $member["email_adh"]; ?><br />
 <?php }?>

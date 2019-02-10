@@ -39,30 +39,50 @@
 			<tbody>
 		<?php
 
-		function showGivers($givers) {
+		function showGivers($givers, $uuid = null) {
 			if (!$givers || !count($givers)) return "";
-
+			if (!$uuid) { 
+				$return = '<ul class="givers-list first-givers-list">';
+			}
+			else {
+				$return = '<ul class="givers-list second-givers-list" id="ul-' . $uuid . '" style="display: none;">';
+			}
+			
 			//$return = '"';
-			$return = '';
 
 			$offset = 0;
 			foreach($givers as $giver) {
-				if ($offset) {
-					$return .= ", ";
-				}
-				$return .= GaletteBo::showIdentity($giver);
-				$return .= "[+".$giver["given_power"]."]";
+//				if ($offset) {
+//					$return .= ", ";
+//				}
 
-				$childrenGivers = showGivers($giver["givers"]);
+				$return .= "<li>";
 
-				if ($childrenGivers) {
-					$return .= " ($childrenGivers)";
+				$giverDescription = str_replace("{points}", $giver["given_power"], str_replace("{giver}", GaletteBo::showIdentity($giver), str_replace("{giver_id}", $giver["id_adh"], lang("theme_giver"))));
+
+//				$return .= GaletteBo::showIdentity($giver);
+//				$return .= "[+".$giver["given_power"]."]";
+
+				$return .= $giverDescription;
+
+				if (count($giver["givers"])) {
+//					$return .= " ($childrenGivers)";
+
+					$childUuid = uniqid();
+
+					$childrenGivers = showGivers($giver["givers"], $childUuid);
+
+					$return .= str_replace("{uuid}", $childUuid, lang("theme_giver_has_givers"));
+					$return .= "$childrenGivers";
 				}
+
+				$return .= "</li>";
+				
 				$offset++;
 			}
 
 	//		$return .= '"';
-			$return .= '';
+			$return .= '</ul>';
 
 			return $return;
 		}
@@ -127,6 +147,7 @@
 	<?php foreach($eligibles as $eligible) {
 		
 				if ($eligible["id_adh"] == $sessionUserId) continue;
+				if (!$eligible["id_type_cotis"]) continue;
 
 				$delegativePower = 0;
 				foreach($delegations as $delegation) {
