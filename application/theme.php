@@ -155,7 +155,7 @@ foreach($groups as $groupId => $lgroup) {
 
 ?>
 
-<div class="container theme-showcase" role="main">
+<div class="container theme-container theme-showcase" role="main">
 	<?php echo getBreadcrumb(); ?>
 
 <!-- User part -->
@@ -166,9 +166,12 @@ foreach($groups as $groupId => $lgroup) {
 
 <?php include("connect_button.php"); ?>
 
+<script>
+	themePower = <?php echo $theme["the_voting_power"]; ?>;
+</script>
 </div>
 
-<div class="container otbHidden">
+<div class="container alert-container otbHidden">
 	<?php echo addAlertDialog("success_theme_candidateAlert", lang("success_theme_candidate"), "success"); ?>
 	<?php echo addAlertDialog("success_theme_votingAlert", lang("success_theme_voting"), "success"); ?>
 	<?php echo addAlertDialog("success_theme_themeAlert", lang("success_theme_theme"), "success"); ?>
@@ -180,9 +183,6 @@ foreach($groups as $groupId => $lgroup) {
 
 <div class="lastDiv"></div>
 
-<script>
-	themePower = <?php echo $theme["the_voting_power"]; ?>;
-</script>
 <?php include("footer.php");?>
 
 <script src="assets/js/perpage/theme_user_delegation_advanced.js"></script>

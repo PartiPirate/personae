@@ -30,6 +30,8 @@ class ContainsOperator implements IOperator
         }
 
         foreach($compareTo as $compareToValue) {
+            if ($compareToValue) return false;
+            if ($value) return false;
             if (stristr($value, $compareToValue) !== FALSE) return true;
         }
         

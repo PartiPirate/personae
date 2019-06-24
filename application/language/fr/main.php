@@ -77,6 +77,8 @@ $lang["index_groups_button"] = "Les groupes";
 $lang["index_connect_button"] = "Se connecter";
 $lang["index_description"] = "Gestionnaire de groupes et de pouvoirs décisionnels : par résultat, par tirage au sort, par démocratie liquide";
 
+$lang["groups_guide"] = "Cliquez sur un groupe pour en connaitre la composition et distribuer vos délégations.";
+
 $lang["mypreferences_guide"] = "Changer mes préférences.";
 $lang["mypreferences_form_legend"] = "Configuration de vos accès";
 $lang["mypreferences_form_passwordInput"] = "Nouveau mot de passe";

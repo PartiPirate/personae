@@ -48,7 +48,7 @@ function getBreadcrumb() {
         $crumb = array("isActive" => true, "links" => array("member.php?id=" . $member["id_adh"]), "labels" => array(GaletteBo::showPseudo($member)));
         $crumbs[] = $crumb;
     }
-    else if ($currentPage == "groups.php") {
+    else if ($currentPage == "groups.php" || $currentPage == "groups2.php") {
         global $limit, $isConnected;
         
         $crumb = array("isActive" => ($limit != "mine" || !$isConnected), "links" => array("groups.php"), "labels" => array(lang(breadcrumb_groups)));
@@ -70,11 +70,11 @@ function getBreadcrumb() {
             $crumbs[] = $crumb;
         }
 
-        $crumb = array("isActive" => (!$showAdmin || !$isAdmin), "links" => array("group.php?id=" . $group["gro_id"]), "labels" => array($group["gro_label"]));
+        $crumb = array("isActive" => (!$showAdmin || !$isAdmin), "links" => array("group.php?id=" . $group["gro_id"]), "classes" => array("group-link"), "labels" => array($group["gro_label"]));
         $crumbs[] = $crumb;
         
         if ($isAdmin) {
-            $crumb = array("isActive" => $showAdmin, "links" => array("group.php?admin=&id=" . $group["gro_id"]), "labels" => array(lang("breadcrumb_group_administration")));
+            $crumb = array("isActive" => $showAdmin, "links" => array("group.php?admin=&id=" . $group["gro_id"]), "classes" => array("group-admin-link"), "labels" => array(lang("breadcrumb_group_administration")));
             $crumbs[] = $crumb;
         }
     }
@@ -91,21 +91,22 @@ function getBreadcrumb() {
 
         if (count($themeGroups) > 1 || (count($themeGroups) == 1 && $themeGroups[0]["gro_label"])) {
             // there is parent groups (at least one)
-            $crumb = array("isActive" => false, "links" => array(), "labels" => array());
+            $crumb = array("isActive" => false, "links" => array(), "classes" => array(), "labels" => array());
 
             foreach($themeGroups as $themeGroup) {
                 $crumb["links"][] = "group.php?id=" . $themeGroup["gro_id"];
                 $crumb["labels"][] = $themeGroup["gro_label"];
+                $crumb["classes"][] = "group-link";
             }
 
             $crumbs[] = $crumb;
         }
 
-        $crumb = array("isActive" => (!$showAdmin || !$isAdmin), "links" => array("theme.php?id=" . $theme["the_id"]), "labels" => array($theme["the_label"]));
+        $crumb = array("isActive" => (!$showAdmin || !$isAdmin), "links" => array("theme.php?id=" . $theme["the_id"]), "classes" => array("theme-link"), "labels" => array($theme["the_label"]));
         $crumbs[] = $crumb;
         
         if ($isAdmin) {
-            $crumb = array("isActive" => $showAdmin, "links" => array("theme.php?admin=&id=" . $theme["the_id"]), "labels" => array(lang("breadcrumb_theme_administration")));
+            $crumb = array("isActive" => $showAdmin, "links" => array("theme.php?admin=&id=" . $theme["the_id"]), "classes" => array("theme-admin-link"), "labels" => array(lang("breadcrumb_theme_administration")));
             $crumbs[] = $crumb;
         }
     }
@@ -132,12 +133,13 @@ function dumpBreadcrumb($crumbs) {
         foreach($crumb["links"] as $linkIndex => $link) {
             $breadcrumb .= $linkSeparator;
             $label = $crumb["labels"][$linkIndex];
+            $class = (isset($crumb["classes"][$linkIndex])) ? $crumb["classes"][$linkIndex] : "";
 
             if (@$crumb["isActive"]) {
                 $breadcrumb .= "$label";
             }        
             else {
-                $breadcrumb .= "<a href=\"$link\">";
+                $breadcrumb .= "<a href=\"$link\" class=\"$class\">";
                 $breadcrumb .= "$label";
                 $breadcrumb .= "</a>";
             }

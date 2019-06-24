@@ -65,7 +65,7 @@ function isInMyGroup($theme, $mygroups) {
 
 ?>
 
-<div class="container theme-showcase" role="main">
+<div class="container group-container theme-showcase" role="main">
 	<?php echo getBreadcrumb(); ?>
 
 <?php
@@ -88,7 +88,7 @@ foreach($group["gro_themes"] as $themeId => $theme) {
 			</div>
 		<?php } ?>
 
-			<a href="theme.php?id=<?php echo $themeId; ?>"><?php echo $theme["the_label"]; ?></a>&nbsp;
+			<a href="theme.php?id=<?php echo $themeId; ?>" class="theme-link"><?php echo $theme["the_label"]; ?></a>&nbsp;
 		</div>
 		<div class="panel-body">
 
