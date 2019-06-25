@@ -21,6 +21,7 @@ require_once("engine/utils/FormUtils.php");
 require_once("engine/bo/FixationBo.php");
 require_once("engine/bo/ThemeBo.php");
 require_once("engine/bo/GaletteBo.php");
+require_once("engine/bo/ServerAdminBo.php");
 
 // We sanitize the request fields
 xssCleanArray($_REQUEST);

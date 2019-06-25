@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -58,7 +58,7 @@ $isAdmin = false;
 $showAdmin = false;
 if ($isConnected) {
 	if ($theme["the_id"]) {
-		$isAdmin = $themeBo->isMemberAdmin($theme, $sessionUserId);
+		$isAdmin = $isAdmin || $themeBo->isMemberAdmin($theme, $sessionUserId);
 		$showAdmin = isset($_REQUEST["admin"]);
 
 		if ($isAdmin) {

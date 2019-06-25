@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2018 Cédric Levieux, Parti Pirate
+	Copyright 2018-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -51,22 +51,22 @@ function getBreadcrumb() {
     else if ($currentPage == "groups.php" || $currentPage == "groups2.php") {
         global $limit, $isConnected;
         
-        $crumb = array("isActive" => ($limit != "mine" || !$isConnected), "links" => array("groups.php"), "labels" => array(lang(breadcrumb_groups)));
+        $crumb = array("isActive" => ($limit != "mine" || !$isConnected), "links" => array("groups.php"), "labels" => array(lang("breadcrumb_groups")));
         $crumbs[] = $crumb;
 
         if ($isConnected) {
-            $crumb = array("isActive" => $limit == "mine", "links" => array("groups.php?limit=mine"), "labels" => array(lang(breadcrumb_my_groups)));
+            $crumb = array("isActive" => $limit == "mine", "links" => array("groups.php?limit=mine"), "labels" => array(lang("breadcrumb_my_groups")));
             $crumbs[] = $crumb;
         }
     }
     else if ($currentPage == "group.php") {
         global $showAdmin, $isAdmin, $group;
 
-        $crumb = array("isActive" => false, "links" => array("groups.php"), "labels" => array(lang(breadcrumb_groups)));
+        $crumb = array("isActive" => false, "links" => array("groups.php"), "labels" => array(lang("breadcrumb_groups")));
         $crumbs[] = $crumb;
 
         if (false) {
-            $crumb = array("isActive" => false, "links" => array("groups.php?limit=mine"), "labels" => array(lang(breadcrumb_my_groups)));
+            $crumb = array("isActive" => false, "links" => array("groups.php?limit=mine"), "labels" => array(lang("breadcrumb_my_groups")));
             $crumbs[] = $crumb;
         }
 
@@ -81,11 +81,11 @@ function getBreadcrumb() {
     else if ($currentPage == "theme.php") {
         global $showAdmin, $isAdmin, $theme, $themeGroups;
 
-        $crumb = array("isActive" => false, "links" => array("groups.php"), "labels" => array(lang(breadcrumb_groups)));
+        $crumb = array("isActive" => false, "links" => array("groups.php"), "labels" => array(lang("breadcrumb_groups")));
         $crumbs[] = $crumb;
 
         if (false) {
-            $crumb = array("isActive" => false, "links" => array("groups.php?limit=mine"), "labels" => array(lang(breadcrumb_my_groups)));
+            $crumb = array("isActive" => false, "links" => array("groups.php?limit=mine"), "labels" => array(lang("breadcrumb_my_groups")));
             $crumbs[] = $crumb;
         }
 

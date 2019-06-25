@@ -20,6 +20,7 @@
 class ThemeBo {
 	var $pdo = null;
 	var $database = "";
+	var $personaeDatabase = "";
 
 	function __construct($pdo, $database) {
 		if ($database) {

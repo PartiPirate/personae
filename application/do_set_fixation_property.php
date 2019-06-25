@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -21,6 +21,7 @@ require_once("engine/utils/FormUtils.php");
 require_once("engine/bo/FixationBo.php");
 require_once("engine/bo/ThemeBo.php");
 require_once("engine/bo/GaletteBo.php");
+require_once("engine/bo/ServerAdminBo.php");
 
 // We sanitize the request fields
 xssCleanArray($_REQUEST);

@@ -30,7 +30,7 @@ $authoritatives = array();
 
 if ($isConnected) {
 	if ($group["gro_id"]) {
-		$isAdmin = $groupBo->isMemberAdmin($group, $sessionUserId);
+		$isAdmin = $isAdmin || $groupBo->isMemberAdmin($group, $sessionUserId);
 		$showAdmin = isset($_REQUEST["admin"]);
 
 		if ($isAdmin) {

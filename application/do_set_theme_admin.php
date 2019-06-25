@@ -20,6 +20,7 @@ include_once("config/database.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/bo/ThemeBo.php");
 require_once("engine/bo/GaletteBo.php");
+require_once("engine/bo/ServerAdminBo.php");
 
 // We sanitize the request fields
 xssCleanArray($_REQUEST);
@@ -41,7 +42,11 @@ $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 $theme = array();
 $theme["the_id"] = $_REQUEST["tad_theme_id"];
 
-if (!$themeBo->isMemberAdmin($theme, $sessionUserId)) {
+$serverAdminBo = ServerAdminBo::newInstance($connection, $config);
+$isAdmin = count($serverAdminBo->getServerAdmins(array("sad_member_id" => $sessionUserId))) > 0;
+$isAdmin = $isAdmin || $themeBo->isMemberAdmin($theme, $sessionUserId);
+
+if (!$isAdmin) {
 	echo json_encode(array("error" => "theme_not_admin"));
 	exit();
 }

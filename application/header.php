@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -16,10 +16,17 @@
     You should have received a copy of the GNU General Public License
     along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/*
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+*/
+
 session_start();
 include_once("config/database.php");
 include_once("language/language.php");
 require_once("engine/bo/UserPropertyBo.php");
+require_once("engine/bo/ServerAdminBo.php");
 include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/utils/SessionUtils.php");
@@ -47,6 +54,13 @@ if (SessionUtils::getUserId($_SESSION)) {
 	$sessionUserId = SessionUtils::getUserId($_SESSION);
 
 	$isConnected = true;
+
+	$serverAdminBo = ServerAdminBo::newInstance($connection, $config);
+	$isAdmin = count($serverAdminBo->getServerAdmins(array("sad_member_id" => $sessionUserId))) > 0;
+	
+	if ($isAdmin) {
+		echo "<!-- YOU ARE A SUPER ADMIN -->\n";
+	}
 }
 
 $language = SessionUtils::getLanguage($_SESSION);

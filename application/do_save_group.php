@@ -20,6 +20,7 @@ include_once("config/database.php");
 require_once("engine/utils/FormUtils.php");
 require_once("engine/bo/GroupBo.php");
 require_once("engine/bo/GaletteBo.php");
+require_once("engine/bo/ServerAdminBo.php");
 
 // We sanitize the request fields
 xssCleanArray($_REQUEST);
@@ -41,7 +42,11 @@ $galetteBo = GaletteBo::newInstance($connection, $config["galette"]["db"]);
 $group = array();
 $group["gro_id"] = $_REQUEST["gro_id"];
 
-if (!$groupBo->isMemberAdmin($group, $sessionUserId)) {
+$serverAdminBo = ServerAdminBo::newInstance($connection, $config);
+$isAdmin = count($serverAdminBo->getServerAdmins(array("sad_member_id" => $sessionUserId))) > 0;
+$isAdmin = $isAdmin || $groupBo->isMemberAdmin($group, $sessionUserId);
+
+if (!$isAdmin) {
 	echo json_encode(array("error" => "group_not_admin"));
 	exit();
 }
