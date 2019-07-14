@@ -19,7 +19,7 @@
 
 function addAlertDialog($id, $text, $level = "default") {
 	$formElement = "";
-	$formElement .= "<div id='$id' class='alert alert-$level otbHidden' role='alert'>$text</div>";
+	$formElement .= "<div id='$id' class='alert alert-$level soft-hidden' role='alert'>$text</div>";
 
 	return $formElement;
 }

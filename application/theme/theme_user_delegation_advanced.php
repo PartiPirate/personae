@@ -17,6 +17,10 @@
     along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+if (isset($config["tags"]["url"])) {
+    $tags = json_decode(file_get_contents($config["tags"]["url"]), true);
+}
+
 function orderByIdentity($eligibleA, $eligibleB) {
     $compare = strcasecmp(GaletteBo::showIdentity($eligibleA), GaletteBo::showIdentity($eligibleB));
 
@@ -158,7 +162,7 @@ if (!$hasConditionDelegations) {
                         <optgroup label="<?php echo lang("conditional_condition_field_motion"); ?>">
                             <option value="motion_title"       <?php if (@$condition["field"] == "motion_title")       echo 'selected="selected"' ?> data-type="string"><?php echo lang("conditional_condition_field_motion_title"); ?></option>
                             <option value="motion_description" <?php if (@$condition["field"] == "motion_description") echo 'selected="selected"' ?> data-type="string"><?php echo lang("conditional_condition_field_motion_description"); ?></option>
-                            <option value="motion_tags"        <?php if (@$condition["field"] == "motion_tags")        echo 'selected="selected"' ?> data-type="string"><?php echo lang("conditional_condition_field_motion_tags"); ?></option>
+                            <option value="motion_tags"        <?php if (@$condition["field"] == "motion_tags")        echo 'selected="selected"' ?> data-type="<?php   if (isset($tags)) { echo "tag"; } else { echo "string"; } ?>"><?php echo lang("conditional_condition_field_motion_tags"); ?></option>
                             <option value="motion_date"        <?php if (@$condition["field"] == "motion_date")        echo 'selected="selected"' ?> data-type="date"><?php echo lang("conditional_condition_field_motion_date"); ?></option>
                         </optgroup>
                         <optgroup label="<?php echo lang("conditional_condition_field_motion_voters"); ?>">
@@ -172,6 +176,7 @@ if (!$hasConditionDelegations) {
                         <optgroup label="<?php echo lang("conditional_condition_operator_string"); ?>" data-type="string">
                             <option value="contains"        <?php if (@$condition["operator"] == "contains")        echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_string_contains"); ?></option>
                             <option value="do_not_contain"  <?php if (@$condition["operator"] == "do_not_contain")  echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_string_does_not_contain"); ?></option>
+                            <option value="equals"          <?php if (@$condition["operator"] == "equals")          echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_string_equal"); ?></option>
                         </optgroup>
                         <optgroup label="<?php echo lang("conditional_condition_operator_me"); ?>" data-type="me">
                             <option value="do_vote"         <?php if (@$condition["operator"] == "do_vote")         echo 'selected="selected"' ?> data-need-value="false"><?php echo lang("conditional_condition_operator_me_voted"); ?></option>
@@ -180,11 +185,21 @@ if (!$hasConditionDelegations) {
                             <option value="is_before"       <?php if (@$condition["operator"] == "is_before")       echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_date_before"); ?></option>
                             <option value="is_after"        <?php if (@$condition["operator"] == "is_after")        echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_date_after"); ?></option>
                         </optgroup>
+                        <optgroup label="<?php echo lang("conditional_condition_operator_tag"); ?>" data-type="tag">
+                            <option value="equals"          <?php if (@$condition["operator"] == "equals")          echo 'selected="selected"' ?> data-need-value="true"><?php echo lang("conditional_condition_operator_tag_equal"); ?></option>
+                        </optgroup>
                     </select>
                 </div>
                 <div class="col-md-2">
                     <input name="value-input"       type="text" placeholder="" value="<?php echo @$condition["value"]; ?>" class="form-control input-md">
                     <input name="value-date-input"  type="date" placeholder="" value="<?php echo @$condition["value"]; ?>" class="form-control input-md" style="height: 38px;">
+                    <?php   if (isset($tags)) { ?>
+                    <select name="value-tag-input" class="form-control input-md">
+                    <?php   foreach($tags as $tag) { ?>
+                        <option value="<?=$tag["label"]?>" <?php     if (@$condition["value"] && $condition["value"] == $tag["label"]) { echo "selected='selected'"; } ?> ><?=$tag["label"]?></option>
+                    <?php   } ?>
+                    </select>
+                    <?php   } ?>
                 </div>
                 <div class="col-md-2">
                     <button type="button" class="btn btn-primary add-condition-btn"   title="<?php echo lang("conditional_add_condition");    ?>"><i class="fa fa-plus"  aria-hidden="true"></i></button>

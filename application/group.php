@@ -274,7 +274,7 @@ foreach($group["gro_themes"] as $themeId => $theme) {
 </div>
 
 
-<div class="container otbHidden">
+<div class="container soft-hidden">
 	<?php echo addAlertDialog("success_group_groupAlert", lang("success_group_group"), "success"); ?>
 </div>
 

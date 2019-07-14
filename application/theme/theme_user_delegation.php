@@ -1,5 +1,5 @@
 <?php /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -25,6 +25,9 @@
 <div class="panel panel-default voting">
 	<div class="panel-heading">
 		<?php echo lang("theme_demliq_label"); ?>&nbsp;
+		
+		<a href="#delegation-advanced" id="advanced-link" class="pull-right no-collapse"><?php echo lang("theme_demliq_delegation_advanced"); ?></a>
+		<a href="#delegation-standard" id="standard-link" class="pull-right no-collapse soft-hidden"><?php echo lang("theme_demliq_delegation_standard"); ?></a>
 	</div>
 	<div class="panel-body tabs-bottom">
 
@@ -41,10 +44,10 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist" style="margin: 0 -16px -15px -16px;">
         	<li role="presentation" class="active">
-        		<a href="#delegation-standard" aria-controls="delegation-standard" role="tab" data-toggle="tab"><?php echo lang("theme_demliq_delegation_standard"); ?></a>
+        		<a href="#delegation-standard" aria-controls="delegation-standard" role="tab" data-toggle="tab" id="standard-tab"><?php echo lang("theme_demliq_delegation_standard"); ?></a>
         	</li>
         	<li role="presentation">
-        		<a href="#delegation-advanced" aria-controls="delegation-advanced" role="tab" data-toggle="tab"><?php echo lang("theme_demliq_delegation_advanced"); ?></a>
+        		<a href="#delegation-advanced" aria-controls="delegation-advanced" role="tab" data-toggle="tab" id="advanced-tab"><?php echo lang("theme_demliq_delegation_advanced"); ?></a>
         	</li>
         </ul>
         

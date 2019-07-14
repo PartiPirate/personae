@@ -171,7 +171,7 @@ foreach($groups as $groupId => $lgroup) {
 </script>
 </div>
 
-<div class="container alert-container otbHidden">
+<div class="container alert-container soft-hidden">
 	<?php echo addAlertDialog("success_theme_candidateAlert", lang("success_theme_candidate"), "success"); ?>
 	<?php echo addAlertDialog("success_theme_votingAlert", lang("success_theme_voting"), "success"); ?>
 	<?php echo addAlertDialog("success_theme_themeAlert", lang("success_theme_theme"), "success"); ?>

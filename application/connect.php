@@ -57,9 +57,9 @@ require_once("engine/utils/SessionUtils.php");
 					<input id="userLoginInput" name="login" value="" type="text"
 						placeholder="" class="form-control input-md">
 					<span id="userLoginStatus"
-						class="glyphicon glyphicon-ok form-control-feedback otbHidden" aria-hidden="true"></span>
+						class="glyphicon glyphicon-ok form-control-feedback soft-hidden" aria-hidden="true"></span>
 					<p class="help-block"><?php echo lang("connect_form_loginHelp");?></p>
-					<p id="userLoginHelp" class="help-block otbHidden"></p>
+					<p id="userLoginHelp" class="help-block soft-hidden"></p>
 				</div>
 			</div>
 
@@ -69,7 +69,7 @@ require_once("engine/utils/SessionUtils.php");
 				<div class="col-md-6">
 					<input id="userPasswordInput" name="password" value="" type="password"
 						placeholder="" class="form-control input-md">
-					<span id="passwordStatus" class="glyphicon glyphicon-ok form-control-feedback otbHidden" aria-hidden="true"></span>
+					<span id="passwordStatus" class="glyphicon glyphicon-ok form-control-feedback soft-hidden" aria-hidden="true"></span>
 					<p class="help-block"><?php echo lang("connect_form_passwordHelp");?></p>
 				</div>
 			</div>

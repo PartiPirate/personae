@@ -54,7 +54,7 @@ require_once("engine/utils/SessionUtils.php");
 		</fieldset>
 	</form>
 
-	<div id="successPanel" class="panel panel-success otbHidden">
+	<div id="successPanel" class="panel panel-success soft-hidden">
 		<div class="panel-heading">
 			<?php echo lang("forgotten_success_title"); ?>
 		</div>

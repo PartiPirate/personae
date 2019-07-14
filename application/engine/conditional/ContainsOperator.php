@@ -29,12 +29,19 @@ class ContainsOperator implements IOperator
             $compareTo = array($compareTo);
         }
 
+//        error_log("Contains");
+//        error_log(print_r($compareTo, true));
+//        error_log($value);
+
         foreach($compareTo as $compareToValue) {
-            if ($compareToValue) return false;
-            if ($value) return false;
+            if (!$compareToValue) return false;
+            if (!$value) return false;
+            
+//            error_log("There is something to compare, and result is : " . stristr($value, $compareToValue));
+            
             if (stristr($value, $compareToValue) !== FALSE) return true;
         }
-        
+
         return false;
     }
 }

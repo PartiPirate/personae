@@ -1,7 +1,7 @@
 <?php
 
 /*
- Copyright 2018 Cédric Levieux, Parti Pirate
+ Copyright 2019 Cédric Levieux, Parti Pirate
 
 This file is part of Personae.
 
@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with Personae.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class DoNotContainOperator implements IOperator
+class EqualsOperator implements IOperator
 {
     /**
      * @return <code>true</code> if the evaluation of this operator succeeds
@@ -29,13 +29,20 @@ class DoNotContainOperator implements IOperator
             $compareTo = array($compareTo);
         }
 
+//        error_log("Contains");
+//        error_log(print_r($compareTo, true));
+//        error_log($value);
+
         foreach($compareTo as $compareToValue) {
             if (!$compareToValue) return false;
             if (!$value) return false;
-            if (stristr($value, $compareToValue) !== FALSE) return false;
+            
+//            error_log("There is something to compare, and result is : " . stristr($value, $compareToValue));
+            
+            if (strcasecmp($value, $compareToValue) == 0) return true;
         }
-        
-        return true;
+
+        return false;
     }
 }
 

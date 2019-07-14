@@ -35,6 +35,7 @@ class ConditionalFactory {
         if (strtolower($condition["operator"]) == "is_after") return new IsAfterOperator();
         if (strtolower($condition["operator"]) == "is_before") return new IsBeforeOperator();
         if (strtolower($condition["operator"]) == "contains") return new ContainsOperator();
+        if (strtolower($condition["operator"]) == "equals") return new EqualsOperator();
         if (strtolower($condition["operator"]) == "do_not_contain") return new DoNotContainOperator();
         if (strtolower($condition["operator"]) == "do_vote") return new DoVoteOperator();
 

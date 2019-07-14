@@ -460,11 +460,13 @@ class DelegationBo {
 		for($index = 0; $index < $count; $index++) {
 			$delegation = $delegations[$index];
 
+//			error_log("Delegation " . print_r($delegation, true));
+
 			if (!$delegation["del_member_from"]) $delegation["del_member_from"] = $delegation["dco_member_from"];
 			$memberFrom = $delegation["del_member_from"];
 
 //			echo "Index : $index \n";
-//			echo "Member : " . $memberFrom;
+//			error_log("Member : " . $memberFrom);
 //			echo "\n";
 
 			$memberDelegations = array();
@@ -744,6 +746,7 @@ class DelegationBo {
 
 		$statement = $this->pdo->prepare($query);
 //		echo showQuery($query, $args);
+//		error_log("SQL : " . showQuery($query, $args));
 
 		$results = array();
 

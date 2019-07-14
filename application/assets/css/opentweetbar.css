@@ -43,6 +43,10 @@ html,body {
 	content: "\e080";
 }
 
+.panel-heading a.no-collapse:after {
+	content: none;
+}
+
 .mailForm {
 	display: none;
 }
@@ -60,7 +64,7 @@ html,body {
 	border-radius: 10px;
 }
 
-.otbHidden {
+.soft-hidden {
 	display: none;
 }
 

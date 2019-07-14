@@ -193,7 +193,7 @@ echo $CARD;
 		</div>
 	</nav>
 
-	<div class="container otbHidden" id="loginForm">
+	<div class="container soft-hidden" id="loginForm">
 		<form class="form-signin" role="form">
 			<h2 class="form-signin-heading text-center"><?php echo lang("login_title"); ?></h2>
 			<label for="inputLogin" class="sr-only"><?php echo lang("login_loginInput"); ?></label> <input type="text" id="loginInput" class="form-control" placeholder="<?php echo lang("login_loginInput"); ?>" required
@@ -214,7 +214,7 @@ echo $CARD;
 		</form>
 	</div>
 
-	<div class="container otbHidden">
+	<div class="container soft-hidden">
 		<?php echo addAlertDialog("error_login_banAlert", lang("error_login_ban"), "danger"); ?>
 		<?php echo addAlertDialog("error_login_badAlert", lang("error_login_bad"), "warning"); ?>
 	</div>

@@ -1,5 +1,5 @@
 /*
-	Copyright 2018 Cédric Levieux, Parti Pirate
+	Copyright 2018-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -160,14 +160,22 @@ function changeOperatorHandler() {
         if (needValue && type == "string") {
             condition.find("input[name=value-input]").show();
             condition.find("input[name=value-date-input]").hide();
+            condition.find("select[name=value-tag-input]").hide();
         }
         else if (needValue && type == "date") {
             condition.find("input[name=value-input]").hide();
             condition.find("input[name=value-date-input]").show();
+            condition.find("select[name=value-tag-input]").hide();
+        }
+        else if (needValue && type == "tag") {
+            condition.find("input[name=value-input]").hide();
+            condition.find("input[name=value-date-input]").hide();
+            condition.find("select[name=value-tag-input]").show();
         }
         else {
             condition.find("input[name=value-input]").hide();
             condition.find("input[name=value-date-input]").hide();
+            condition.find("select[name=value-tag-input]").hide();
         }
     });
 }
@@ -224,7 +232,17 @@ function addSaveDelegationHandler() {
                 var typeOption = $(this).find("select[name=field-select] option:selected");
                 var type = typeOption.data("type");
 
-                currentCondition["value"] = (type == "date" ? $(this).find("input[name=value-date-input]").val() : $(this).find("input[name=value-input]").val());
+                switch(type) {
+                    case "date":
+                        currentCondition["value"] = $(this).find("input[name=value-date-input]").val();
+                        break;
+                    case "tag":
+                        currentCondition["value"] = $(this).find("select[name=value-tag-input]").val();
+                        break
+                    default:
+                        currentCondition["value"] = $(this).find("input[name=value-input]").val();
+                        break;
+                }
 
                 if (currentCondition["field"] && currentCondition["operator"]) {
                     conditions.push(currentCondition);
@@ -291,5 +309,6 @@ $(function() {
 	checkInteractions();
 
     $("#conditional-delegetation-container").sortable({"distance": 5});
+    $("select[name=field-select]").change();
 	$("select[name=operator-select]").change();
 });

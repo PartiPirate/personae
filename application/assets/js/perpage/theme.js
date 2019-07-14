@@ -1,5 +1,5 @@
 /*
-	Copyright 2015-2018 Cédric Levieux, Parti Pirate
+	Copyright 2015-2019 Cédric Levieux, Parti Pirate
 
 	This file is part of Personae.
 
@@ -585,6 +585,21 @@ $(function() {
 		$("button#button-" + id).show();
 		$("span#span-" + id).hide();
 		$("ul#ul-" + id).hide();
+	});
+
+	$("#advanced-link").click(function(event) {
+	    event.stopImmediatePropagation();
+	    event.preventDefault();
+	    $("#advanced-tab").click();
+	    $("#standard-link").show();
+	    $(this).hide();
+	});
+	$("#standard-link").click(function(event) {
+	    event.stopImmediatePropagation();
+	    event.preventDefault();
+	    $("#standard-tab").click();
+	    $("#advanced-link").show();
+	    $(this).hide();
 	});
 
 	computeDelegations(themePower);
