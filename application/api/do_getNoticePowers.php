@@ -20,6 +20,7 @@
 include_once("engine/conditional/ICondition.php");
 include_once("engine/conditional/IOperator.php");
 include_once("engine/conditional/ContainsOperator.php");
+include_once("engine/conditional/EqualsOperator.php");
 include_once("engine/conditional/DoNotContainOperator.php");
 include_once("engine/conditional/DoVoteOperator.php");
 include_once("engine/conditional/IsAfterOperator.php");
