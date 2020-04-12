@@ -163,7 +163,7 @@ $skills = $skillBo->getByFilters(array());
 			<tr data-template-id="template-tweet"
 				data-row=""
 				class="template">
-				<td><a href="member.php?id=${id}" target="_blank">${lastname} ${firstname} ${nickname}</a></td>
+				<td><a href="member.php?id=${id}" target="_blank" style="color: inherit;">${lastname} ${firstname} ${nickname}</a></td>
 				<td>${mail}</td>
 				<td>${zipcode}</td>
 				<td>${city}</td>

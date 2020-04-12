@@ -124,7 +124,7 @@ $(function() {
 
 		checkSuccesButtonState($(this));
 	});
-	
+
 	$("body").on("click", ".btn-add-skill-filter", function(event) {
 		var button = $(this);
 		var icon = button.find(".fa");

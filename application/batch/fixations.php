@@ -158,7 +158,7 @@ foreach($themes as $theme) {
 
 		// Clean powerless members
 		foreach($powers as $memberId => $member) {
-			if ($member["power"] <= 0) unset($powers[$memberId]);
+//			if ($member["power"] <= 0) unset($powers[$memberId]);
 		}
 
 //		if (count($powers) < $theme["the_max_members"]) {
@@ -177,7 +177,7 @@ foreach($themes as $theme) {
 			$fixationMember["fme_member_id"] = $memberId;
 			$fixationMember["fme_power"] = $member["power"];
 
-			echo ($member["pseudo_adh"] ? $member["pseudo_adh"] : ($member["nom_adh"] . " " . $member["prenom_adh"])) . " gains power with " . $member["power"] . "\n";
+			echo "(" . $member["id_adh"] . ") " . ($member["pseudo_adh"] ? $member["pseudo_adh"] : ($member["nom_adh"] . " " . $member["prenom_adh"])) . " gains power with " . $member["power"] . "\n";
 			//print_r($fixationMember);
 
 			$fixationBo->addFixationMember($fixationMember);
