@@ -308,6 +308,10 @@ class DelegationBo {
 //			print_r($member);
 //			exit();
 
+			unset($member["can_text"]);
+
+//			print_r($member);
+
 			if (!$member["id_type_cotis"]) continue;
 			$members[$member["id_adh"]] = $member;
 			$members[$member["id_adh"]]["power"] = 0;
@@ -315,11 +319,20 @@ class DelegationBo {
 		}
 
 		foreach($instance["votings"] as $member) {
+			unset($member["can_text"]);
+
 			if (!$member["id_type_cotis"]) continue;
 			$members[$member["id_adh"]] = $member;
 			$members[$member["id_adh"]]["power"] = $instancePower;
 			$members[$member["id_adh"]]["max_power"] = $instancePower;
+
+			unset($members[$member["id_adh"]]["can_text"]);
 		}
+
+//		echo "Number of eligibles : " . count($instance["eligibles"]) . "<br>\n";
+//		echo "Number of votings : " . count($instance["votings"]) . "<br>\n";
+//		echo "Number of members : " . count($members) . "<br>\n";
+		
 /*
 		foreach($members as $index => $member) {
 			$members[$index]["power"] = $instancePower;
@@ -369,6 +382,7 @@ class DelegationBo {
 // 		echo "<br/>------------<br/>\n";
 
 		error_log("Before - Number of delegations : " . count($delegations));
+//		echo("Before - Number of delegations : " . count($delegations)) . "<br>\n";
 
 		$context = array("motion" => $motion, "votes" => $votes, "me" => null);
 
@@ -433,6 +447,9 @@ class DelegationBo {
 				unset($delegations[$index]);
 			}
 		}
+		// End clear delegation
+
+//		echo("After - Number of delegations : " . count($delegations)) . "<br>\n";
 
 		function sortDelegations($delegationA, $delegationB) {
 			if (!$delegationA["del_member_from"]) $delegationA["del_member_from"] = $delegationA["dco_member_from"];
@@ -450,6 +467,9 @@ class DelegationBo {
 
 		usort($delegations, "sortDelegations");
 
+//		echo("After sort - Number of delegations : " . count($delegations)) . "<br>\n";
+//		exit();
+
 // 		print_r($delegations);
 // 		echo "\n";
 
@@ -465,18 +485,23 @@ class DelegationBo {
 			if (!$delegation["del_member_from"]) $delegation["del_member_from"] = $delegation["dco_member_from"];
 			$memberFrom = $delegation["del_member_from"];
 
+			error_log("Index : $index");
 //			echo "Index : $index \n";
-//			error_log("Member : " . $memberFrom);
+//			flush();
+			error_log("Member : " . $memberFrom);
 //			echo "\n";
+//			error_log("Delegation : " . print_r($delegation, true));
 
 			$memberDelegations = array();
 
 			for($jndex = $index; $jndex < $count; $jndex++) {
 				$delegation = $delegations[$jndex];
+				if (!$delegation["del_member_from"]) $delegation["del_member_from"] = $delegation["dco_member_from"];
 
 				if ($memberFrom == $delegation["del_member_from"]) {
 					$delegation["del_index"] = $jndex;
 					$memberDelegations[] = $delegation;
+//					error_log("Add delegation : " . print_r($delegation, true));
 				}
 				else {
 					break;
@@ -489,6 +514,8 @@ class DelegationBo {
 			$availablePower = $instancePower;
 
 			$stopDelegation = null;
+
+			error_log("Number of delegation : " . count($memberDelegations));
 
 			for($jndex = 0; $jndex < count($memberDelegations); $jndex++) {
 				$memberDelegation = $memberDelegations[$jndex];
@@ -552,8 +579,17 @@ class DelegationBo {
 //				echo "--\n";
 			}
 
+			error_log("Number of delegation : " . count($memberDelegations));
+
+//			sleep(1);
+
 			$index += (count($memberDelegations) - 1);
 		}
+
+//		echo("After stop delegation process - Number of delegations : " . count($delegations)) . "<br>\n";
+//		exit();
+
+		
 
 /*
 		foreach($delegations as &$delegation) {

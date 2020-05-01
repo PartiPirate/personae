@@ -111,6 +111,7 @@ else {
 	$data["groups"] = $inGroups;
 
 //	print_r($data);
+	error_log("Groupes : " . print_r($data, true));
 }
 
 echo json_encode($data, JSON_NUMERIC_CHECK);

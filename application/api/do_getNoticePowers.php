@@ -87,6 +87,7 @@ if ($method == "demliq") {
 
 	$powers = $delegationBo->computeFixationWithContext($theme, $motion, $votes);
 
+
 /*
 	// Clean powerless members
 	foreach($powers as $memberId => $member) {
